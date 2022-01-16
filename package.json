@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update-types": "npx openapi-typescript https://crtqyixuufelpnrkgtjh.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNjQyMTY2NjYwLCJleHAiOjE5NTc3NDI2NjB9.rIlVQz22dENczT4odu-hkLv1SbggIGHZ4F_6i4cEIM0 --output types/database/index.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.29.1",

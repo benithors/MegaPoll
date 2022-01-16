@@ -15,27 +15,21 @@ const createPoll = (props: IProps) => {
             </div>
 
 
-            <div className="form-control w-1/4">
-                <div>
+            <div className="form-control">
                     <label className="label">
                         <span className="label-text">Poll Name</span>
                     </label>
                     <input type="text" placeholder="Give your Poll a name" className="input input-bordered"/>
-                </div>
 
-                <div>
                     <label className="label">
                         <span className="label-text">Describe the poll</span>
                     </label>
                     <textarea className="textarea h-24 textarea-bordered" placeholder="Describe what the poll is about"></textarea>
-                </div>
 
-                <div>
                     <label className="label">
                         <span className="label-text">Cover Image of the Poll</span>
                     </label>
                     <input type="file"  />
-                </div>
 
                 <div className={"mt-16"}>
 
