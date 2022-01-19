@@ -215,6 +215,7 @@ export interface paths {
           created_at?: parameters["rowFilter.polls.created_at"];
           poll_name?: parameters["rowFilter.polls.poll_name"];
           poll_description?: parameters["rowFilter.polls.poll_description"];
+          uuid?: parameters["rowFilter.polls.uuid"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -269,6 +270,7 @@ export interface paths {
           created_at?: parameters["rowFilter.polls.created_at"];
           poll_name?: parameters["rowFilter.polls.poll_name"];
           poll_description?: parameters["rowFilter.polls.poll_description"];
+          uuid?: parameters["rowFilter.polls.uuid"];
         };
         header: {
           /** Preference */
@@ -287,6 +289,7 @@ export interface paths {
           created_at?: parameters["rowFilter.polls.created_at"];
           poll_name?: parameters["rowFilter.polls.poll_name"];
           poll_description?: parameters["rowFilter.polls.poll_description"];
+          uuid?: parameters["rowFilter.polls.uuid"];
         };
         body: {
           /** polls */
@@ -462,6 +465,11 @@ export interface definitions {
     poll_name: string;
     /** Format: character varying */
     poll_description: string;
+    /**
+     * Format: uuid
+     * @default extensions.uuid_generate_v4()
+     */
+    uuid: string;
   };
   profiles: {
     /**
@@ -546,6 +554,8 @@ export interface parameters {
   "rowFilter.polls.poll_name": string;
   /** Format: character varying */
   "rowFilter.polls.poll_description": string;
+  /** Format: uuid */
+  "rowFilter.polls.uuid": string;
   /** @description profiles */
   "body.profiles": definitions["profiles"];
   /** Format: uuid */
