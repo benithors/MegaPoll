@@ -2,31 +2,36 @@ import React from 'react'
 import {useRouter} from "next/router";
 import {supabase} from "../../utils/SupabaseClient";
 
-
+import { definitions } from "../../types/database/index";
 interface IProps {
-
+allPollsy:definitions["polls"],
+    something:string
 }
 
 export async function getStaticProps(){
-    const {data: polls,error} = await supabase.from('poll_questions').select('*')
+
+   const allPolls = await supabase
+        .from<definitions["polls"]>("polls")
+        .select("*");
 
 
 
     return{
         props:{
-            polls,
+            allPollsy:allPolls,
+            something:'future'
         },
     };
 
 }
 
-const Poll = ({polls}) => {
+const Poll = (props:IProps) => {
     const router = useRouter()
     const { pid } = router.query
     return (
         <div>
 asd
-            {JSON.stringify(polls,null,2)}
+            {JSON.stringify(props.allPollsy,null,2)}
         </div>
 
 
