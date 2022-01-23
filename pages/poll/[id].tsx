@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {supabase} from "../../utils/SupabaseClient";
 import {definitions} from "../../types/database";
 import {GetServerSideProps } from "next";
@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const allPolls = await supabase
         .from<definitions["polls"]>("polls")
         .select("*")
-        .eq("uuid",id.toString());
+        .eq("id",id.toString());
 
     return{
         props:{
@@ -27,12 +27,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 
+
 const poll = (props: IProps) => {
+
+    const [pollData, setPollData] = useState(props.allPolls.data[0].poll_name);
+
+    const mySubscription = supabase
+        .from('*')
+        .on('*', payload => {
+
+            setPollData(payload.new.poll_name);
+            console.log('Change received!', payload);
+        })
+        .subscribe()
+
+
+    useEffect(() => {
+
+    })
+
 
     return (
         <div>
-            {props.allPolls.poll_name}
-            {JSON.stringify(props.allPolls,null,2)}
+            {pollData}
         </div>
 
 
