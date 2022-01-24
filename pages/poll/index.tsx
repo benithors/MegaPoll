@@ -30,7 +30,6 @@ const Poll = (props:IProps) => {
     const { pid } = router.query
     return (
         <div>
-asd
             {JSON.stringify(props.allPollsy,null,2)}
         </div>
 
