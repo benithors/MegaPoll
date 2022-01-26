@@ -57,45 +57,59 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const poll = (props: IProps) => {
 
-    const [pollData, setPollData] = useState(props.pollData);
-    const [newIncomingMessageTrigger, setNewIncomingMessageTrigger] =
-        useState(null);
-    let mySubscription = null;
+    const [optionsData,setOptionsData] = useState(props.pollOptions)
+    let mySubscription = [null];
 
 
-    const handleNewMessage = (payload) => {
-        setPollData(payload.new);
-        setNewIncomingMessageTrigger(payload.new);
+
+
+
+    const handleNewOptionsUpdate = (payload) => {
+        let optionsTemp = [...optionsData];
+        optionsTemp[optionsTemp.findIndex(x => x.id == payload.new.id)] = payload.new;
+        console.log("after:" +JSON.stringify(optionsData));
+        console.log("Before:" + JSON.stringify(optionsTemp));
+        setOptionsData(optionsTemp);
+
     };
 
     useEffect(() => {
 
-        getMessagesAndSubscribe();
+        props.pollOptions.forEach((value, index) =>
+        {
+            let subTemp =  supabase
+                .from('poll_options:id=eq.' + value.id)
+                .on('*', payload => {
+                    handleNewOptionsUpdate(payload);
+                })
+                .subscribe();
+            mySubscription.push(subTemp);
+        })
+
+
 
 
         return () => {
-            supabase.removeSubscription(mySubscription);
+            mySubscription.forEach(sub => {
+                supabase.removeSubscription(sub);
+            })
             console.log("Remove supabase subscription by useEffect unmount");
         };
     }, [])
 
 
-    const getMessagesAndSubscribe = async () => {
-        if (!mySubscription) {
-            mySubscription = supabase
-                .from('polls:id=eq.' + pollData.id)
-                .on('*', payload => {
-                    handleNewMessage(payload);
-                })
-                .subscribe();
-        }
-    };
+
+
+    function getVotePercentage( ): number {
+
+        return 1;
+    }
 
 
     return (
         <div>
 
-            {pollData.poll_name}
+            {props.pollData.poll_name}
 
 
             {props.pollQuestions.map((pollque, index) =>
@@ -105,7 +119,7 @@ const poll = (props: IProps) => {
 
 
                     <div className="p-6 space-y-2 artboard phone">
-                        {props.pollOptions.filter(value => value.poll_question === pollque.id).map((value, index) =>
+                        {optionsData.filter(value => value.poll_question === pollque.id).map((value, index) =>
 
                             <div key={index}>
                                 <div>
