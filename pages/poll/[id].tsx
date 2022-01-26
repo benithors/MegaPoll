@@ -2,12 +2,19 @@ import React, {useEffect, useState} from 'react'
 import {supabase} from "../../utils/SupabaseClient";
 import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
+import {random} from "nanoid";
+import {prefixes} from "next/dist/build/output/log";
 
 
 interface IProps {
     pollData: definitions["polls"],
     pollQuestions: definitions["poll_questions"][],
-    pollOptions: definitions["poll_options"][],
+    pollOptionsWrapper: IPollOption[],
+}
+
+interface IPollOption{
+    pollOptions: definitions["poll_options"]
+    lastUpdate : string;
 }
 
 /*
@@ -24,7 +31,7 @@ const allOptions = await supabase
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const id = context.params.id;
-    const poll = await supabase
+    const pollData = await supabase
         .from<definitions["polls"]>("polls")
         .select("*")
         .eq("id", id.toString()).single();
@@ -43,42 +50,71 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         .in("poll_question", allQuestions.data.map(a => a.id));
 
 
+    let pollOptionDataWrapper:IPollOption[] =[];
+
+allPollOptions.data.forEach((value, index) => {
+    const temp:IPollOption = {
+        pollOptions:value,
+        lastUpdate: new Date().toISOString()
+    }
+    pollOptionDataWrapper.push(temp);
+    })
+
+
+
     console.log("blub" + allPollOptions.data)
     return {
         props: {
-            pollData: poll.data,
+            pollData: pollData.data,
             pollQuestions: allQuestions.data,
-            pollOptions: allPollOptions.data
+            pollOptionsWrapper: pollOptionDataWrapper
         },
-    };
+    }
+
+
 
 }
 
 
 const poll = (props: IProps) => {
 
-    const [optionsData,setOptionsData] = useState(props.pollOptions)
+    const [optionsData,setOptionsData] = useState<IPollOption[]>(props.pollOptionsWrapper)
     let mySubscription = [null];
 
 
 
 
-
-    const handleNewOptionsUpdate = (payload) => {
+// the problem is that we don't have the "real" previous state
+    // it seems like usestate is async, need to figure out a way to update the value properly
+    const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: any; old?: any; errors?: string[]; }) => {
         let optionsTemp = [...optionsData];
-        optionsTemp[optionsTemp.findIndex(x => x.id == payload.new.id)] = payload.new;
-        console.log("after:" +JSON.stringify(optionsData));
-        console.log("Before:" + JSON.stringify(optionsTemp));
-        setOptionsData(optionsTemp);
 
+        let idx = optionsTemp.findIndex(x => x.pollOptions.id == payload.new.id);
+        if(new Date(payload.commit_timestamp) > new Date(optionsTemp[idx].lastUpdate)) {
+            console.log(payload.commit_timestamp)
+            console.log(payload.new)
+
+            const temp: IPollOption = {
+                pollOptions: payload.new,
+                lastUpdate: payload.commit_timestamp
+            }
+            optionsTemp[idx] = temp;
+
+            setOptionsData(prevState => (
+
+                [...optionsTemp]));
+            console.log(JSON.stringify(optionsData))
+        }else{
+            console.log("throwing it away")
+        }
     };
 
     useEffect(() => {
 
-        props.pollOptions.forEach((value, index) =>
+        props.pollOptionsWrapper.forEach((value, index) =>
         {
             let subTemp =  supabase
-                .from('poll_options:id=eq.' + value.id)
+                .from('poll_options:id=eq.' + value.pollOptions.id)
                 .on('*', payload => {
                     handleNewOptionsUpdate(payload);
                 })
@@ -92,17 +128,17 @@ const poll = (props: IProps) => {
         return () => {
             mySubscription.forEach(sub => {
                 supabase.removeSubscription(sub);
+                console.log("Remove supabase subscription by useEffect unmount");
             })
-            console.log("Remove supabase subscription by useEffect unmount");
+
         };
     }, [])
 
 
 
-
-    function getVotePercentage( ): number {
-
-        return 1;
+    function getVotePercentage(value, filteredOptions: IPollOption[]): number {
+        let map = filteredOptions.map(value1 => value1.pollOptions);
+        return (100 * value.pollOptions.votes) /  map.reduce((a, b) => +a + +b.votes, 0);
     }
 
 
@@ -112,26 +148,28 @@ const poll = (props: IProps) => {
             {props.pollData.poll_name}
 
 
-            {props.pollQuestions.map((pollque, index) =>
+            {props.pollQuestions.map((pollque, index) => {
+                const filteredOptions = optionsData.filter(value => value.pollOptions.poll_question === pollque.id);
+                return <div key={index}>
+                        {pollque.question}
 
-                <div key={index}>
-                    {pollque.question}
 
+                        <div className="p-6 space-y-2 artboard phone">
+                            {filteredOptions.map((value, index) =>
 
-                    <div className="p-6 space-y-2 artboard phone">
-                        {optionsData.filter(value => value.poll_question === pollque.id).map((value, index) =>
+                                <div key={index}>
+                                    <div>
+                                        {value.pollOptions.option} {value.pollOptions.votes}
+                                    </div>
 
-                            <div key={index}>
-                                <div>
-                                    {value.option}
+                                    <progress className="progress progress-primary" value={getVotePercentage(value,filteredOptions)} max="100"></progress>
                                 </div>
-                                <progress className="progress progress-primary" value={value.votes} max="5"></progress>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
 
 
-                </div>
+                    </div>;
+                }
             )}
 
 
