@@ -87,26 +87,19 @@ const poll = (props: IProps) => {
 // the problem is that we don't have the "real" previous state
     // it seems like usestate is async, need to figure out a way to update the value properly
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: any; old?: any; errors?: string[]; }) => {
-        let optionsTemp = [...optionsData];
 
-        let idx = optionsTemp.findIndex(x => x.pollOptions.id == payload.new.id);
-        if(new Date(payload.commit_timestamp) > new Date(optionsTemp[idx].lastUpdate)) {
-            console.log(payload.commit_timestamp)
-            console.log(payload.new)
 
-            const temp: IPollOption = {
-                pollOptions: payload.new,
-                lastUpdate: payload.commit_timestamp
-            }
-            optionsTemp[idx] = temp;
+            setOptionsData(prevState => {
+                let iPollOptions = prevState.slice();
+                let idx = iPollOptions.findIndex(x => x.pollOptions.id == payload.new.id);
+                const temp: IPollOption = {
+                    pollOptions: payload.new,
+                    lastUpdate: payload.commit_timestamp
+                }
+                iPollOptions[idx] = temp;
+                return  [...iPollOptions]
+            });
 
-            setOptionsData(prevState => (
-
-                [...optionsTemp]));
-            console.log(JSON.stringify(optionsData))
-        }else{
-            console.log("throwing it away")
-        }
     };
 
     useEffect(() => {
@@ -123,8 +116,6 @@ const poll = (props: IProps) => {
         })
 
 
-
-
         return () => {
             mySubscription.forEach(sub => {
                 supabase.removeSubscription(sub);
@@ -137,15 +128,17 @@ const poll = (props: IProps) => {
 
 
     function getVotePercentage(value, filteredOptions: IPollOption[]): number {
+        if(value.pollOptions.votes === 0){
+            return 0
+        }
         let map = filteredOptions.map(value1 => value1.pollOptions);
         return (100 * value.pollOptions.votes) /  map.reduce((a, b) => +a + +b.votes, 0);
     }
 
 
     return (
-        <div>
+        <div className={"w-full pt-16"}>
 
-            {props.pollData.poll_name}
 
 
             {props.pollQuestions.map((pollque, index) => {
@@ -154,12 +147,11 @@ const poll = (props: IProps) => {
                         {pollque.question}
 
 
-                        <div className="p-6 space-y-2 artboard phone">
+                        <div className="p-6 space-y-2 artboard  w-full ">
                             {filteredOptions.map((value, index) =>
-
                                 <div key={index}>
                                     <div>
-                                        {value.pollOptions.option} {value.pollOptions.votes}
+                                        {value.pollOptions.option} / Votes {value.pollOptions.votes} /  {Math.floor(getVotePercentage(value,filteredOptions))}%
                                     </div>
 
                                     <progress className="progress progress-primary" value={getVotePercentage(value,filteredOptions)} max="100"></progress>
