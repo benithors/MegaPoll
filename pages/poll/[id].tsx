@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {supabase} from "../../utils/SupabaseClient";
 import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
-import {random} from "nanoid";
-import {prefixes} from "next/dist/build/output/log";
+import { PieChart } from 'react-minimal-pie-chart';
+
 
 
 interface IProps {
@@ -12,9 +12,9 @@ interface IProps {
     pollOptionsWrapper: IPollOption[],
 }
 
-interface IPollOption{
+interface IPollOption {
     pollOptions: definitions["poll_options"]
-    lastUpdate : string;
+    lastUpdate: string;
 }
 
 /*
@@ -42,24 +42,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         .eq("poll", id.toString());
 
 
-
-
     const allPollOptions = await supabase
         .from<definitions["poll_options"]>("poll_options")
         .select("*")
         .in("poll_question", allQuestions.data.map(a => a.id));
 
 
-    let pollOptionDataWrapper:IPollOption[] =[];
+    let pollOptionDataWrapper: IPollOption[] = [];
 
-allPollOptions.data.forEach((value, index) => {
-    const temp:IPollOption = {
-        pollOptions:value,
-        lastUpdate: new Date().toISOString()
-    }
-    pollOptionDataWrapper.push(temp);
+    allPollOptions.data.forEach((value, index) => {
+        const temp: IPollOption = {
+            pollOptions: value,
+            lastUpdate: new Date().toISOString()
+        }
+        pollOptionDataWrapper.push(temp);
     })
-
 
 
     console.log("blub" + allPollOptions.data)
@@ -72,41 +69,35 @@ allPollOptions.data.forEach((value, index) => {
     }
 
 
-
 }
 
 
 const poll = (props: IProps) => {
 
-    const [optionsData,setOptionsData] = useState<IPollOption[]>(props.pollOptionsWrapper)
+    const [optionsData, setOptionsData] = useState<IPollOption[]>(props.pollOptionsWrapper)
     let mySubscription = [null];
 
 
-
-
-// the problem is that we don't have the "real" previous state
-    // it seems like usestate is async, need to figure out a way to update the value properly
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: any; old?: any; errors?: string[]; }) => {
 
 
-            setOptionsData(prevState => {
-                let iPollOptions = prevState.slice();
-                let idx = iPollOptions.findIndex(x => x.pollOptions.id == payload.new.id);
-                const temp: IPollOption = {
-                    pollOptions: payload.new,
-                    lastUpdate: payload.commit_timestamp
-                }
-                iPollOptions[idx] = temp;
-                return  [...iPollOptions]
-            });
+        setOptionsData(prevState => {
+            let iPollOptions = prevState.slice();
+            let idx = iPollOptions.findIndex(x => x.pollOptions.id == payload.new.id);
+            const temp: IPollOption = {
+                pollOptions: payload.new,
+                lastUpdate: payload.commit_timestamp
+            }
+            iPollOptions[idx] = temp;
+            return [...iPollOptions]
+        });
 
     };
 
     useEffect(() => {
 
-        props.pollOptionsWrapper.forEach((value, index) =>
-        {
-            let subTemp =  supabase
+        props.pollOptionsWrapper.forEach((value, index) => {
+            let subTemp = supabase
                 .from('poll_options:id=eq.' + value.pollOptions.id)
                 .on('*', payload => {
                     handleNewOptionsUpdate(payload);
@@ -126,24 +117,22 @@ const poll = (props: IProps) => {
     }, [])
 
 
-
     function getVotePercentage(value, filteredOptions: IPollOption[]): number {
-        if(value.pollOptions.votes === 0){
+        if (value.pollOptions.votes === 0) {
             return 0
         }
         let map = filteredOptions.map(value1 => value1.pollOptions);
-        return (100 * value.pollOptions.votes) /  map.reduce((a, b) => +a + +b.votes, 0);
+        return (100 * value.pollOptions.votes) / map.reduce((a, b) => +a + +b.votes, 0);
     }
 
 
     return (
-        <div className={"w-full pt-16"}>
-
+        <div className={"w-full pt-16 px-20"}>
 
 
             {props.pollQuestions.map((pollque, index) => {
-                const filteredOptions = optionsData.filter(value => value.pollOptions.poll_question === pollque.id);
-                return <div key={index}>
+                    const filteredOptions = optionsData.filter(value => value.pollOptions.poll_question === pollque.id);
+                    return <div key={index}>
                         {pollque.question}
 
 
@@ -151,10 +140,20 @@ const poll = (props: IProps) => {
                             {filteredOptions.map((value, index) =>
                                 <div key={index}>
                                     <div>
-                                        {value.pollOptions.option} / Votes {value.pollOptions.votes} /  {Math.floor(getVotePercentage(value,filteredOptions))}%
+                                        {value.pollOptions.option}
                                     </div>
 
-                                    <progress className="progress progress-primary" value={getVotePercentage(value,filteredOptions)} max="100"></progress>
+                                    <div className={'flex flex-row justify-between'}>
+                                        <div className={'w-2/4'}>
+
+                                            <progress className="progress progress-primary" value={getVotePercentage(value, filteredOptions)} max="100"></progress>
+                                        </div>
+                                        <div>
+                                            Votes {value.pollOptions.votes} | {getVotePercentage(value, filteredOptions).toFixed(1)}%
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             )}
                         </div>
@@ -163,7 +162,6 @@ const poll = (props: IProps) => {
                     </div>;
                 }
             )}
-
 
 
         </div>
