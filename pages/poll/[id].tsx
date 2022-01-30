@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {supabase} from "../../utils/SupabaseClient";
 import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
-import { PieChart } from 'react-minimal-pie-chart';
-
 
 
 interface IProps {
@@ -16,16 +14,6 @@ interface IPollOption {
     pollOptions: definitions["poll_options"]
     lastUpdate: string;
 }
-
-/*
-const allOptions = await supabase
-    .from<definitions["poll_options"]>("poll_options")
-    .select("*")
-    .eq("poll_question", value.id.toString());
-          allOptions.data.map(value1 => {
-            myPollData.pollo.push(value1);
-        })
-*/
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -50,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     let pollOptionDataWrapper: IPollOption[] = [];
 
-    allPollOptions.data.forEach((value, index) => {
+    allPollOptions.data.forEach((value) => {
         const temp: IPollOption = {
             pollOptions: value,
             lastUpdate: new Date().toISOString()
@@ -72,14 +60,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 
-const poll = (props: IProps) => {
+const Poll = (props: IProps) => {
 
     const [optionsData, setOptionsData] = useState<IPollOption[]>(props.pollOptionsWrapper)
     let mySubscription = [null];
 
 
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: any; old?: any; errors?: string[]; }) => {
-
 
         setOptionsData(prevState => {
             let iPollOptions = prevState.slice();
@@ -96,7 +83,7 @@ const poll = (props: IProps) => {
 
     useEffect(() => {
 
-        props.pollOptionsWrapper.forEach((value, index) => {
+        props.pollOptionsWrapper.forEach((value) => {
             let subTemp = supabase
                 .from('poll_options:id=eq.' + value.pollOptions.id)
                 .on('*', payload => {
@@ -114,7 +101,8 @@ const poll = (props: IProps) => {
             })
 
         };
-    }, [])
+    }, [])  //todo need to figure out why removing the deps array breaks the updates
+
 
 
     function getVotePercentage(value, filteredOptions: IPollOption[]): number {
@@ -137,8 +125,8 @@ const poll = (props: IProps) => {
 
 
                         <div className="p-6 space-y-2 artboard  w-full ">
-                            {filteredOptions.map((value, index) =>
-                                <div key={index}>
+                            {filteredOptions.map((value, idx) =>
+                                <div key={idx}>
                                     <div>
                                         {value.pollOptions.option}
                                     </div>
@@ -152,8 +140,6 @@ const poll = (props: IProps) => {
                                             Votes {value.pollOptions.votes} | {getVotePercentage(value, filteredOptions).toFixed(1)}%
                                         </div>
                                     </div>
-
-
                                 </div>
                             )}
                         </div>
@@ -170,4 +156,4 @@ const poll = (props: IProps) => {
     );
 }
 
-export default poll
+export default Poll

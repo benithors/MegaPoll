@@ -2,11 +2,7 @@ import React from 'react'
 import Poll from "../components/Poll";
 
 
-interface IProps {
-
-}
-
-const createPoll = (props: IProps) => {
+const createPoll = () => {
 
     return (
         <main className={"flex flex-col items-center  h-screen"}>
@@ -16,30 +12,27 @@ const createPoll = (props: IProps) => {
 
 
             <div className="form-control">
-                    <label className="label">
-                        <span className="label-text">Poll Name</span>
-                    </label>
-                    <input type="text" placeholder="Give your Poll a name" className="input input-bordered"/>
+                <label className="label">
+                    <span className="label-text">Poll Name</span>
+                </label>
+                <input type="text" placeholder="Give your Poll a name" className="input input-bordered"/>
 
-                    <label className="label">
-                        <span className="label-text">Describe the poll</span>
-                    </label>
-                    <textarea className="textarea h-24 textarea-bordered" placeholder="Describe what the poll is about"></textarea>
+                <label className="label">
+                    <span className="label-text">Describe the poll</span>
+                </label>
+                <textarea className="textarea h-24 textarea-bordered" placeholder="Describe what the poll is about"></textarea>
 
-                    <label className="label">
-                        <span className="label-text">Cover Image of the Poll</span>
-                    </label>
-                    <input type="file"  />
+                <label className="label">
+                    <span className="label-text">Cover Image of the Poll</span>
+                </label>
+                <input type="file"/>
 
                 <div className={"mt-16"}>
 
-                    <Poll>
+                    <Poll/>
 
-
-                    </Poll>
 
                 </div>
-
 
 
             </div>

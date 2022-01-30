@@ -2,11 +2,9 @@ import { useState } from 'react'
 import { supabase } from '../utils/SupabaseClient'
 import {getErrorMessage} from "../utils/ErrorUtil";
 
-interface IProps {
 
-}
 
-const Auth = (props: IProps) => {
+const Auth = () => {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
 

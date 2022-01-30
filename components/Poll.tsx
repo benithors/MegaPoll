@@ -1,9 +1,4 @@
-import React, {useEffect} from 'react'
-
-
-interface IProps {
-
-}
+import React from 'react'
 
 
 interface IPoll {
@@ -11,46 +6,14 @@ interface IPoll {
     pollOptions: string[]
 }
 
-const Poll = (props: IProps) => {
+const Poll = () => {
     const [poll, setPoll] = React.useState<IPoll>({
         pollOptions: [''],
         pollName: ''
     });
 
-    useEffect(() => {
-      /*  if (poll.pollOptions[poll.pollOptions.length - 1]) {
 
-            let updated = poll;
-            updated.pollOptions.push('');
-            setPoll(prevState => ({
-                    ...poll,
-                    ...updated
-                })
-            )
-        }*/
-    })
-
-    const updatePollOption = (index: number) => (e: { target: { value: string; }; }) => {
-
-        let newPoll = poll;
-        poll.pollOptions[index] = e.target.value;
-
-        setPoll(newPoll);
-
-    }
-
-
-    function updatePoll(index:number,e: { target: { value: string; }; } ){
-
-        console.log('index' +index + '/'+ e.target.value);
-        let newPoll = poll;
-        poll.pollOptions[index] = e.target.value;
-
-        setPoll(newPoll);
-
-    }
-
-    function updatePoll2(index:number,e: { target: { value: string; }; } ){
+    function updatePoll(index: number, e: { target: { value: string; }; }) {
 
         let newPollOpt = [...poll.pollOptions]
         newPollOpt[index] = e.target.value;
@@ -71,7 +34,7 @@ const Poll = (props: IProps) => {
 
                     return <input value={value}
                                   key={index}
-                                  onChange={event => updatePoll2(index,event)}
+                                  onChange={event => updatePoll(index, event)}
                                   type="text" placeholder="Poll Option" className="input input-primary input-bordered"/>
                 })}
 
