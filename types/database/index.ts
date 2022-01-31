@@ -108,6 +108,46 @@ export interface paths {
       };
     };
   };
+  "/poll_options_voted": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.poll_options_voted.id"];
+          option?: parameters["rowFilter.poll_options_voted.option"];
+          poll_question?: parameters["rowFilter.poll_options_voted.poll_question"];
+          votes?: parameters["rowFilter.poll_options_voted.votes"];
+          profile?: parameters["rowFilter.poll_options_voted.profile"];
+          poll_option?: parameters["rowFilter.poll_options_voted.poll_option"];
+          cookie_identifier?: parameters["rowFilter.poll_options_voted.cookie_identifier"];
+          exists?: parameters["rowFilter.poll_options_voted.exists"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["poll_options_voted"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
   "/poll_questions": {
     get: {
       parameters: {
@@ -405,6 +445,99 @@ export interface paths {
       };
     };
   };
+  "/profiles_2_poll_options": {
+    get: {
+      parameters: {
+        query: {
+          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
+          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
+          cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["profiles_2_poll_options"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** profiles_2_poll_options */
+          profiles_2_poll_options?: definitions["profiles_2_poll_options"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
+          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
+          cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
+          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
+          cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+        };
+        body: {
+          /** profiles_2_poll_options */
+          profiles_2_poll_options?: definitions["profiles_2_poll_options"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
 }
 
 export interface definitions {
@@ -425,6 +558,40 @@ export interface definitions {
     poll_question?: number;
     /** Format: bigint */
     votes?: number;
+  };
+  poll_options_voted: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id?: number;
+    /** Format: character varying */
+    option?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `poll_questions.id`.<fk table='poll_questions' column='id'/>
+     */
+    poll_question?: number;
+    /** Format: bigint */
+    votes?: number;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    profile?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `poll_options.id`.<fk table='poll_options' column='id'/>
+     */
+    poll_option?: number;
+    /** Format: uuid */
+    cookie_identifier?: string;
+    /** Format: boolean */
+    exists?: boolean;
   };
   poll_questions: {
     /**
@@ -487,6 +654,22 @@ export interface definitions {
     /** Format: text */
     website?: string;
   };
+  profiles_2_poll_options: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    profile?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `poll_options.id`.<fk table='poll_options' column='id'/>
+     */
+    poll_option?: number;
+    /** Format: uuid */
+    cookie_identifier?: string;
+  };
 }
 
 export interface parameters {
@@ -532,6 +715,24 @@ export interface parameters {
   "rowFilter.poll_options.poll_question": string;
   /** Format: bigint */
   "rowFilter.poll_options.votes": string;
+  /** @description poll_options_voted */
+  "body.poll_options_voted": definitions["poll_options_voted"];
+  /** Format: bigint */
+  "rowFilter.poll_options_voted.id": string;
+  /** Format: character varying */
+  "rowFilter.poll_options_voted.option": string;
+  /** Format: bigint */
+  "rowFilter.poll_options_voted.poll_question": string;
+  /** Format: bigint */
+  "rowFilter.poll_options_voted.votes": string;
+  /** Format: uuid */
+  "rowFilter.poll_options_voted.profile": string;
+  /** Format: bigint */
+  "rowFilter.poll_options_voted.poll_option": string;
+  /** Format: uuid */
+  "rowFilter.poll_options_voted.cookie_identifier": string;
+  /** Format: boolean */
+  "rowFilter.poll_options_voted.exists": string;
   /** @description poll_questions */
   "body.poll_questions": definitions["poll_questions"];
   /** Format: bigint */
@@ -568,6 +769,14 @@ export interface parameters {
   "rowFilter.profiles.avatar_url": string;
   /** Format: text */
   "rowFilter.profiles.website": string;
+  /** @description profiles_2_poll_options */
+  "body.profiles_2_poll_options": definitions["profiles_2_poll_options"];
+  /** Format: uuid */
+  "rowFilter.profiles_2_poll_options.profile": string;
+  /** Format: bigint */
+  "rowFilter.profiles_2_poll_options.poll_option": string;
+  /** Format: uuid */
+  "rowFilter.profiles_2_poll_options.cookie_identifier": string;
 }
 
 export interface operations {}
