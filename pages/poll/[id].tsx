@@ -2,23 +2,30 @@ import React, {useEffect, useState} from 'react'
 import {supabase} from "../../utils/SupabaseClient";
 import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
+import {checkCookies, getCookies, setCookies} from 'cookies-next';
+import { v4 as uuidv4 } from 'uuid';
 
 
 interface IProps {
     pollData: definitions["polls"],
-    pollQuestions: definitions["poll_questions"][],
-    pollOptionsWrapper: IPollOption[],
+    pollQuestionsWrapper: IPollOption[],
+}
+
+interface IPollQuestion{
+    pollQuestions: definitions["poll_questions"];
+    pollOptionsWrapper: IPollOption[];
+    voted:boolean;
 }
 
 interface IPollOption {
     pollOptions: definitions["poll_options"]
-    lastUpdate: string;
 }
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const id = context.params.id;
+    const { req, res } = context;
     const pollData = await supabase
         .from<definitions["polls"]>("polls")
         .select("*")
@@ -28,6 +35,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         .from<definitions["poll_questions"]>("poll_questions")
         .select("*")
         .eq("poll", id.toString());
+
+    //first we get the question
+    //then we check if the user is logged in
+    //if not we check if there is a cookie
+    //if there is one we have to check in the db if there is an entry in profiles_2_poll_options
+    //for a profile option which is connected to the question
+
 
 
     const allPollOptions = await supabase
@@ -41,13 +55,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     allPollOptions.data.forEach((value) => {
         const temp: IPollOption = {
             pollOptions: value,
-            lastUpdate: new Date().toISOString()
         }
         pollOptionDataWrapper.push(temp);
     })
+    if(!checkCookies('voter', context)){
+        setCookies('voter', uuidv4(), { req, res, maxAge: 604800});//a week
+    }
 
 
-    console.log("blub" + allPollOptions.data)
+
     return {
         props: {
             pollData: pollData.data,
@@ -73,13 +89,14 @@ const Poll = (props: IProps) => {
             let idx = iPollOptions.findIndex(x => x.pollOptions.id == payload.new.id);
             const temp: IPollOption = {
                 pollOptions: payload.new,
-                lastUpdate: payload.commit_timestamp
             }
             iPollOptions[idx] = temp;
             return [...iPollOptions]
         });
 
     };
+
+
 
     useEffect(() => {
 
@@ -103,6 +120,11 @@ const Poll = (props: IProps) => {
         };
     }, [])  //todo need to figure out why removing the deps array breaks the updates
 
+
+
+
+    //TODO write a function that takes an polloption id as parameter and inserts into
+    // profiles_2_votes
 
 
     function getVotePercentage(value, filteredOptions: IPollOption[]): number {

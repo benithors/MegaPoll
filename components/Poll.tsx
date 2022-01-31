@@ -14,7 +14,6 @@ const Poll = () => {
 
 
     function updatePoll(index: number, e: { target: { value: string; }; }) {
-
         let newPollOpt = [...poll.pollOptions]
         newPollOpt[index] = e.target.value;
         let newPoll = poll;
