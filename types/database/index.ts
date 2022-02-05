@@ -112,14 +112,11 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.poll_options_voted.id"];
-          option?: parameters["rowFilter.poll_options_voted.option"];
           poll_question?: parameters["rowFilter.poll_options_voted.poll_question"];
-          votes?: parameters["rowFilter.poll_options_voted.votes"];
           profile?: parameters["rowFilter.poll_options_voted.profile"];
           poll_option?: parameters["rowFilter.poll_options_voted.poll_option"];
           cookie_identifier?: parameters["rowFilter.poll_options_voted.cookie_identifier"];
-          exists?: parameters["rowFilter.poll_options_voted.exists"];
+          voted?: parameters["rowFilter.poll_options_voted.voted"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -566,19 +563,9 @@ export interface definitions {
     /**
      * Format: bigint
      * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id?: number;
-    /** Format: character varying */
-    option?: string;
-    /**
-     * Format: bigint
-     * @description Note:
      * This is a Foreign Key to `poll_questions.id`.<fk table='poll_questions' column='id'/>
      */
     poll_question?: number;
-    /** Format: bigint */
-    votes?: number;
     /**
      * Format: uuid
      * @description Note:
@@ -594,7 +581,7 @@ export interface definitions {
     /** Format: uuid */
     cookie_identifier?: string;
     /** Format: boolean */
-    exists?: boolean;
+    voted?: boolean;
   };
   poll_questions: {
     /**
@@ -727,13 +714,7 @@ export interface parameters {
   /** @description poll_options_voted */
   "body.poll_options_voted": definitions["poll_options_voted"];
   /** Format: bigint */
-  "rowFilter.poll_options_voted.id": string;
-  /** Format: character varying */
-  "rowFilter.poll_options_voted.option": string;
-  /** Format: bigint */
   "rowFilter.poll_options_voted.poll_question": string;
-  /** Format: bigint */
-  "rowFilter.poll_options_voted.votes": string;
   /** Format: uuid */
   "rowFilter.poll_options_voted.profile": string;
   /** Format: bigint */
@@ -741,7 +722,7 @@ export interface parameters {
   /** Format: uuid */
   "rowFilter.poll_options_voted.cookie_identifier": string;
   /** Format: boolean */
-  "rowFilter.poll_options_voted.exists": string;
+  "rowFilter.poll_options_voted.voted": string;
   /** @description poll_questions */
   "body.poll_questions": definitions["poll_questions"];
   /** Format: bigint */
