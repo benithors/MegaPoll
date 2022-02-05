@@ -452,6 +452,7 @@ export interface paths {
           profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
           poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
           cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+          poll_question?: parameters["rowFilter.profiles_2_poll_options.poll_question"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -505,6 +506,7 @@ export interface paths {
           profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
           poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
           cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+          poll_question?: parameters["rowFilter.profiles_2_poll_options.poll_question"];
         };
         header: {
           /** Preference */
@@ -522,6 +524,7 @@ export interface paths {
           profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
           poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
           cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+          poll_question?: parameters["rowFilter.profiles_2_poll_options.poll_question"];
         };
         body: {
           /** profiles_2_poll_options */
@@ -669,6 +672,12 @@ export interface definitions {
     poll_option?: number;
     /** Format: uuid */
     cookie_identifier?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `poll_questions.id`.<fk table='poll_questions' column='id'/>
+     */
+    poll_question?: number;
   };
 }
 
@@ -777,6 +786,8 @@ export interface parameters {
   "rowFilter.profiles_2_poll_options.poll_option": string;
   /** Format: uuid */
   "rowFilter.profiles_2_poll_options.cookie_identifier": string;
+  /** Format: bigint */
+  "rowFilter.profiles_2_poll_options.poll_question": string;
 }
 
 export interface operations {}
