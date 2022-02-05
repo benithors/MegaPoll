@@ -446,10 +446,12 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
-          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
+          id?: parameters["rowFilter.profiles_2_poll_options.id"];
+          created_at?: parameters["rowFilter.profiles_2_poll_options.created_at"];
           cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
           poll_question?: parameters["rowFilter.profiles_2_poll_options.poll_question"];
+          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -500,10 +502,12 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
-          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
+          id?: parameters["rowFilter.profiles_2_poll_options.id"];
+          created_at?: parameters["rowFilter.profiles_2_poll_options.created_at"];
           cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
           poll_question?: parameters["rowFilter.profiles_2_poll_options.poll_question"];
+          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
         };
         header: {
           /** Preference */
@@ -518,10 +522,12 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
-          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
+          id?: parameters["rowFilter.profiles_2_poll_options.id"];
+          created_at?: parameters["rowFilter.profiles_2_poll_options.created_at"];
           cookie_identifier?: parameters["rowFilter.profiles_2_poll_options.cookie_identifier"];
+          poll_option?: parameters["rowFilter.profiles_2_poll_options.poll_option"];
           poll_question?: parameters["rowFilter.profiles_2_poll_options.poll_question"];
+          profile?: parameters["rowFilter.profiles_2_poll_options.profile"];
         };
         body: {
           /** profiles_2_poll_options */
@@ -646,25 +652,36 @@ export interface definitions {
   };
   profiles_2_poll_options: {
     /**
-     * Format: uuid
+     * Format: bigint
      * @description Note:
-     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     * This is a Primary Key.<pk/>
      */
-    profile?: string;
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /** Format: uuid */
+    cookie_identifier: string;
     /**
      * Format: bigint
      * @description Note:
      * This is a Foreign Key to `poll_options.id`.<fk table='poll_options' column='id'/>
      */
-    poll_option?: number;
-    /** Format: uuid */
-    cookie_identifier?: string;
+    poll_option: number;
     /**
      * Format: bigint
      * @description Note:
      * This is a Foreign Key to `poll_questions.id`.<fk table='poll_questions' column='id'/>
      */
-    poll_question?: number;
+    poll_question: number;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    profile?: string;
   };
 }
 
@@ -761,14 +778,18 @@ export interface parameters {
   "rowFilter.profiles.website": string;
   /** @description profiles_2_poll_options */
   "body.profiles_2_poll_options": definitions["profiles_2_poll_options"];
-  /** Format: uuid */
-  "rowFilter.profiles_2_poll_options.profile": string;
   /** Format: bigint */
-  "rowFilter.profiles_2_poll_options.poll_option": string;
+  "rowFilter.profiles_2_poll_options.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.profiles_2_poll_options.created_at": string;
   /** Format: uuid */
   "rowFilter.profiles_2_poll_options.cookie_identifier": string;
   /** Format: bigint */
+  "rowFilter.profiles_2_poll_options.poll_option": string;
+  /** Format: bigint */
   "rowFilter.profiles_2_poll_options.poll_question": string;
+  /** Format: uuid */
+  "rowFilter.profiles_2_poll_options.profile": string;
 }
 
 export interface operations {}
