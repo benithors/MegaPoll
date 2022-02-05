@@ -4,6 +4,7 @@ import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
 import {checkCookies, getCookie, setCookies} from 'cookies-next';
 import {v4 as uuidv4} from 'uuid';
+import {useForm} from "react-hook-form";
 
 
 interface IProps {
@@ -12,7 +13,7 @@ interface IProps {
 }
 
 interface IPollQuestion {
-    pollQuestions: definitions["poll_questions"];
+    pollQuestion: definitions["poll_questions"];
     pollOptions: definitions["poll_options"][]
     voted: boolean;
 }
@@ -62,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
             const pollQuestionTemp: IPollQuestion = {
                 pollOptions: allPollOptions.data,
-                pollQuestions: pollQuestion,
+                pollQuestion: pollQuestion,
                 voted: didVote
             }
             questionWrapper.push(pollQuestionTemp)
@@ -89,32 +90,30 @@ const Poll = (props: IProps) => {
 
     const [optionsData, setOptionsData] = useState<IPollQuestion[]>(props.pollQuestionsWrapper)
     let mySubscription = [null];
-
-
+    const { register, handleSubmit } = useForm();
+    const onSubmit = data => console.log(data);
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options"]; old?: any; errors?: string[]; }) => {
 
-           setOptionsData(prevState => {
-               let prevStatePollQuestionWrapper = prevState.slice();
-               let questionIdx = prevStatePollQuestionWrapper.findIndex(value => value.pollQuestions.id === payload.new.poll_question);
-/*
-               let iPollQuestion = prevStatePollQuestionWrapper.find(value => value.pollQuestions.id === payload.new.poll_question);
-*/
-
-               let iPollQuestion = prevStatePollQuestionWrapper[questionIdx];
-               let optionIdx = iPollQuestion.pollOptions.findIndex(x =>
-                   x.id == payload.new.id);
+        setOptionsData(prevState => {
+            let prevStatePollQuestionWrapper = prevState.slice();
+            let questionIdx = prevStatePollQuestionWrapper.findIndex(value => value.pollQuestion.id === payload.new.poll_question);
 
 
-               const tempOption: definitions["poll_options"] = {
-                   option:payload.new.option,
-                   id:payload.new.id,
-                   votes:payload.new.votes,
-                   poll_question:payload.new.poll_question
-               }
-               iPollQuestion.pollOptions[optionIdx] = tempOption;
-               prevStatePollQuestionWrapper[questionIdx] = iPollQuestion;
-               return [...prevStatePollQuestionWrapper]
-           });
+            let iPollQuestion = prevStatePollQuestionWrapper[questionIdx];
+            let optionIdx = iPollQuestion.pollOptions.findIndex(x =>
+                x.id == payload.new.id);
+
+
+            const tempOption: definitions["poll_options"] = {
+                option: payload.new.option,
+                id: payload.new.id,
+                votes: payload.new.votes,
+                poll_question: payload.new.poll_question
+            }
+            iPollQuestion.pollOptions[optionIdx] = tempOption;
+            prevStatePollQuestionWrapper[questionIdx] = iPollQuestion;
+            return [...prevStatePollQuestionWrapper]
+        });
 
     };
 
@@ -155,33 +154,68 @@ const Poll = (props: IProps) => {
         return (100 * value.votes) / options.reduce((a, b) => +a + +b.votes, 0);
     }
 
+    function voteQuestion(pollQ: IPollQuestion) {
+
+
+    }
+
+
+
     return (
         <div className={"w-full pt-16 px-20"}>
 
 
             {props.pollQuestionsWrapper.map((pollQ, index) => {
                     return <div key={index}>
-                        {pollQ.pollQuestions.question}
+                        {pollQ.pollQuestion.question}
+
+                        {
+                            pollQ.voted ?
+
+                                <div className="p-6 space-y-2 artboard  w-full ">
+                                    {pollQ.pollOptions.map((value, idx) =>
+                                        <div key={idx}>
+                                            <div>
+                                                {value.option}
+
+                                            </div>
+
+                                            <div className={'flex flex-row justify-between'}>
+                                                <div className={'w-2/4'}>
+                                                    <progress className="progress progress-primary" value={getVotePercentage(value, pollQ.pollOptions)} max="100"/>
+                                                </div>
+                                                <div>
+                                                    Votes {value.votes} | {getVotePercentage(value, pollQ.pollOptions).toFixed(1)}%
+                                                </div>
 
 
-                        <div className="p-6 space-y-2 artboard  w-full ">
-                            {pollQ.pollOptions.map((value, idx) =>
-                                <div key={idx}>
+                                            </div>
+
+
+                                        </div>
+                                    )}
+                                </div>
+
+                            :
+
+
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                {pollQ.pollOptions.map((value, idx) =>
                                     <div>
                                         {value.option}
+
+
+
+                                        <input {...register("question."+pollQ.pollQuestion.id+".options."+value.id)} type="checkbox"
+                                               className="checkbox checkbox-lg"/>
                                     </div>
 
-                                    <div className={'flex flex-row justify-between'}>
-                                        <div className={'w-2/4'}>
-                                            <progress className="progress progress-primary" value={getVotePercentage(value, pollQ.pollOptions)} max="100"/>
-                                        </div>
-                                        <div>
-                                            Votes {value.votes} | {getVotePercentage(value, pollQ.pollOptions).toFixed(1)}%
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                                )}
+
+                            <input type="submit" />
+                            </form>
+                        }
+
 
 
                     </div>;
