@@ -5,6 +5,7 @@ import {GetServerSideProps} from "next";
 import {checkCookies, getCookie, setCookies} from 'cookies-next';
 import {v4 as uuidv4} from 'uuid';
 import {useForm} from "react-hook-form";
+import CheckboxForm from "../../components/CheckboxForm";
 
 
 interface IProps {
@@ -12,7 +13,7 @@ interface IProps {
     pollQuestionsWrapper: IPollQuestion[],
 }
 
-interface IPollQuestion {
+export interface IPollQuestion {
     pollQuestion: definitions["poll_questions"];
     pollOptions: definitions["poll_options"][]
     voted: boolean;
@@ -90,7 +91,6 @@ const Poll = (props: IProps) => {
 
     const [optionsData, setOptionsData] = useState<IPollQuestion[]>(props.pollQuestionsWrapper)
     let mySubscription = [null];
-    const { register, handleSubmit } = useForm();
     const onSubmit = data => console.log(data);
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options"]; old?: any; errors?: string[]; }) => {
 
@@ -160,13 +160,12 @@ const Poll = (props: IProps) => {
     }
 
 
-
     return (
         <div className={"w-full pt-16 px-20"}>
 
 
             {props.pollQuestionsWrapper.map((pollQ, index) => {
-                    return <div key={index}>
+                    return <div key={index} className={"pb-12"}>
                         {pollQ.pollQuestion.question}
 
                         {
@@ -196,26 +195,12 @@ const Poll = (props: IProps) => {
                                     )}
                                 </div>
 
-                            :
+                                :
 
 
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                {pollQ.pollOptions.map((value, idx) =>
-                                    <div>
-                                        {value.option}
+                                <CheckboxForm pollQ={pollQ} callback={onSubmit}/>
 
-
-
-                                        <input {...register("question."+pollQ.pollQuestion.id+".options."+value.id)} type="checkbox"
-                                               className="checkbox checkbox-lg"/>
-                                    </div>
-
-                                )}
-
-                            <input type="submit" />
-                            </form>
                         }
-
 
 
                     </div>;
