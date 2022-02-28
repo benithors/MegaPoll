@@ -91,7 +91,10 @@ const Poll = (props: IProps) => {
 
     const [optionsData, setOptionsData] = useState<IPollQuestion[]>(props.pollQuestionsWrapper)
     let mySubscription = [null];
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+        const obj = JSON.stringify(data);
+        console.log(data[4]);
+    }
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options"]; old?: any; errors?: string[]; }) => {
 
         setOptionsData(prevState => {
@@ -171,7 +174,7 @@ const Poll = (props: IProps) => {
                         {
                             pollQ.voted ?
 
-                                <div className="p-6 space-y-2 artboard  w-full ">
+                                <div className="p-6 space-y-2 artboard  w-full " key={index}>
                                     {pollQ.pollOptions.map((value, idx) =>
                                         <div key={idx}>
                                             <div>
@@ -198,7 +201,7 @@ const Poll = (props: IProps) => {
                                 :
 
 
-                                <CheckboxForm pollQ={pollQ} callback={onSubmit}/>
+                                <CheckboxForm  key={index} pollQ={pollQ} callback={onSubmit} questionId={pollQ.pollQuestion.id}/>
 
                         }
 
