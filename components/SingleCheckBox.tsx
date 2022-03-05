@@ -1,5 +1,4 @@
-import React, {useState} from 'react'
-import {definitions} from "../types/database";
+import React from 'react'
 import {pollOption} from "./CheckboxForm";
 
 
@@ -10,18 +9,13 @@ interface IProps {
 
 }
 
-//todo needs rework right now it does not work on first click and line 16 & 17 are actually not needed
 const SingleCheckBox = (props: IProps) => {
     const handleClick = () => {
-        const pollOption = props.checkBoxes[props.idx];
-        pollOption.checkBox = !pollOption.checkBox;
-        props.setCheckBoxes(prevState => {
-            const pollOptionsTemp = prevState.slice();
-            const pollOptionTemp = pollOptionsTemp[props.idx];
-            pollOptionTemp.checkBox = !pollOptionTemp.checkBox;
-            pollOptionsTemp[props.idx] = pollOptionTemp;
-            return [...pollOptionsTemp]
-        })
+       const pollOptions = [...props.checkBoxes];
+       const pollOption = pollOptions[props.idx];
+       pollOption.checkBox = !pollOption.checkBox;
+       pollOptions[props.idx] = pollOption;
+       props.setCheckBoxes(pollOptions);
     }
 
     return (

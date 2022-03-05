@@ -3,6 +3,8 @@ import {useForm} from "react-hook-form";
 import {IPollQuestion} from "../pages/poll/[id]";
 import SingleCheckBox from "./SingleCheckBox";
 import {definitions} from "../types/database";
+import {supabase} from "../utils/SupabaseClient";
+import {getCookie} from "cookies-next";
 
 
 interface IProps {
@@ -11,38 +13,52 @@ interface IProps {
     callback
 }
 
-export interface pollOption{
-    checkBox:boolean,
+export interface pollOption {
+    checkBox: boolean,
     pollOption: definitions["poll_options"]
 }
 
 //problem: how do we parse the data so can create a proper query
 const CheckboxForm = (props: IProps) => {
     const {register, handleSubmit, getValues} = useForm();
-    const [checkBoxes,setCheckBoxes] = useState<pollOption[]>(getNewCheckBoxState);
+    const [checkBoxes, setCheckBoxes] = useState<pollOption[]>(getNewCheckBoxState);
     const onSubmit = data => {
         console.log(data)
     }
 
-    function getNewCheckBoxState():pollOption[]
-    {
-        let pollOptionTemp:pollOption[] = [];
-        props.pollQ.pollOptions.forEach((pollOption, idx) =>{
-            const newElement:pollOption = {
-                checkBox:false,
-                pollOption:pollOption
+    function getNewCheckBoxState(): pollOption[] {
+        let pollOptionTemp: pollOption[] = [];
+        props.pollQ.pollOptions.forEach((pollOption, idx) => {
+            const newElement: pollOption = {
+                checkBox: false,
+                pollOption: pollOption
             }
             pollOptionTemp.push(newElement)
         });
         return pollOptionTemp;
     }
 
-    function submitQuestion()
-    {
-            console.log(props.questionId)
-        checkBoxes.forEach(value => {
-            console.log("value:" +value.pollOption.option + " = " + value.checkBox)
-        })
+    //TODO BT need to validate
+    //If there is a cookie identifier, if not maybe create one ?
+    //need think about how do we make sure there are no duplicates!
+    //need to rewrite to for bulk create https://supabase.com/docs/reference/javascript/insert#bulk-create
+    async function submitQuestion() {
+        for (const checkbox of checkBoxes) {
+            if (checkbox.checkBox) {
+                const {data, error} = await supabase.from<definitions["profiles_2_poll_options"]>("profiles_2_poll_options")
+                    .insert([
+                        {
+                            poll_option:checkbox.pollOption.id,
+                            poll_question: checkbox.pollOption.poll_question,
+                            cookie_identifier: getCookie('voter').toString()
+                        }
+                    ]);
+                if(error){
+                    console.log(error);
+                }
+            }
+
+        }
     }
 
 
