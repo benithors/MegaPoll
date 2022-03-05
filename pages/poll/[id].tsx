@@ -42,13 +42,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (!checkCookies('voter', context)) {
         setCookies('voter', uuidv4(), {req, res, maxAge: 604800});//a week
     }
-        //if there is one we have to check in the db if there is an entry in profiles_2_poll_options
+    //if there is one we have to check in the db if there is an entry in profiles_2_poll_options
     //for a profile option which is connected to the question
     else {
-
-
         for (const pollQuestion of allQuestions.data) {
-
             const allPollOptions = await supabase
                 .from<definitions["poll_options"]>("poll_options")
                 .select("*")
@@ -59,8 +56,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 .select("*")
                 .eq("poll_question", pollQuestion.id)
                 .eq("cookie_identifier", getCookie('voter', context));
-
-            let didVote = pollOptionsVoted.data.some(value => value.voted);
+            let didVote = false;
+            console.log(pollOptionsVoted);
+            if(pollOptionsVoted.data){
+                didVote = pollOptionsVoted.data.some(value => value.voted);
+            }
 
             const pollQuestionTemp: IPollQuestion = {
                 pollOptions: allPollOptions.data,
@@ -68,11 +68,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 voted: didVote
             }
             questionWrapper.push(pollQuestionTemp)
-
-
         }
-
-
     }
 
 
@@ -91,10 +87,7 @@ const Poll = (props: IProps) => {
 
     const [optionsData, setOptionsData] = useState<IPollQuestion[]>(props.pollQuestionsWrapper)
     let mySubscription = [null];
-    const onSubmit = data => {
-        const obj = JSON.stringify(data);
-        console.log(data[4]);
-    }
+
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options"]; old?: any; errors?: string[]; }) => {
 
         setOptionsData(prevState => {
@@ -157,17 +150,11 @@ const Poll = (props: IProps) => {
         return (100 * value.votes) / options.reduce((a, b) => +a + +b.votes, 0);
     }
 
-    function voteQuestion(pollQ: IPollQuestion) {
-
-
-    }
 
 
     return (
         <div className={"w-full pt-16 px-20"}>
-
-
-            {props.pollQuestionsWrapper.map((pollQ, index) => {
+            {optionsData.map((pollQ, index) => {
                     return <div key={index} className={"pb-12"}>
                         {pollQ.pollQuestion.question}
 
@@ -201,7 +188,7 @@ const Poll = (props: IProps) => {
                                 :
 
 
-                                <CheckboxForm  key={index} pollQ={pollQ} callback={onSubmit} questionId={pollQ.pollQuestion.id}/>
+                                <CheckboxForm  key={index} pollQ={pollQ} setOptionsData={setOptionsData}/>
 
                         }
 
