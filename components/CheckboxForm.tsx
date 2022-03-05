@@ -9,18 +9,16 @@ import {getCookie} from "cookies-next";
 
 interface IProps {
     pollQ: IPollQuestion;
-    questionId: number,
-    callback
+    setOptionsData:React.Dispatch<React.SetStateAction<IPollQuestion[]>>;
 }
 
 export interface pollOption {
     checkBox: boolean,
-    pollOption: definitions["poll_options"]
+    pollOption: definitions["poll_options"],
 }
 
 //problem: how do we parse the data so can create a proper query
 const CheckboxForm = (props: IProps) => {
-    const {register, handleSubmit, getValues} = useForm();
     const [checkBoxes, setCheckBoxes] = useState<pollOption[]>(getNewCheckBoxState);
     const onSubmit = data => {
         console.log(data)
@@ -44,6 +42,17 @@ const CheckboxForm = (props: IProps) => {
     //need to rewrite to for bulk create https://supabase.com/docs/reference/javascript/insert#bulk-create
     async function submitQuestion() {
         for (const checkbox of checkBoxes) {
+            //we need to update voted to true so the vote form is replaced by the vote stats
+            props.setOptionsData(prevState => {
+                const iPollQuestions = prevState.slice();
+                const idx = iPollQuestions.findIndex(value => value.pollQuestion.id === checkbox.pollOption.poll_question);
+
+                const iPollQuestion = iPollQuestions[idx];
+                iPollQuestion.voted = true;
+                iPollQuestions[idx] =iPollQuestion;
+
+                return iPollQuestions;
+            });
             if (checkbox.checkBox) {
                 const {data, error} = await supabase.from<definitions["profiles_2_poll_options"]>("profiles_2_poll_options")
                     .insert([
@@ -64,13 +73,11 @@ const CheckboxForm = (props: IProps) => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
                 {checkBoxes.map((pollOption, idx) =>
 
                     <SingleCheckBox key={idx} setCheckBoxes={setCheckBoxes} checkBoxes={checkBoxes} idx={idx}/>
                 )}
                 <button className="btn btn-sm mt-4" onClick={submitQuestion}>submit</button>
-            </form>
         </div>
 
 
