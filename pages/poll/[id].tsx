@@ -139,8 +139,6 @@ const Poll = (props: IProps) => {
     }, [])  //todo need to figure out why removing the deps array breaks the updates
 
 
-    //TODO write a function that takes an polloption id as parameter and inserts into
-    // profiles_2_votes
 
 
     function getVotePercentage(value: definitions["poll_options"], options: definitions["poll_options"][]): number {
