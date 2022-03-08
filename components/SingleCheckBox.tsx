@@ -6,7 +6,6 @@ interface IProps {
     checkBoxes: pollOption[];
     setCheckBoxes: React.Dispatch<React.SetStateAction<pollOption[]>>;
     idx: number;
-
 }
 
 const SingleCheckBox = (props: IProps) => {

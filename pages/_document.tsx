@@ -52,7 +52,7 @@ export default function Document() {
                     name="google-site-verification"
                 />
             </Head>
-            <body className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen">
+            <body  >
             <Main />
             <NextScript />
             </body>
