@@ -1,9 +1,9 @@
 import React from 'react'
-import CreatePollInput from "../components/CreatePollInput";
-import {isNotEmpty} from "../utils/StringUtils";
-import {definitions} from "../types/database";
-import {supabase} from "../utils/SupabaseClient";
-import {getErrorMessage, isErrorWithMessage} from "../utils/ErrorUtil";
+import CreatePollInput from "../../components/CreatePollInput";
+import {isNotEmpty} from "../../utils/StringUtils";
+import {definitions} from "../../types/database";
+import {supabase} from "../../utils/SupabaseClient";
+import {getErrorMessage, isErrorWithMessage} from "../../utils/ErrorUtil";
 import {useRouter} from "next/router";
 
 
