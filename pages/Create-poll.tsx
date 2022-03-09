@@ -39,18 +39,16 @@ const CreatePoll = () => {
               //todo
           } else {
               const pollId = data[0].id;
-              let insertDataArr = [];
+
               for (const pollQuestion of pollQuestionFormData) {
                   if(isNotEmpty(pollQuestion.pollQuestion)){
-                      const insertData = {
-                          poll: pollId,
-                          question: pollQuestion.pollQuestion
-                      };
-                      insertDataArr.push(insertData)
                       const {data, error} = await supabase.from<definitions["poll_questions"]>("poll_questions")
                           .insert(
                               [
-                                  insertData
+                                  {
+                                      poll: pollId,
+                                      question: pollQuestion.pollQuestion
+                                  }
                               ]);
 
                       const pollQuestionId = data[0].id;
@@ -69,7 +67,7 @@ const CreatePoll = () => {
                                   optionInsertData.push(insertData)
                               }
                           })
-                          const {data, error} = await supabase.from<definitions["poll_options"]>("poll_options")
+                          const { error} = await supabase.from<definitions["poll_options"]>("poll_options")
                               .insert(optionInsertData);
                           if (isErrorWithMessage(error)) {
                               console.log(getErrorMessage(error))
