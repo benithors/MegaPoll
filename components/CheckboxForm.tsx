@@ -24,7 +24,7 @@ const CheckboxForm = (props: IProps) => {
 
     function getNewCheckBoxState(): pollOption[] {
         let pollOptionTemp: pollOption[] = [];
-        props.pollQ.pollOptions.forEach((pollOption, idx) => {
+        props.pollQ.pollOptions.forEach((pollOption) => {
             const newElement: pollOption = {
                 checkBox: false,
                 pollOption: pollOption
