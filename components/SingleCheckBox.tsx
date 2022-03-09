@@ -10,11 +10,11 @@ interface IProps {
 
 const SingleCheckBox = (props: IProps) => {
     const handleClick = () => {
-       const pollOptions = [...props.checkBoxes];
-       const pollOption = pollOptions[props.idx];
-       pollOption.checkBox = !pollOption.checkBox;
-       pollOptions[props.idx] = pollOption;
-       props.setCheckBoxes(pollOptions);
+        const pollOptions = [...props.checkBoxes];
+        const pollOption = pollOptions[props.idx];
+        pollOption.checkBox = !pollOption.checkBox;
+        pollOptions[props.idx] = pollOption;
+        props.setCheckBoxes(pollOptions);
     }
 
     return (

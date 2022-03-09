@@ -1,7 +1,6 @@
-import { useState } from 'react'
-import { supabase } from '../utils/SupabaseClient'
+import {useState} from 'react'
+import {supabase} from '../utils/SupabaseClient'
 import {getErrorMessage} from "../utils/ErrorUtil";
-
 
 
 const Auth = () => {
@@ -11,7 +10,7 @@ const Auth = () => {
     const handleLogin = async (email: string) => {
         try {
             setLoading(true)
-            const { error } = await supabase.auth.signIn({ email })
+            const {error} = await supabase.auth.signIn({email})
             if (error) throw error
             alert('Check your email for the login link!')
         } catch (error) {

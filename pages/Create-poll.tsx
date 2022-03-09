@@ -26,60 +26,60 @@ const CreatePoll = () => {
 
     //TODO BT need to write a postgres function with client side and server side validation
     async function submitPoll() {
-          const {data, error} = await supabase.from<definitions["polls"]>("polls")
-              .insert(
-                  [
-                      {
-                          poll_name: pollName,
-                          poll_description: pollDescription
-                      }
-                  ]);
-          if (isErrorWithMessage(error)) {
-              console.log(getErrorMessage(error))
-              //todo
-          } else {
-              const pollId = data[0].id;
+        const {data, error} = await supabase.from<definitions["polls"]>("polls")
+            .insert(
+                [
+                    {
+                        poll_name: pollName,
+                        poll_description: pollDescription
+                    }
+                ]);
+        if (isErrorWithMessage(error)) {
+            console.log(getErrorMessage(error))
+            //todo
+        } else {
+            const pollId = data[0].id;
 
-              for (const pollQuestion of pollQuestionFormData) {
-                  if(isNotEmpty(pollQuestion.pollQuestion)){
-                      const {data, error} = await supabase.from<definitions["poll_questions"]>("poll_questions")
-                          .insert(
-                              [
-                                  {
-                                      poll: pollId,
-                                      question: pollQuestion.pollQuestion
-                                  }
-                              ]);
+            for (const pollQuestion of pollQuestionFormData) {
+                if (isNotEmpty(pollQuestion.pollQuestion)) {
+                    const {data, error} = await supabase.from<definitions["poll_questions"]>("poll_questions")
+                        .insert(
+                            [
+                                {
+                                    poll: pollId,
+                                    question: pollQuestion.pollQuestion
+                                }
+                            ]);
 
-                      const pollQuestionId = data[0].id;
-                      console.log(pollQuestionId);
-                      if (isErrorWithMessage(error)) {
-                          console.log(getErrorMessage(error))
-                          //todo
-                      }else{
-                          let optionInsertData = [];
-                          pollQuestion.pollOptions.forEach(pollOption => {
-                              if(isNotEmpty(pollOption)){
-                                  const insertData = {
-                                      poll_question: pollQuestionId,
-                                      option: pollOption
-                                  };
-                                  optionInsertData.push(insertData)
-                              }
-                          })
-                          const { error} = await supabase.from<definitions["poll_options"]>("poll_options")
-                              .insert(optionInsertData);
-                          if (isErrorWithMessage(error)) {
-                              console.log(getErrorMessage(error))
-                              //todo
-                          }else{
-                              await router.push('/poll/'+pollId)
-                          }
-                      }
-                  }
+                    const pollQuestionId = data[0].id;
+                    console.log(pollQuestionId);
+                    if (isErrorWithMessage(error)) {
+                        console.log(getErrorMessage(error))
+                        //todo
+                    } else {
+                        let optionInsertData = [];
+                        pollQuestion.pollOptions.forEach(pollOption => {
+                            if (isNotEmpty(pollOption)) {
+                                const insertData = {
+                                    poll_question: pollQuestionId,
+                                    option: pollOption
+                                };
+                                optionInsertData.push(insertData)
+                            }
+                        })
+                        const {error} = await supabase.from<definitions["poll_options"]>("poll_options")
+                            .insert(optionInsertData);
+                        if (isErrorWithMessage(error)) {
+                            console.log(getErrorMessage(error))
+                            //todo
+                        } else {
+                            await router.push('/poll/' + pollId)
+                        }
+                    }
+                }
 
-              }
-          }
+            }
+        }
     }
 
     function increaseArraySize(setArray: React.Dispatch<React.SetStateAction<IPollQuestionCreation[]>>, index: number, e: { target: { value: string; }; }) {
