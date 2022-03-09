@@ -12,7 +12,7 @@ export interface IPollQuestionCreation {
     pollOptions: string[]
 }
 
-const createPoll = () => {
+const CreatePoll = () => {
     const [pollQuestionFormData, setPollQuestionFormData] = React.useState<IPollQuestionCreation[]>([{
         pollQuestion: '',
         pollOptions: ['']
@@ -151,4 +151,4 @@ const createPoll = () => {
     );
 }
 
-export default createPoll
+export default CreatePoll

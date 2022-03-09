@@ -1,5 +1,5 @@
 import React from 'react'
-import {IPollQuestionCreation} from "../pages/create-poll";
+import {IPollQuestionCreation} from "../pages/Create-poll";
 import {isNotEmpty} from "../utils/StringUtils";
 
 interface IProps {
