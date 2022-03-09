@@ -4,7 +4,6 @@ import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
 import {checkCookies, getCookie, setCookies} from 'cookies-next';
 import {v4 as uuidv4} from 'uuid';
-import {useForm} from "react-hook-form";
 import CheckboxForm from "../../components/CheckboxForm";
 
 
@@ -42,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (!checkCookies('voter', context)) {
         setCookies('voter', uuidv4(), {req, res, maxAge: 604800});//a week
     }
-    //if there is one we have to check in the db if there is an entry in profiles_2_poll_options
+        //if there is one we have to check in the db if there is an entry in profiles_2_poll_options
     //for a profile option which is connected to the question
     else {
         for (const pollQuestion of allQuestions.data) {
@@ -58,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 .eq("cookie_identifier", getCookie('voter', context));
             let didVote = false;
             console.log(pollOptionsVoted);
-            if(pollOptionsVoted.data){
+            if (pollOptionsVoted.data) {
                 didVote = pollOptionsVoted.data.some(value => value.voted);
             }
 
@@ -100,13 +99,12 @@ const Poll = (props: IProps) => {
                 x.id == payload.new.id);
 
 
-            const tempOption: definitions["poll_options"] = {
+            iPollQuestion.pollOptions[optionIdx] = {
                 option: payload.new.option,
                 id: payload.new.id,
                 votes: payload.new.votes,
                 poll_question: payload.new.poll_question
-            }
-            iPollQuestion.pollOptions[optionIdx] = tempOption;
+            };
             prevStatePollQuestionWrapper[questionIdx] = iPollQuestion;
             return [...prevStatePollQuestionWrapper]
         });
@@ -139,15 +137,12 @@ const Poll = (props: IProps) => {
     }, [])  //todo need to figure out why removing the deps array breaks the updates
 
 
-
-
     function getVotePercentage(value: definitions["poll_options"], options: definitions["poll_options"][]): number {
         if (value.votes === 0) {
             return 0
         }
         return (100 * value.votes) / options.reduce((a, b) => +a + +b.votes, 0);
     }
-
 
 
     return (
@@ -186,7 +181,7 @@ const Poll = (props: IProps) => {
                                 :
 
 
-                                <CheckboxForm  key={index} pollQ={pollQ} setOptionsData={setOptionsData}/>
+                                <CheckboxForm key={index} pollQ={pollQ} setOptionsData={setOptionsData}/>
 
                         }
 
