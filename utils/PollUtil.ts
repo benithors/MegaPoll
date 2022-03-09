@@ -11,7 +11,7 @@ export function increaseArraySize( setArray,index: number, e: { target: { value:
         //we need to check if the last element in poll has some string in it
         //if this is so we need to append +1 on poll so that another poll can be added
         const lastPollOption = pollOptions[pollOptions.length - 1];
-        if (isNotEmpty(lastPollOption)) {
+        if (isNotEmpty(lastPollOption) && pollOptions.length < 15) {
             pollOptions.push('')
         }
         return pollOptions;
