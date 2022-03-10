@@ -26,6 +26,10 @@ const CreatePoll = () => {
 
     //TODO BT need to write a postgres function with client side and server side validation
     async function submitPoll() {
+        console.log(JSON.stringify(pollQuestionFormData));
+        console.log(pollQuestionFormData);
+
+        /*
         const {data, error} = await supabase.from<definitions["polls"]>("polls")
             .insert(
                 [
@@ -79,7 +83,8 @@ const CreatePoll = () => {
                 }
 
             }
-        }
+        */
+
     }
 
     function increaseArraySize(setArray: React.Dispatch<React.SetStateAction<IPollQuestionCreation[]>>, index: number, e: { target: { value: string; }; }) {
