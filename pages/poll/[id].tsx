@@ -26,12 +26,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const pollData = await supabase
         .from<definitions["polls"]>("polls")
         .select("*")
-        .eq("id", id.toString()).single();
+        .eq("uuid", id.toString()).single();
+
+
     //first we get the question
     const allQuestions = await supabase
         .from<definitions["poll_questions"]>("poll_questions")
         .select("*")
-        .eq("poll", id.toString());
+        .eq("poll", pollData.data.id);
 
 
     let questionWrapper: IPollQuestion[] = [];
@@ -147,6 +149,16 @@ const Poll = (props: IProps) => {
 
     return (
         <div className={"w-full pt-16 px-20"}>
+
+            <h1 className={"font-medium leading-tight text-5xl"}>
+                {props.pollData.poll_name}
+
+            </h1>
+            <h2 className={"font-medium leading-tight text-2xl pt-16"}>
+                {props.pollData.poll_description}
+
+            </h2>
+            <div className="divider"></div>
             {optionsData.map((pollQ, index) => {
                     return <div key={index} className={"pb-12"}>
                         {pollQ.pollQuestion.question}

@@ -1,4 +1,3 @@
--- auto-generated definition
 create or replace function fn_create_poll(poll_name character varying, poll_description character varying,
                                           poll_question_data json) returns uuid
     language plpgsql

@@ -1,15 +1,26 @@
 import React from 'react'
 import CreatePollInput from "../../components/CreatePollInput";
 import {isNotEmpty} from "../../utils/StringUtils";
-import {definitions} from "../../types/database";
 import {supabase} from "../../utils/SupabaseClient";
 import {getErrorMessage, isErrorWithMessage} from "../../utils/ErrorUtil";
 import {useRouter} from "next/router";
+import {useToasts} from "react-toast-notifications";
 
 
 export interface IPollQuestionCreation {
     pollQuestion: string,
     pollOptions: string[]
+}
+
+export function areThereValidOption(cleanedPollQuestionCreation: IPollQuestionCreation[]):boolean {
+    //todo validate if there are valid option
+    //todo write proper test for this
+    return true;
+}
+
+export function cleanPollQuestionCreation(cleanedPollQuestionCreation: IPollQuestionCreation[]):IPollQuestionCreation[] {
+    //todo write test to clean all empty strings
+    return cleanedPollQuestionCreation;
 }
 
 const CreatePoll = () => {
@@ -18,72 +29,56 @@ const CreatePoll = () => {
         pollOptions: ['']
 
     }]);
-    const router = useRouter()
-
+    const router = useRouter();
+    const {addToast} = useToasts();
     const [pollName, setPollName] = React.useState<string>();
     const [pollDescription, setPollDescription] = React.useState<string>();
 
 
-    //TODO BT need to write a postgres function with client side and server side validation
-    async function submitPoll() {
-        console.log(JSON.stringify(pollQuestionFormData));
-        console.log(pollQuestionFormData);
 
-        /*
-        const {data, error} = await supabase.from<definitions["polls"]>("polls")
-            .insert(
-                [
-                    {
-                        poll_name: pollName,
-                        poll_description: pollDescription
-                    }
-                ]);
+
+    //TODO BT client side and server side validation
+    async function submitPoll() {
+
+        if(!pollName){
+            addToast("Poll name missing!", {
+                appearance: 'warning',
+                autoDismiss: true,
+            })
+            return;
+        }
+        if(!pollDescription){
+            addToast("Poll description missing!", {
+                appearance: 'warning',
+                autoDismiss: true,
+            })
+            return;
+        }
+
+        const iPollQuestionCreation = cleanPollQuestionCreation(pollQuestionFormData);
+
+        if(!areThereValidOption(iPollQuestionCreation)){
+            addToast("Add at least one question with poll options!", {
+                appearance: 'warning',
+                autoDismiss: true,
+            })
+            return;
+        }
+
+
+
+        const { data, error } = await supabase
+            .rpc('fn_create_poll', {
+                poll_name: pollName ,
+                poll_description:pollDescription,
+                poll_question_data:pollQuestionFormData
+            })
         if (isErrorWithMessage(error)) {
             console.log(getErrorMessage(error))
             //todo
         } else {
-            const pollId = data[0].id;
-
-            for (const pollQuestion of pollQuestionFormData) {
-                if (isNotEmpty(pollQuestion.pollQuestion)) {
-                    const {data, error} = await supabase.from<definitions["poll_questions"]>("poll_questions")
-                        .insert(
-                            [
-                                {
-                                    poll: pollId,
-                                    question: pollQuestion.pollQuestion
-                                }
-                            ]);
-
-                    const pollQuestionId = data[0].id;
-                    console.log(pollQuestionId);
-                    if (isErrorWithMessage(error)) {
-                        console.log(getErrorMessage(error))
-                        //todo
-                    } else {
-                        let optionInsertData = [];
-                        pollQuestion.pollOptions.forEach(pollOption => {
-                            if (isNotEmpty(pollOption)) {
-                                const insertData = {
-                                    poll_question: pollQuestionId,
-                                    option: pollOption
-                                };
-                                optionInsertData.push(insertData)
-                            }
-                        })
-                        const {error} = await supabase.from<definitions["poll_options"]>("poll_options")
-                            .insert(optionInsertData);
-                        if (isErrorWithMessage(error)) {
-                            console.log(getErrorMessage(error))
-                            //todo
-                        } else {
-                            await router.push('/poll/' + pollId)
-                        }
-                    }
-                }
-
-            }
-        */
+       console.log(data);
+        }
 
     }
 
