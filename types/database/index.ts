@@ -544,6 +544,30 @@ export interface paths {
       };
     };
   };
+  "/rpc/fn_create_poll": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: json */
+            poll_question_data: string;
+            /** Format: character varying */
+            poll_name: string;
+            /** Format: character varying */
+            poll_description: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
 }
 
 export interface definitions {
