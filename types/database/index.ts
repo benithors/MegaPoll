@@ -578,10 +578,7 @@ export interface definitions {
      * This is a Primary Key.<pk/>
      */
     id: number;
-    /**
-     * Format: character varying
-     * @default 0
-     */
+    /** Format: character varying */
     option?: string;
     /**
      * Format: bigint
