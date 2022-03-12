@@ -26,7 +26,7 @@ begin
 
                     if KEY = 'pollQuestion'
                     THEN
-                        insert into poll_questions(question, poll) VALUES (val, pollId) returning id into questionId;
+                        insert into poll_questions(question, poll) VALUES (trim(both '"' FROM val::text), pollId) returning id into questionId;
                     end if;
                     --loop through options
                     if KEY = 'pollOptions'
