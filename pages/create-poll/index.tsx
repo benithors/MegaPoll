@@ -1,27 +1,12 @@
 import React from 'react'
 import CreatePollInput from "../../components/CreatePollInput";
-import {isNotEmpty} from "../../utils/StringUtils";
+import {isEmpty} from "../../utils/StringUtils";
 import {supabase} from "../../utils/SupabaseClient";
 import {getErrorMessage, isErrorWithMessage} from "../../utils/ErrorUtil";
 import {useRouter} from "next/router";
 import {useToasts} from "react-toast-notifications";
+import {areThereValidOption, cleanPollQuestionCreation, copyPoll, IPollQuestionCreation} from "../../utils/PollUtil";
 
-
-export interface IPollQuestionCreation {
-    pollQuestion: string,
-    pollOptions: string[]
-}
-
-export function areThereValidOption(cleanedPollQuestionCreation: IPollQuestionCreation[]):boolean {
-    //todo validate if there are valid option
-    //todo write proper test for this
-    return true;
-}
-
-export function cleanPollQuestionCreation(cleanedPollQuestionCreation: IPollQuestionCreation[]):IPollQuestionCreation[] {
-    //todo write test to clean all empty strings
-    return cleanedPollQuestionCreation;
-}
 
 const CreatePoll = () => {
     const [pollQuestionFormData, setPollQuestionFormData] = React.useState<IPollQuestionCreation[]>([{
@@ -36,29 +21,46 @@ const CreatePoll = () => {
 
 
 
+    function areQuestionsValid(iPollQuestionCreations: IPollQuestionCreation[]): boolean {
+        let isValid = true;
+        if(iPollQuestionCreations.length < 1){
+            return false;
+        }
+        for (let iPollQuestionCreation of iPollQuestionCreations) {
+            if (!areThereValidOption(iPollQuestionCreation)) {
+                 isValid = false;
+                break;
+            }
+        }
+        return isValid
+    }
 
-    //TODO BT client side and server side validation
+
+    //TODO server side validation
     async function submitPoll() {
 
-        if(!pollName){
+        if (!pollName) {
             addToast("Poll name missing!", {
                 appearance: 'warning',
                 autoDismiss: true,
             })
             return;
         }
-        if(!pollDescription){
+        if (!pollDescription) {
             addToast("Poll description missing!", {
                 appearance: 'warning',
                 autoDismiss: true,
             })
             return;
         }
+        let copy= [];
+       copyPoll(pollQuestionFormData,copy);
 
-        const iPollQuestionCreation = cleanPollQuestionCreation(pollQuestionFormData);
+        copy= cleanPollQuestionCreation(copy);
 
-        if(!areThereValidOption(iPollQuestionCreation)){
-            addToast("Add at least one question with poll options!", {
+
+        if (!areQuestionsValid(copy)) {
+            addToast("Every question must have at least two poll options!", {
                 appearance: 'warning',
                 autoDismiss: true,
             })
@@ -66,18 +68,25 @@ const CreatePoll = () => {
         }
 
 
-
-        const { data, error } = await supabase
-            .rpc('fn_create_poll', {
-                poll_name: pollName ,
-                poll_description:pollDescription,
-                poll_question_data:pollQuestionFormData
-            })
+        const params = {
+            poll_name: pollName,
+            poll_description: pollDescription,
+            poll_question_data: copy
+        };
+        console.log(params)
+        const {data, error} = await supabase
+            .rpc('fn_create_poll', params)
         if (isErrorWithMessage(error)) {
             console.log(getErrorMessage(error))
-            //todo
+            addToast("Something went wrong, try it again later!", {
+                appearance: 'error',
+                autoDismiss: true,
+            })
         } else {
-       console.log(data);
+            router.push({
+                pathname: '/poll/[id]',
+                query: { id: data.toString() },
+            })
         }
 
     }
@@ -91,7 +100,7 @@ const CreatePoll = () => {
             //we need to check if the last element in poll has some string in it
             //if this is so we need to append +1 on poll so that another poll can be added
             const lastPollQuestions = pollQuestionCreationArr[pollQuestionCreationArr.length - 1];
-            if (isNotEmpty(lastPollQuestions.pollQuestion) && pollQuestionCreationArr.length < 15) {
+            if (!isEmpty(lastPollQuestions.pollQuestion) && pollQuestionCreationArr.length < 15) {
                 let pollQuestionCreationTemp: IPollQuestionCreation = {
                     pollQuestion: '',
                     pollOptions: ['']

@@ -1,6 +1,6 @@
 import React from 'react'
-import {isNotEmpty} from "../utils/StringUtils";
-import {IPollQuestionCreation} from "../pages/create-poll";
+import {isEmpty} from "../utils/StringUtils";
+import {IPollQuestionCreation} from "../utils/PollUtil";
 
 interface IProps {
     pollQuestionFormData: IPollQuestionCreation[],
@@ -19,7 +19,7 @@ function increaseArraySize(setArray: React.Dispatch<React.SetStateAction<IPollQu
         //if this is so we need to append +1 on poll so that another poll can be added
         const lastPollOption = pollOptions[pollOptions.length - 1];
 
-        if (isNotEmpty(lastPollOption) && pollOptions.length < 15) {
+        if (!isEmpty(lastPollOption) && pollOptions.length < 15) {
             pollOptions.push('')
         }
         pollQuestionCreation.pollOptions = pollOptions;
