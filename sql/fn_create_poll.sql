@@ -1,9 +1,9 @@
-create or replace function fn_create_poll(poll_name character varying, poll_description character varying,
-                                          poll_question_data json) returns uuid
+create function fn_create_poll(poll_name character varying, poll_description character varying, poll_question_data json) returns uuid
     language plpgsql
 as
 $$
 DECLARE
+    poll_uuid uuid;
     questions  json;
     key        text;
     val        json;
@@ -12,8 +12,9 @@ DECLARE
     pollOption text;
 begin
 
+    poll_uuid := gen_random_uuid();
     INSERT INTO public.polls (poll_name, poll_description, uuid)
-    VALUES (poll_name, poll_description, gen_random_uuid())
+    VALUES (poll_name, poll_description, poll_uuid)
     RETURNING id into pollId;
     --loop through all the question
     FOR questions IN
@@ -22,7 +23,7 @@ begin
             FOR key, val IN
                 SELECT * FROM json_each(questions)
                 LOOP
-                    RAISE NOTICE '%: %', key, val;
+
                     if KEY = 'pollQuestion'
                     THEN
                         insert into poll_questions(question, poll) VALUES (val, pollId) returning id into questionId;
@@ -33,7 +34,8 @@ begin
                         FOR pollOption IN
                             SELECT * FROM json_array_elements(val)
                             LOOP
-                                insert into poll_options(option, poll_question) VALUES(pollOption,questionId);
+                                RAISE NOTICE '%',trim(both '"' FROM pollOption) ;
+                                insert into poll_options(option, poll_question) VALUES(trim(both '"' FROM pollOption) ,questionId);
                             end loop;
                     end if;
 
@@ -41,7 +43,7 @@ begin
 
         END LOOP;
 
-    return gen_random_uuid();
+    return poll_uuid;
 end;
 $$;
 
