@@ -1,0 +1,45 @@
+[
+  {
+    "pollQuestion": "Which type",
+    "pollOptions": [
+      "Inear",
+      "Overear",
+      "  ",
+      ""
+    ]
+  },
+  {
+    "pollQuestion": "   ",
+    "pollOptions": [
+      "Sony",
+      "  ",
+      "Bose",
+      "Jaybird",
+      ""
+    ]
+  },
+  {
+    "pollQuestion": "How long should they last",
+    "pollOptions": [
+      "1h",
+      "2h",
+      "3h",
+      "4h",
+      ""
+    ]
+  },
+  {
+    "pollQuestion": "Earwings?",
+    "pollOptions": [
+      "",
+      "No I dont need earwings",
+      ""
+    ]
+  },
+  {
+    "pollQuestion": "",
+    "pollOptions": [
+      ""
+    ]
+  }
+]
