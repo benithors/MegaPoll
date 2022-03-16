@@ -3,7 +3,10 @@ import {isEmpty} from "./StringUtils";
 export interface IPollQuestionCreation {
     pollQuestion: string,
     pollOptions: string[]
+    multiPoll:boolean,
 }
+
+
 
 
 export function areThereValidOption(cleanedPollQuestionCreation: IPollQuestionCreation): boolean {
@@ -13,11 +16,9 @@ export function areThereValidOption(cleanedPollQuestionCreation: IPollQuestionCr
 export function cleanPollQuestionCreation(pollQuestionCreations: IPollQuestionCreation[]): IPollQuestionCreation[] {
     //remove all question that have an empty question string
     pollQuestionCreations = pollQuestionCreations.filter(pollQuestionCreation => !isEmpty(pollQuestionCreation.pollQuestion));
-    console.log('1',pollQuestionCreations);
     pollQuestionCreations.forEach(pollQuestionCreation => {
         pollQuestionCreation.pollOptions = pollQuestionCreation.pollOptions.filter(option => !isEmpty(option));
     })
-    console.log('2',pollQuestionCreations);
     return pollQuestionCreations;
 }
 
@@ -29,9 +30,11 @@ export function copyPoll(original: IPollQuestionCreation[], copyTo: IPollQuestio
             pollOptionCopy.push(pollOption);
         })
         const pollQuestion:string = value.pollQuestion;
+        const multiPoll = value.multiPoll;
         const temp: IPollQuestionCreation = {
             pollQuestion:  pollQuestion,
-            pollOptions: pollOptionCopy
+            pollOptions: pollOptionCopy,
+            multiPoll: multiPoll
         }
         copyTo.push(temp);
     })

@@ -11,8 +11,8 @@ import {areThereValidOption, cleanPollQuestionCreation, copyPoll, IPollQuestionC
 const CreatePoll = () => {
     const [pollQuestionFormData, setPollQuestionFormData] = React.useState<IPollQuestionCreation[]>([{
         pollQuestion: '',
-        pollOptions: ['']
-
+        pollOptions: [''],
+        multiPoll: false
     }]);
     const router = useRouter();
     const {addToast} = useToasts();
@@ -20,15 +20,14 @@ const CreatePoll = () => {
     const [pollDescription, setPollDescription] = React.useState<string>();
 
 
-
     function areQuestionsValid(iPollQuestionCreations: IPollQuestionCreation[]): boolean {
         let isValid = true;
-        if(iPollQuestionCreations.length < 1){
+        if (iPollQuestionCreations.length < 1) {
             return false;
         }
         for (let iPollQuestionCreation of iPollQuestionCreations) {
             if (!areThereValidOption(iPollQuestionCreation)) {
-                 isValid = false;
+                isValid = false;
                 break;
             }
         }
@@ -53,10 +52,10 @@ const CreatePoll = () => {
             })
             return;
         }
-        let copy= [];
-       copyPoll(pollQuestionFormData,copy);
+        let copy = [];
+        copyPoll(pollQuestionFormData, copy);
 
-        copy= cleanPollQuestionCreation(copy);
+        copy = cleanPollQuestionCreation(copy);
 
 
         if (!areQuestionsValid(copy)) {
@@ -85,14 +84,14 @@ const CreatePoll = () => {
         } else {
             router.push({
                 pathname: '/poll/[id]',
-                query: { id: data.toString() },
+                query: {id: data.toString()},
             })
         }
 
     }
 
-    function increaseArraySize(setArray: React.Dispatch<React.SetStateAction<IPollQuestionCreation[]>>, index: number, e: { target: { value: string; }; }) {
-        setArray(prevState => {
+    function increaseArraySize( index: number, e: { target: { value: string; }; }) {
+        setPollQuestionFormData(prevState => {
             let pollQuestionCreationArr = [...prevState];
             let pollQuestionCreation = pollQuestionCreationArr[index];
             pollQuestionCreation.pollQuestion = e.target.value;
@@ -103,7 +102,8 @@ const CreatePoll = () => {
             if (!isEmpty(lastPollQuestions.pollQuestion) && pollQuestionCreationArr.length < 15) {
                 let pollQuestionCreationTemp: IPollQuestionCreation = {
                     pollQuestion: '',
-                    pollOptions: ['']
+                    pollOptions: [''],
+                    multiPoll: false
                 };
 
                 pollQuestionCreationArr.push(pollQuestionCreationTemp);
@@ -111,6 +111,15 @@ const CreatePoll = () => {
             return pollQuestionCreationArr;
         });
 
+    }
+
+    function changeMultiPollState(index: number, e:string) {
+
+        let pollQuestionCreationArr = [...pollQuestionFormData];
+        let pollQuestionCreation = pollQuestionCreationArr[index];
+        pollQuestionCreation.multiPoll = !pollQuestionCreation.multiPoll;
+        pollQuestionCreationArr[index] = pollQuestionCreation;
+            setPollQuestionFormData(pollQuestionCreationArr);
     }
 
     return (
@@ -141,10 +150,17 @@ const CreatePoll = () => {
                     {pollQuestionFormData.map((value, index) => {
                         return <div className="flex flex-col  pt-5  mb-8" key={index}>
                             <input
-                                onChange={event => increaseArraySize(setPollQuestionFormData, index, event)}
+                                onChange={event => increaseArraySize(index, event)}
                                 type="text" placeholder="Type your question here" className="mb-5 input input-accent input-bordered input-lg w-full "/>
                             <CreatePollInput pollQuestionFormData={pollQuestionFormData} setPollOptions={setPollQuestionFormData} pollQuestionIndex={index}/>
+                            <div>
+                                <input onChange={event => changeMultiPollState(index,event.target.value)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
+                                       className="checkbox checkbox-md"/>
+
+                                Are multiple answers allowed?
+                            </div>
                         </div>
+
                     })}
 
                 </div>
