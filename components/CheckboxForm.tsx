@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {IPollQuestion} from "../pages/poll/[id]";
-import SingleCheckBox from "./SingleCheckBox";
+import SinglePollOptionBox from "./SinglePollOptionBox";
 import {definitions} from "../types/database";
 import {supabase} from "../utils/SupabaseClient";
 import {getCookie} from "cookies-next";
@@ -89,7 +89,7 @@ const CheckboxForm = (props: IProps) => {
         <div>
             {checkBoxes.map((pollOption, idx) =>
 
-                <SingleCheckBox key={idx} setCheckBoxes={setCheckBoxes} checkBoxes={checkBoxes} idx={idx}/>
+                <SinglePollOptionBox key={idx} multiPoll={props.pollQ.pollQuestion.multipoll} setCheckBoxes={setCheckBoxes} checkBoxes={checkBoxes} idx={idx}/>
             )}
             <button className="btn btn-sm mt-4" onClick={submitQuestion}>submit</button>
         </div>
