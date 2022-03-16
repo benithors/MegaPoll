@@ -155,7 +155,7 @@ const CreatePoll = () => {
                                 type="text" placeholder="Type your question here" className="mb-5 input input-accent input-bordered input-lg w-full "/>
                             <CreatePollInput pollQuestionFormData={pollQuestionFormData} setPollOptions={setPollQuestionFormData} pollQuestionIndex={index}/>
                             <div>
-                                <input onChange={event => changeMultiPollState(index)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
+                                <input onChange={() => changeMultiPollState(index)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
                                        className="checkbox checkbox-md"/>
 
                                 Are multiple answers allowed?
