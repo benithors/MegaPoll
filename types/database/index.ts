@@ -154,6 +154,7 @@ export interface paths {
           question?: parameters["rowFilter.poll_questions.question"];
           votes?: parameters["rowFilter.poll_questions.votes"];
           poll?: parameters["rowFilter.poll_questions.poll"];
+          multipoll?: parameters["rowFilter.poll_questions.multipoll"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -209,6 +210,7 @@ export interface paths {
           question?: parameters["rowFilter.poll_questions.question"];
           votes?: parameters["rowFilter.poll_questions.votes"];
           poll?: parameters["rowFilter.poll_questions.poll"];
+          multipoll?: parameters["rowFilter.poll_questions.multipoll"];
         };
         header: {
           /** Preference */
@@ -228,6 +230,7 @@ export interface paths {
           question?: parameters["rowFilter.poll_questions.question"];
           votes?: parameters["rowFilter.poll_questions.votes"];
           poll?: parameters["rowFilter.poll_questions.poll"];
+          multipoll?: parameters["rowFilter.poll_questions.multipoll"];
         };
         body: {
           /** poll_questions */
@@ -635,6 +638,11 @@ export interface definitions {
      * This is a Foreign Key to `polls.id`.<fk table='polls' column='id'/>
      */
     poll: number;
+    /**
+     * Format: boolean
+     * @default true
+     */
+    multipoll: boolean;
   };
   polls: {
     /**
@@ -776,6 +784,8 @@ export interface parameters {
   "rowFilter.poll_questions.votes": string;
   /** Format: bigint */
   "rowFilter.poll_questions.poll": string;
+  /** Format: boolean */
+  "rowFilter.poll_questions.multipoll": string;
   /** @description polls */
   "body.polls": definitions["polls"];
   /** Format: bigint */
