@@ -113,7 +113,7 @@ const CreatePoll = () => {
 
     }
 
-    function changeMultiPollState(index: number, e:string) {
+    function changeMultiPollState(index: number) {
 
         let pollQuestionCreationArr = [...pollQuestionFormData];
         let pollQuestionCreation = pollQuestionCreationArr[index];
@@ -128,6 +128,7 @@ const CreatePoll = () => {
 
             <div className={"mt-16 text-4xl self-center"}>
                 Create a Poll
+
             </div>
 
             <div className="form-control md:w-2/4">
@@ -154,7 +155,7 @@ const CreatePoll = () => {
                                 type="text" placeholder="Type your question here" className="mb-5 input input-accent input-bordered input-lg w-full "/>
                             <CreatePollInput pollQuestionFormData={pollQuestionFormData} setPollOptions={setPollQuestionFormData} pollQuestionIndex={index}/>
                             <div>
-                                <input onChange={event => changeMultiPollState(index,event.target.value)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
+                                <input onChange={event => changeMultiPollState(index)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
                                        className="checkbox checkbox-md"/>
 
                                 Are multiple answers allowed?
