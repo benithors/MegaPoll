@@ -5,7 +5,7 @@ import {GetServerSideProps} from "next";
 import {checkCookies, getCookie, setCookies} from 'cookies-next';
 import {v4 as uuidv4} from 'uuid';
 import CheckboxForm from "../../components/CheckboxForm";
-
+import Image from 'next/image'
 
 interface IProps {
     pollData: definitions["polls"],
@@ -158,6 +158,13 @@ const Poll = (props: IProps) => {
                 {props.pollData.poll_description}
 
             </h2>
+            <Image
+                src={props.pollData.cover_image}
+                alt="Poll cover"
+                width={500}
+                height={500}
+            />
+
             <div className="divider"></div>
             {optionsData.map((pollQ, index) => {
                     return <div key={index} className={"pb-12"}>

@@ -6,6 +6,7 @@ import {getErrorMessage, isErrorWithMessage} from "../../utils/ErrorUtil";
 import {useRouter} from "next/router";
 import {useToasts} from "react-toast-notifications";
 import {areThereValidOption, cleanPollQuestionCreation, copyPoll, IPollQuestionCreation} from "../../utils/PollUtil";
+import {uuid} from "@supabase/gotrue-js/dist/main/lib/helpers";
 
 
 const CreatePoll = () => {
@@ -19,6 +20,8 @@ const CreatePoll = () => {
     const [pollName, setPollName] = React.useState<string>();
     const [pollDescription, setPollDescription] = React.useState<string>();
 
+
+    const [selectedImage, setSelectedImage] = React.useState(null);
 
     function areQuestionsValid(iPollQuestionCreations: IPollQuestionCreation[]): boolean {
         let isValid = true;
@@ -65,11 +68,33 @@ const CreatePoll = () => {
             })
             return;
         }
-
+        let coverImage;
+        if (selectedImage) {
+            const path = uuid();
+            console.log("uuid " + path)
+            const {data, error} = await supabase
+                .storage
+                .from('pollimages')
+                .upload(path, selectedImage);
+            if(data){
+                console.log(data)
+                const { publicURL, error } = supabase
+                    .storage
+                    .from('pollimages')
+                    .getPublicUrl(path);
+                coverImage = publicURL;
+                if(isErrorWithMessage(error)){
+                    console.log(error);
+                }
+                console.log("upload worked " + coverImage  )
+            }
+            console.log(error)
+        }
 
         const params = {
             poll_name: pollName,
             poll_description: pollDescription,
+            cover_image: isEmpty(coverImage)  ? null : coverImage,
             poll_question_data: copy
         };
         console.log(params)
@@ -145,8 +170,11 @@ const CreatePoll = () => {
                 <label className="label">
                     <span className="label-text">Cover Image of the Poll</span>
                 </label>
-                <input type="file"/>
+                <input type="file" onChange={event => setSelectedImage(event.target.files[0])} name={"Cover Image"}/>
+                <div className={"w-2/3"}>
 
+                    <img src={selectedImage ? URL.createObjectURL(selectedImage) : null} alt={selectedImage ? selectedImage.name : null}/>
+                </div>
                 <div className={"mt-16 flex flex-col divide-y divide-white-200 h-fit"}>
                     {pollQuestionFormData.map((value, index) => {
                         return <div className="flex flex-col  pt-5  mb-8" key={index}>
