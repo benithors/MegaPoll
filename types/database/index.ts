@@ -256,6 +256,7 @@ export interface paths {
           poll_name?: parameters["rowFilter.polls.poll_name"];
           poll_description?: parameters["rowFilter.polls.poll_description"];
           uuid?: parameters["rowFilter.polls.uuid"];
+          cover_image?: parameters["rowFilter.polls.cover_image"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -311,6 +312,7 @@ export interface paths {
           poll_name?: parameters["rowFilter.polls.poll_name"];
           poll_description?: parameters["rowFilter.polls.poll_description"];
           uuid?: parameters["rowFilter.polls.uuid"];
+          cover_image?: parameters["rowFilter.polls.cover_image"];
         };
         header: {
           /** Preference */
@@ -330,6 +332,7 @@ export interface paths {
           poll_name?: parameters["rowFilter.polls.poll_name"];
           poll_description?: parameters["rowFilter.polls.poll_description"];
           uuid?: parameters["rowFilter.polls.uuid"];
+          cover_image?: parameters["rowFilter.polls.cover_image"];
         };
         body: {
           /** polls */
@@ -552,6 +555,8 @@ export interface paths {
       parameters: {
         body: {
           args: {
+            /** Format: character varying */
+            cover_image: string;
             /** Format: json */
             poll_question_data: string;
             /** Format: character varying */
@@ -665,6 +670,8 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     uuid: string;
+    /** Format: character varying */
+    cover_image?: string;
   };
   profiles: {
     /**
@@ -798,6 +805,8 @@ export interface parameters {
   "rowFilter.polls.poll_description": string;
   /** Format: uuid */
   "rowFilter.polls.uuid": string;
+  /** Format: character varying */
+  "rowFilter.polls.cover_image": string;
   /** @description profiles */
   "body.profiles": definitions["profiles"];
   /** Format: uuid */
