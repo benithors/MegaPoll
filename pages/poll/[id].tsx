@@ -14,7 +14,7 @@ interface IProps {
 
 export interface IPollQuestion {
     pollQuestion: definitions["poll_questions"];
-    pollOptions: definitions["poll_options"][]
+    pollOptions: definitions["poll_options"][];
     voted: boolean;
 }
 
@@ -58,7 +58,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 .eq("poll_question", pollQuestion.id)
                 .eq("cookie_identifier", getCookie('voter', context));
             let didVote = false;
-            console.log(pollOptionsVoted);
             if (pollOptionsVoted.data) {
                 didVote = pollOptionsVoted.data.some(value => value.voted);
             }
@@ -158,12 +157,18 @@ const Poll = (props: IProps) => {
                 {props.pollData.poll_description}
 
             </h2>
-            <Image
-                src={props.pollData.cover_image}
-                alt="Poll cover"
-                width={500}
-                height={500}
-            />
+
+            {props.pollData.cover_image ?
+                <Image
+                    src={props.pollData.cover_image}
+                    alt="Poll cover"
+                    width={500}
+                    height={500}
+                />
+                :
+                <></>
+
+            }
 
             <div className="divider"></div>
             {optionsData.map((pollQ, index) => {
