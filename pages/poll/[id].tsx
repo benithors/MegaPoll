@@ -113,6 +113,8 @@ const Poll = (props: IProps) => {
     };
 
 
+
+
     useEffect(() => {
 
         props.pollQuestionsWrapper.forEach((question) => {

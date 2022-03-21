@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import {useToasts} from "react-toast-notifications";
 import {areThereValidOption, cleanPollQuestionCreation, copyPoll, IPollQuestionCreation} from "../../utils/PollUtil";
 import {uuid} from "@supabase/gotrue-js/dist/main/lib/helpers";
+import {handleLogin} from "../../utils/AuthUtil";
 
 
 const CreatePoll = () => {
@@ -97,7 +98,6 @@ const CreatePoll = () => {
             cover_image: isEmpty(coverImage)  ? null : coverImage,
             poll_question_data: copy
         };
-        console.log(params)
         const {data, error} = await supabase
             .rpc('fn_create_poll', params)
         if (isErrorWithMessage(error)) {
@@ -193,7 +193,12 @@ const CreatePoll = () => {
                     })}
 
                 </div>
-
+                <button
+                    className="mt-4 p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300"
+                    onClick={() =>  handleLogin()}
+                >
+                    login with twitter
+                </button>
                 <button onClick={submitPoll} className="btn btn-primary">Submit Poll</button>
             </div>
 
