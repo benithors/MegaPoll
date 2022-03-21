@@ -4,7 +4,7 @@ export const handleLogin = async () => {
     try {
         // setLoading(true);
         const { user, session,error} = await supabase.auth.signIn({
-            provider: 'twitter',
+            provider: 'twitch',
         });
        console.log(user,session)
         if (error) throw error;

@@ -20,8 +20,6 @@ const CreatePoll = () => {
     const {addToast} = useToasts();
     const [pollName, setPollName] = React.useState<string>();
     const [pollDescription, setPollDescription] = React.useState<string>();
-
-
     const [selectedImage, setSelectedImage] = React.useState(null);
 
     function areQuestionsValid(iPollQuestionCreations: IPollQuestionCreation[]): boolean {
@@ -77,17 +75,17 @@ const CreatePoll = () => {
                 .storage
                 .from('pollimages')
                 .upload(path, selectedImage);
-            if(data){
+            if (data) {
                 console.log(data)
-                const { publicURL, error } = supabase
+                const {publicURL, error} = supabase
                     .storage
                     .from('pollimages')
                     .getPublicUrl(path);
                 coverImage = publicURL;
-                if(isErrorWithMessage(error)){
+                if (isErrorWithMessage(error)) {
                     console.log(error);
                 }
-                console.log("upload worked " + coverImage  )
+                console.log("upload worked " + coverImage)
             }
             console.log(error)
         }
@@ -95,7 +93,7 @@ const CreatePoll = () => {
         const params = {
             poll_name: pollName,
             poll_description: pollDescription,
-            cover_image: isEmpty(coverImage)  ? null : coverImage,
+            cover_image: isEmpty(coverImage) ? null : coverImage,
             poll_question_data: copy
         };
         const {data, error} = await supabase
@@ -115,7 +113,7 @@ const CreatePoll = () => {
 
     }
 
-    function increaseArraySize( index: number, e: { target: { value: string; }; }) {
+    function increaseArraySize(index: number, e: { target: { value: string; }; }) {
         setPollQuestionFormData(prevState => {
             let pollQuestionCreationArr = [...prevState];
             let pollQuestionCreation = pollQuestionCreationArr[index];
@@ -144,7 +142,7 @@ const CreatePoll = () => {
         let pollQuestionCreation = pollQuestionCreationArr[index];
         pollQuestionCreation.multiPoll = !pollQuestionCreation.multiPoll;
         pollQuestionCreationArr[index] = pollQuestionCreation;
-            setPollQuestionFormData(pollQuestionCreationArr);
+        setPollQuestionFormData(pollQuestionCreationArr);
     }
 
     return (
@@ -182,24 +180,41 @@ const CreatePoll = () => {
                                 onChange={event => increaseArraySize(index, event)}
                                 type="text" placeholder="Type your question here" className="mb-5 input input-accent input-bordered input-lg w-full "/>
                             <CreatePollInput pollQuestionFormData={pollQuestionFormData} setPollOptions={setPollQuestionFormData} pollQuestionIndex={index}/>
-                            <div>
+                            <div className={"mt-4"}>
                                 <input onChange={() => changeMultiPollState(index)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
-                                       className="checkbox checkbox-md"/>
+                                       className="checkbox checkbox-md mr-4"/>
+                                <text>
 
-                                Are multiple answers allowed?
+                                    Are multiple answers allowed?
+                                </text>
                             </div>
                         </div>
 
                     })}
 
                 </div>
-                <button
-                    className="mt-4 p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300"
-                    onClick={() =>  handleLogin()}
-                >
-                    login with twitter
-                </button>
-                <button onClick={submitPoll} className="btn btn-primary">Submit Poll</button>
+
+                {supabase.auth.user() ?
+
+                    <div>
+
+
+                        <button onClick={submitPoll} className="btn btn-primary bg-red">Submit Poll</button>
+                    </div>
+                    :
+                    <div>
+
+                        You need to be logged in before creating a Poll
+
+                        <button
+                            className="mt-4 mb-4 p-2 pl-5 pr-5 bg-[#6441a5] text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300"
+                            onClick={() => handleLogin()}
+                        >
+                            Login with Twitch
+                        </button>
+                    </div>
+
+                }
             </div>
 
         </main>
