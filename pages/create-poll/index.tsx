@@ -96,6 +96,7 @@ const CreatePoll = () => {
             cover_image: isEmpty(coverImage) ? null : coverImage,
             poll_question_data: copy
         };
+        console.log("````",params);
         const {data, error} = await supabase
             .rpc('fn_create_poll', params)
         if (isErrorWithMessage(error)) {
@@ -150,7 +151,7 @@ const CreatePoll = () => {
         <main className={"flex flex-col h-screen px-14 xl:px-64"}>
 
             <div className={"mt-16 text-4xl self-center"}>
-                Create a Poll
+                Create a Poll Tempalte
 
             </div>
 
@@ -194,17 +195,19 @@ const CreatePoll = () => {
 
                 </div>
 
+
                 {supabase.auth.user() ?
 
                     <div>
 
-
                         <button onClick={submitPoll} className="btn btn-primary bg-red">Submit Poll</button>
                     </div>
                     :
-                    <div>
+                    <div className={"flex flex-row "}>
 
-                        You need to be logged in before creating a Poll
+                       <text>
+                           You need to be logged in before creating a Poll
+                       </text>
 
                         <button
                             className="mt-4 mb-4 p-2 pl-5 pr-5 bg-[#6441a5] text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300"

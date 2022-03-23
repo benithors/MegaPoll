@@ -1,8 +1,41 @@
 import type {NextPage} from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
+import {supabase} from "../utils/SupabaseClient";
 
-const Home: NextPage = () => {
+import {definitions} from "../types/database";
+import Image from "next/image";
+import React from "react";
+
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export async function getStaticProps() {
+    const {data,error } = await supabase.from<definitions["front_page"]>("front_page").select("*");
+
+    return {
+        props: {
+            frontPage:data,
+        },
+        // Next.js will attempt to re-generate the page:
+        // - When a request comes in
+        // - At most once every 3600 seconds
+        revalidate: 3600, // In seconds
+    }
+}
+
+interface IProps {
+    frontPage: definitions["front_page"][];
+
+}
+
+function createFromTemplate(){
+
+}
+
+function Home( props:IProps ) {
+
     return (
         <div>
             <Head>
@@ -19,7 +52,6 @@ const Home: NextPage = () => {
                     </h1>
 
                 </div>
-
                 <div className={"mt-16 "}>
 
                     <Link href="/create-poll">
@@ -32,6 +64,31 @@ const Home: NextPage = () => {
 
 
                 </div>
+                <div className={"flex flex-row pt-16"}>
+                    {props.frontPage.map((value:definitions["front_page"], index) => {
+                        return (
+                            <div className={"px-3"}>
+                                <div className="card w-96 bg-base-100 shadow-xl image-full">
+                                    <figure className={"row-start-1"}>
+                                        <Image
+                                            src={value.cover_image}
+                                            alt={value.poll_description}
+                                            width={500}
+                                            height={500}
+                                        />
+                                    </figure>
+                                    <div className="card-body self-end">
+                                        <h2 className="card-title">{value.poll_name}</h2>
+                                        <div className="card-actions justify-end">
+                                            <button className="btn btn-primary">Vote Now</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+
 
 
             </main>
