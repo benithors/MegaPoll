@@ -12,6 +12,42 @@ export interface paths {
       };
     };
   };
+  "/front_page": {
+    get: {
+      parameters: {
+        query: {
+          poll_name?: parameters["rowFilter.front_page.poll_name"];
+          poll_description?: parameters["rowFilter.front_page.poll_description"];
+          cover_image?: parameters["rowFilter.front_page.cover_image"];
+          uuid?: parameters["rowFilter.front_page.uuid"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["front_page"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
   "/poll_instance": {
     get: {
       parameters: {
@@ -771,6 +807,16 @@ export interface paths {
 }
 
 export interface definitions {
+  front_page: {
+    /** Format: character varying */
+    poll_name?: string;
+    /** Format: character varying */
+    poll_description?: string;
+    /** Format: character varying */
+    cover_image?: string;
+    /** Format: uuid */
+    uuid?: string;
+  };
   poll_instance: {
     /**
      * Format: bigint
@@ -992,6 +1038,16 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
+  /** @description front_page */
+  "body.front_page": definitions["front_page"];
+  /** Format: character varying */
+  "rowFilter.front_page.poll_name": string;
+  /** Format: character varying */
+  "rowFilter.front_page.poll_description": string;
+  /** Format: character varying */
+  "rowFilter.front_page.cover_image": string;
+  /** Format: uuid */
+  "rowFilter.front_page.uuid": string;
   /** @description poll_instance */
   "body.poll_instance": definitions["poll_instance"];
   /** Format: bigint */
