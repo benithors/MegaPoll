@@ -35,7 +35,7 @@ begin
             VALUES (trim(both '"' FROM pollQuestion::text), pollId,multipoll)
             returning id into questionId;
 
-            FOR  pollOptions IN
+            FOR  pollOption IN
                 SELECT * FROM json_array_elements(pollOptions)
                 LOOP
                     RAISE NOTICE '%',trim(both '"' FROM pollOption);
