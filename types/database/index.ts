@@ -835,7 +835,7 @@ export interface definitions {
      * This is a Foreign Key to `polls.id`.<fk table='polls' column='id'/>
      */
     poll: number;
-    /** Format: character varying */
+    /** Format: uuid */
     url: string;
   };
   poll_options: {
@@ -1056,7 +1056,7 @@ export interface parameters {
   "rowFilter.poll_instance.created_at": string;
   /** Format: bigint */
   "rowFilter.poll_instance.poll": string;
-  /** Format: character varying */
+  /** Format: uuid */
   "rowFilter.poll_instance.url": string;
   /** @description poll_options */
   "body.poll_options": definitions["poll_options"];
