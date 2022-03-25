@@ -778,6 +778,26 @@ export interface paths {
       };
     };
   };
+  "/rpc/fn_create_poll_from_template": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: uuid */
+            polluuid: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/fn_create_poll": {
     post: {
       parameters: {
