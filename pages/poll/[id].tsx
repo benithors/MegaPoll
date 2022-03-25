@@ -9,12 +9,17 @@ import Image from 'next/image'
 
 interface IProps {
     pollData: definitions["polls"],
-    pollQuestionsWrapper: IPollQuestion[],
+    pollQuestionsWrapper: IPollQuestionWrapper[],
 }
 
-export interface IPollQuestion {
+export interface IPollOptionWrapper {
+    pollOptionAnswer: definitions["poll_options_answers"];
+    pollOption: definitions["poll_options"];
+}
+
+export interface IPollQuestionWrapper {
     pollQuestion: definitions["poll_questions"];
-    pollOptions: definitions["poll_options"][];
+    pollOptionsWrapper: IPollOptionWrapper[];
     voted: boolean;
 }
 
@@ -23,10 +28,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const id = context.params.id;
     const {req, res} = context;
+
+    const pollInstanceData = await supabase
+        .from<definitions["poll_instance"]>("poll_instance")
+        .select("*")
+        .eq("url", id.toString()).single();
     const pollData = await supabase
         .from<definitions["polls"]>("polls")
         .select("*")
-        .eq("uuid", id.toString()).single();
+        .eq("id", pollInstanceData.data.poll).single();
 
 
     //first we get the question
@@ -36,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         .eq("poll", pollData.data.id);
 
 
-    let questionWrapper: IPollQuestion[] = [];
+    let questionWrapper: IPollQuestionWrapper[] = [];
 
     //then we check if the user is logged in
     //if not we check if there is a cookie
@@ -46,11 +56,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         //if there is one we have to check in the db if there is an entry in profiles_2_poll_options
     //for a profile option which is connected to the question
     else {
+
+        //we gather all poll_question ids, so we can get all poll_options
+        const allPollOptions = await supabase
+            .from<definitions["poll_options"]>("poll_options")
+            .select("*")
+            .in("poll_question", allQuestions.data.map(value => value.id));
+
+
+        const pollAnswersOptions = await supabase
+            .from<definitions["poll_options_answers"]>("poll_options_answers")
+            .select("*")
+            .in("poll_option", allPollOptions.data.map(value => value.id));
+
+       //TODO combine them via poll_option.id and poll_option_answers.poll_option
+       //build interface object
+
         for (const pollQuestion of allQuestions.data) {
             const allPollOptions = await supabase
                 .from<definitions["poll_options"]>("poll_options")
                 .select("*")
                 .eq("poll_question", pollQuestion.id);
+
 
             const pollOptionsVoted = await supabase
                 .from<definitions["poll_options_voted"]>("poll_options_voted")
@@ -61,9 +88,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             if (pollOptionsVoted.data) {
                 didVote = pollOptionsVoted.data.some(value => value.voted);
             }
+            const pollOptionData: IPollOptionWrapper = {
+                pollOption: allPollOptions.data,
+                pollOptionAnswer:
+            }
 
-            const pollQuestionTemp: IPollQuestion = {
-                pollOptions: allPollOptions.data,
+            const pollQuestionTemp: IPollQuestionWrapper = {
+                pollOptions: pollOptionData,
                 pollQuestion: pollQuestion,
                 voted: didVote
             }
@@ -85,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Poll = (props: IProps) => {
 
-    const [optionsData, setOptionsData] = useState<IPollQuestion[]>(props.pollQuestionsWrapper)
+    const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(props.pollQuestionsWrapper)
     let mySubscription = [null];
 
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options"]; old?: any; errors?: string[]; }) => {
@@ -111,8 +142,6 @@ const Poll = (props: IProps) => {
         });
 
     };
-
-
 
 
     useEffect(() => {

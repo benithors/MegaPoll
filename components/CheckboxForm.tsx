@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {IPollQuestion} from "../pages/poll/[id]";
+import {IPollQuestionWrapper} from "../pages/poll/[id]";
 import SinglePollOptionBox from "./SinglePollOptionBox";
 import {definitions} from "../types/database";
 import {supabase} from "../utils/SupabaseClient";
@@ -8,8 +8,8 @@ import {useToasts} from "react-toast-notifications";
 
 
 interface IProps {
-    pollQ: IPollQuestion;
-    setOptionsData: React.Dispatch<React.SetStateAction<IPollQuestion[]>>;
+    pollQ: IPollQuestionWrapper;
+    setOptionsData: React.Dispatch<React.SetStateAction<IPollQuestionWrapper[]>>;
 }
 
 export interface pollOption {

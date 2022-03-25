@@ -6,6 +6,7 @@ import {supabase} from "../utils/SupabaseClient";
 import {definitions} from "../types/database";
 import Image from "next/image";
 import React from "react";
+import {isErrorWithMessage, toErrorWithMessage} from "../utils/ErrorUtil";
 
 
 // This function gets called at build time on server-side.
@@ -30,7 +31,13 @@ interface IProps {
 
 }
 
-function createFromTemplate(){
+async function createFromTemplate(uuid:string){
+    const {data,error} = await supabase.rpc("fn_create_poll_from_template",{polluuid:uuid});
+    if(isErrorWithMessage(error)){
+        console.log(toErrorWithMessage(error));
+    }
+
+    console.log(data);
 
 }
 
@@ -80,7 +87,7 @@ function Home( props:IProps ) {
                                     <div className="card-body self-end">
                                         <h2 className="card-title">{value.poll_name}</h2>
                                         <div className="card-actions justify-end">
-                                            <button className="btn btn-primary">Vote Now</button>
+                                            <button onClick={event => createFromTemplate(value.uuid)} className="btn btn-primary">Vote Now</button>
                                         </div>
                                     </div>
                                 </div>
