@@ -15,6 +15,8 @@ interface IProps {
 export interface pollOption {
     checkBox: boolean,
     pollOption: definitions["poll_options"],
+    pollOptionAnswer: definitions["poll_options_answers"];
+
 }
 
 //problem: how do we parse the data so can create a proper query
@@ -24,10 +26,11 @@ const CheckboxForm = (props: IProps) => {
 
     function getNewCheckBoxState(): pollOption[] {
         let pollOptionTemp: pollOption[] = [];
-        props.pollQ.pollOptions.forEach((pollOption) => {
+        props.pollQ.pollOptionsWrapper.forEach((pollOptionWrapper) => {
             const newElement: pollOption = {
                 checkBox: false,
-                pollOption: pollOption
+                pollOption: pollOptionWrapper.pollOption,
+                pollOptionAnswer: pollOptionWrapper.pollOptionAnswer
             }
             pollOptionTemp.push(newElement)
         });
@@ -63,7 +66,7 @@ const CheckboxForm = (props: IProps) => {
             let insertDataArr = [];
             for (const checkbox of pollOptions) {
                 const insertData = {
-                    poll_option: checkbox.pollOption.id,
+                    poll_option_answers: checkbox.pollOptionAnswer.id,
                     poll_question: checkbox.pollOption.poll_question,
                     cookie_identifier: getCookie('voter').toString()
                 };
@@ -75,7 +78,9 @@ const CheckboxForm = (props: IProps) => {
                     insertDataArr
                 );
             console.log(data);
+
             if (error) {
+                console.log(error)
                 addToast("Something went wrong, try it later again", {
                     appearance: 'error',
                     autoDismiss: true,

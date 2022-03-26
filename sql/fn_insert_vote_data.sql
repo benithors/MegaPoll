@@ -4,7 +4,7 @@ create function fn_insert_vote_data() returns trigger
 as
 $$
 begin
-    update public.poll_options SET votes = votes + 1 where id = new.poll_option;
+    update public.poll_options_answers set votes = votes + 1 where id = new.poll_option_answers;
     return new;
 end;
 $$;
@@ -18,4 +18,3 @@ grant execute on function fn_insert_vote_data() to anon;
 grant execute on function fn_insert_vote_data() to authenticated;
 
 grant execute on function fn_insert_vote_data() to service_role;
-

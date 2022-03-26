@@ -63,40 +63,47 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             .select("*")
             .in("poll_question", allQuestions.data.map(value => value.id));
 
-
         const pollAnswersOptions = await supabase
             .from<definitions["poll_options_answers"]>("poll_options_answers")
             .select("*")
             .in("poll_option", allPollOptions.data.map(value => value.id));
 
-       //TODO combine them via poll_option.id and poll_option_answers.poll_option
-       //build interface object
+
+        let pollOptionWrapper: IPollOptionWrapper[] = []
+        allPollOptions.data.map(pollOption => {
+
+            let pollOptionAnswer = pollAnswersOptions.data.find(answer => answer.poll_option === pollOption.id);
+
+
+            pollOptionWrapper.push({
+                pollOptionAnswer: pollOptionAnswer,
+                pollOption: pollOption
+            });
+        });
+
 
         for (const pollQuestion of allQuestions.data) {
-            const allPollOptions = await supabase
-                .from<definitions["poll_options"]>("poll_options")
-                .select("*")
-                .eq("poll_question", pollQuestion.id);
 
 
-            const pollOptionsVoted = await supabase
-                .from<definitions["poll_options_voted"]>("poll_options_voted")
-                .select("*")
-                .eq("poll_question", pollQuestion.id)
-                .eq("cookie_identifier", getCookie('voter', context));
-            let didVote = false;
-            if (pollOptionsVoted.data) {
-                didVote = pollOptionsVoted.data.some(value => value.voted);
-            }
-            const pollOptionData: IPollOptionWrapper = {
-                pollOption: allPollOptions.data,
-                pollOptionAnswer:
-            }
+
+            // const pollOptionsVoted = await supabase
+            //     .from<definitions["poll_options_voted"]>("poll_options_voted")
+            //     .select("*")
+            //     .eq("poll_question", pollQuestion.id)
+            //     .eq("cookie_identifier", getCookie('voter', context));
+            // let didVote = false;
+            // if (pollOptionsVoted.data) {
+            //     didVote = pollOptionsVoted.data.some(value => value.voted);
+            // }
+
+
+            let pollOptionsFilteredByQuestion = allPollOptions.data.filter(value => value.poll_question === pollQuestion.id);
+
 
             const pollQuestionTemp: IPollQuestionWrapper = {
-                pollOptions: pollOptionData,
+                pollOptionsWrapper: pollOptionWrapper.filter(value => value.pollOption.poll_question === pollQuestion.id),
                 pollQuestion: pollQuestion,
-                voted: didVote
+                voted: false
             }
             questionWrapper.push(pollQuestionTemp)
         }
@@ -116,26 +123,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Poll = (props: IProps) => {
 
-    const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(props.pollQuestionsWrapper)
+
+
+    const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(props.pollQuestionsWrapper);
     let mySubscription = [null];
-
-    const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options"]; old?: any; errors?: string[]; }) => {
-
+    const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options_answers"]; old?: any; errors?: string[]; }) => {
+        console.log("update incoming ",
+            payload )
         setOptionsData(prevState => {
             let prevStatePollQuestionWrapper = prevState.slice();
-            let questionIdx = prevStatePollQuestionWrapper.findIndex(value => value.pollQuestion.id === payload.new.poll_question);
 
-
+            let questionIdx = prevStatePollQuestionWrapper.findIndex(pollQuestionWrapper => pollQuestionWrapper.pollOptionsWrapper.some(pollOptionWrapper => pollOptionWrapper.pollOptionAnswer.id === payload.new.id));
+            console.log("questionIdx : ",questionIdx);
+            console.log("prevStatePollQuestionWrapper : ",prevStatePollQuestionWrapper)
             let iPollQuestion = prevStatePollQuestionWrapper[questionIdx];
-            let optionIdx = iPollQuestion.pollOptions.findIndex(x =>
-                x.id == payload.new.id);
+            let optionIdx = iPollQuestion.pollOptionsWrapper.findIndex(optionWrapper =>
+                optionWrapper.pollOptionAnswer.id === payload.new.id);
+
+            console.log("optionIdx",optionIdx);
+            console.log("pollOptionsWrapper",iPollQuestion.pollOptionsWrapper);
 
 
-            iPollQuestion.pollOptions[optionIdx] = {
-                option: payload.new.option,
+            iPollQuestion.pollOptionsWrapper[optionIdx].pollOptionAnswer = {
+                poll_option:payload.new.poll_option,
                 id: payload.new.id,
                 votes: payload.new.votes,
-                poll_question: payload.new.poll_question
+                poll_instance:payload.new.poll_instance
             };
             prevStatePollQuestionWrapper[questionIdx] = iPollQuestion;
             return [...prevStatePollQuestionWrapper]
@@ -147,9 +160,9 @@ const Poll = (props: IProps) => {
     useEffect(() => {
 
         props.pollQuestionsWrapper.forEach((question) => {
-            question.pollOptions.forEach(option => {
+            question.pollOptionsWrapper.forEach(optionWrapper => {
                 let subTemp = supabase
-                    .from('poll_options:id=eq.' + option.id)
+                    .from('poll_options_answers:id=eq.' + optionWrapper.pollOptionAnswer.id)
                     .on('*', payload => {
                         handleNewOptionsUpdate(payload);
                     })
@@ -157,6 +170,7 @@ const Poll = (props: IProps) => {
                 mySubscription.push(subTemp);
             })
         })
+
 
 
         return () => {
@@ -204,25 +218,28 @@ const Poll = (props: IProps) => {
             <div className="divider"></div>
             {optionsData.map((pollQ, index) => {
                     return <div key={index} className={"pb-12"}>
-                        {pollQ.pollQuestion.question}
+                        <h1 className={"text-4xl"}>
+
+                            {pollQ.pollQuestion.question}
+                        </h1>
 
                         {
                             pollQ.voted ?
 
                                 <div className="p-6 space-y-2 artboard  w-full " key={index}>
-                                    {pollQ.pollOptions.map((value, idx) =>
+                                    {pollQ.pollOptionsWrapper.map((value, idx) =>
                                         <div key={idx}>
                                             <div>
-                                                {value.option}
+                                                {value.pollOption.option}
 
                                             </div>
 
                                             <div className={'flex flex-row justify-between'}>
                                                 <div className={'w-2/4'}>
-                                                    <progress className="progress progress-primary" value={getVotePercentage(value, pollQ.pollOptions)} max="100"/>
+                                                    <progress className="progress progress-primary" value={100} max="100"/>
                                                 </div>
                                                 <div>
-                                                    Votes {value.votes} | {getVotePercentage(value, pollQ.pollOptions).toFixed(1)}%
+                                                    Votes {value.pollOptionAnswer.votes}
                                                 </div>
 
 
