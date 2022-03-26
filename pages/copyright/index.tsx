@@ -5,15 +5,15 @@ interface IProps {
 
 }
 
-const Template = (props: IProps) => {
+const index = (props: IProps) => {
 
     return (
         <div>
-
+            https://heroicons.com/
         </div>
 
 
     );
 }
 
-export default Template
+export default index

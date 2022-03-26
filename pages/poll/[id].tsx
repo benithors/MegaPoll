@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {supabase} from "../../utils/SupabaseClient";
 import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
-import {checkCookies, getCookie, setCookies} from 'cookies-next';
+import {checkCookies,  setCookies} from 'cookies-next';
 import {v4 as uuidv4} from 'uuid';
 import CheckboxForm from "../../components/CheckboxForm";
 import Image from 'next/image'
+import Container from "../../components/Container";
 
 interface IProps {
     pollData: definitions["polls"],
@@ -70,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
         let pollOptionWrapper: IPollOptionWrapper[] = []
-        allPollOptions.data.map(pollOption => {
+        allPollOptions.data.forEach(pollOption => {
 
             let pollOptionAnswer = pollAnswersOptions.data.find(answer => answer.poll_option === pollOption.id);
 
@@ -83,29 +84,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
         for (const pollQuestion of allQuestions.data) {
-
-
-
-            // const pollOptionsVoted = await supabase
-            //     .from<definitions["poll_options_voted"]>("poll_options_voted")
-            //     .select("*")
-            //     .eq("poll_question", pollQuestion.id)
-            //     .eq("cookie_identifier", getCookie('voter', context));
-            // let didVote = false;
-            // if (pollOptionsVoted.data) {
-            //     didVote = pollOptionsVoted.data.some(value => value.voted);
-            // }
-
-          //  supabase.from<definitions["profiles_2_poll_options"]>("profiles_2_poll_options").select("*");
-
-
-            let pollOptionsFilteredByQuestion = allPollOptions.data.filter(value => value.poll_question === pollQuestion.id);
-
-
             const pollQuestionTemp: IPollQuestionWrapper = {
                 pollOptionsWrapper: pollOptionWrapper.filter(value => value.pollOption.poll_question === pollQuestion.id),
                 pollQuestion: pollQuestion,
-                voted: false
+                voted: false //TODO BT need to implement logic that checks if the user already voted, would also be good to see what the user voted for?
             }
             questionWrapper.push(pollQuestionTemp)
         }
@@ -184,7 +166,7 @@ const Poll = (props: IProps) => {
         };
     }, [])  //todo need to figure out why removing the deps array breaks the updates
 
-
+    //todo bt reimplement this
     function getVotePercentage(value: definitions["poll_options"], options: definitions["poll_options"][]): number {
         if (value.votes === 0) {
             return 0
@@ -194,78 +176,82 @@ const Poll = (props: IProps) => {
 
 
     return (
-        <div className={"w-full pt-16 px-20"}>
+        <Container>
+            <div className={"w-full pt-16 px-20"}>
 
-            <h1 className={"font-medium leading-tight text-5xl"}>
-                {props.pollData.poll_name}
+                <h1 className={"font-medium leading-tight text-5xl"}>
+                    {props.pollData.poll_name}
 
-            </h1>
-            <h2 className={"font-medium leading-tight text-2xl pt-16"}>
-                {props.pollData.poll_description}
+                </h1>
+                <h2 className={"font-medium leading-tight text-2xl pt-16"}>
+                    {props.pollData.poll_description}
 
-            </h2>
+                </h2>
 
-            {props.pollData.cover_image ?
-                <Image
-                    src={props.pollData.cover_image}
-                    alt="Poll cover"
-                    width={500}
-                    height={500}
-                />
-                :
-                <></>
+                {props.pollData.cover_image ?
+                    <Image
+                        src={props.pollData.cover_image}
+                        alt="Poll cover"
+                        width={500}
+                        height={500}
+                    />
+                    :
+                    <></>
 
-            }
-
-            <div className="divider"></div>
-            {optionsData.map((pollQ, index) => {
-                    return <div key={index} className={"pb-12"}>
-                        <h1 className={"text-4xl"}>
-
-                            {pollQ.pollQuestion.question}
-                        </h1>
-
-                        {
-                            pollQ.voted ?
-
-                                <div className="p-6 space-y-2 artboard  w-full " key={index}>
-                                    {pollQ.pollOptionsWrapper.map((value, idx) =>
-                                        <div key={idx}>
-                                            <div>
-                                                {value.pollOption.option}
-
-                                            </div>
-
-                                            <div className={'flex flex-row justify-between'}>
-                                                <div className={'w-2/4'}>
-                                                    <progress className="progress progress-primary" value={100} max="100"/>
-                                                </div>
-                                                <div>
-                                                    Votes {value.pollOptionAnswer.votes}
-                                                </div>
-
-
-                                            </div>
-
-
-                                        </div>
-                                    )}
-                                </div>
-
-                                :
-
-
-                                <CheckboxForm key={index} pollQ={pollQ} setOptionsData={setOptionsData}/>
-
-                        }
-
-
-                    </div>;
                 }
-            )}
+
+                <div className="divider"></div>
+                {optionsData.map((pollQ, index) => {
+                        return <div key={index} className={"pb-12"}>
+                            <h1 className={"text-4xl"}>
+
+                                {pollQ.pollQuestion.question}
+                            </h1>
+
+                            {
+                                pollQ.voted ?
+
+                                    <div className="p-6 space-y-2 artboard  w-full " key={index}>
+                                        {pollQ.pollOptionsWrapper.map((value, idx) =>
+                                            <div key={idx}>
+                                                <div>
+                                                    {value.pollOption.option}
+
+                                                </div>
+
+                                                <div className={'flex flex-row justify-between'}>
+                                                    <div className={'w-2/4'}>
+                                                        <progress className="progress progress-primary" value={100} max="100"/>
+                                                    </div>
+                                                    <div>
+                                                        Votes {value.pollOptionAnswer.votes}
+                                                    </div>
 
 
-        </div>
+                                                </div>
+
+
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    :
+
+
+                                    <CheckboxForm key={index} pollQ={pollQ} setOptionsData={setOptionsData}/>
+
+                            }
+
+
+                        </div>;
+                    }
+                )}
+
+
+            </div>
+
+
+        </Container>
 
 
     );

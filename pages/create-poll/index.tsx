@@ -8,6 +8,7 @@ import {useToasts} from "react-toast-notifications";
 import {areThereValidOption, cleanPollQuestionCreation, copyPoll, IPollQuestionCreation} from "../../utils/PollUtil";
 import {uuid} from "@supabase/gotrue-js/dist/main/lib/helpers";
 import {handleLogin} from "../../utils/AuthUtil";
+import Container from "../../components/Container";
 
 
 const CreatePoll = () => {
@@ -96,7 +97,7 @@ const CreatePoll = () => {
             cover_image: isEmpty(coverImage) ? null : coverImage,
             poll_question_data: copy
         };
-        console.log("````",params);
+        console.log("````", params);
         const {data, error} = await supabase
             .rpc('fn_create_poll', params)
         if (isErrorWithMessage(error)) {
@@ -147,80 +148,81 @@ const CreatePoll = () => {
     }
 
     return (
+        <Container>
 
-        <main className={"flex flex-col h-screen px-14 xl:px-64"}>
+                <div className={"mt-16 text-4xl self-center"}>
+                    Create a Poll Tempalte
 
-            <div className={"mt-16 text-4xl self-center"}>
-                Create a Poll Tempalte
-
-            </div>
-
-            <div className="form-control md:w-2/4">
-                <label className="label">
-                    <span className="label-text">Poll Name</span>
-                </label>
-                <input type="text" onChange={event => setPollName(event.target.value)} placeholder="Give your Poll a name" className="input input-bordered"/>
-
-                <label className="label">
-                    <span className="label-text">Describe the poll</span>
-                </label>
-                <textarea className="textarea h-24 textarea-bordered" onChange={event => setPollDescription(event.target.value)} placeholder="Describe what the poll is about"></textarea>
-
-                <label className="label">
-                    <span className="label-text">Cover Image of the Poll</span>
-                </label>
-                <input type="file" onChange={event => setSelectedImage(event.target.files[0])} name={"Cover Image"}/>
-                <div className={"w-2/3"}>
-
-                    <img src={selectedImage ? URL.createObjectURL(selectedImage) : null} alt={selectedImage ? selectedImage.name : null}/>
                 </div>
-                <div className={"mt-16 flex flex-col divide-y divide-white-200 h-fit"}>
-                    {pollQuestionFormData.map((value, index) => {
-                        return <div className="flex flex-col  pt-5  mb-8" key={index}>
-                            <input
-                                onChange={event => increaseArraySize(index, event)}
-                                type="text" placeholder="Type your question here" className="mb-5 input input-accent input-bordered input-lg w-full "/>
-                            <CreatePollInput pollQuestionFormData={pollQuestionFormData} setPollOptions={setPollQuestionFormData} pollQuestionIndex={index}/>
-                            <div className={"mt-4"}>
-                                <input onChange={() => changeMultiPollState(index)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
-                                       className="checkbox checkbox-md mr-4"/>
-                                <text>
 
-                                    Are multiple answers allowed?
-                                </text>
+                <div className="form-control md:w-2/4">
+                    <label className="label">
+                        <span className="label-text">Poll Name</span>
+                    </label>
+                    <input type="text" onChange={event => setPollName(event.target.value)} placeholder="Give your Poll a name" className="input input-bordered"/>
+
+                    <label className="label">
+                        <span className="label-text">Describe the poll</span>
+                    </label>
+                    <textarea className="textarea h-24 textarea-bordered" onChange={event => setPollDescription(event.target.value)} placeholder="Describe what the poll is about"></textarea>
+
+                    <label className="label">
+                        <span className="label-text">Cover Image of the Poll</span>
+                    </label>
+                    <input type="file" onChange={event => setSelectedImage(event.target.files[0])} name={"Cover Image"}/>
+                    <div className={"w-2/3"}>
+
+                        <img src={selectedImage ? URL.createObjectURL(selectedImage) : null} alt={selectedImage ? selectedImage.name : null}/>
+                    </div>
+                    <div className={"mt-16 flex flex-col divide-y divide-white-200 h-fit"}>
+                        {pollQuestionFormData.map((value, index) => {
+                            return <div className="flex flex-col  pt-5  mb-8" key={index}>
+                                <input
+                                    onChange={event => increaseArraySize(index, event)}
+                                    type="text" placeholder="Type your question here" className="mb-5 input input-accent input-bordered input-lg w-full "/>
+                                <CreatePollInput pollQuestionFormData={pollQuestionFormData} setPollOptions={setPollQuestionFormData} pollQuestionIndex={index}/>
+                                <div className={"mt-4"}>
+                                    <input onChange={() => changeMultiPollState(index)} checked={pollQuestionFormData[index].multiPoll} type="checkbox"
+                                           className="checkbox checkbox-md mr-4"/>
+                                    <text>
+
+                                        Are multiple answers allowed?
+                                    </text>
+                                </div>
                             </div>
+
+                        })}
+
+                    </div>
+
+
+                    {supabase.auth.user() ?
+
+                        <div>
+
+                            <button onClick={submitPoll} className="btn btn-primary bg-red">Submit Poll</button>
+                        </div>
+                        :
+                        <div className={"flex flex-row "}>
+
+                            <text>
+                                You need to be logged in before creating a Poll
+                            </text>
+
+                            <button
+                                className="mt-4 mb-4 p-2 pl-5 pr-5 bg-[#6441a5] text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300"
+                                onClick={() => handleLogin()}
+                            >
+                                Login with Twitch
+                            </button>
                         </div>
 
-                    })}
-
+                    }
                 </div>
 
 
-                {supabase.auth.user() ?
 
-                    <div>
-
-                        <button onClick={submitPoll} className="btn btn-primary bg-red">Submit Poll</button>
-                    </div>
-                    :
-                    <div className={"flex flex-row "}>
-
-                       <text>
-                           You need to be logged in before creating a Poll
-                       </text>
-
-                        <button
-                            className="mt-4 mb-4 p-2 pl-5 pr-5 bg-[#6441a5] text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300"
-                            onClick={() => handleLogin()}
-                        >
-                            Login with Twitch
-                        </button>
-                    </div>
-
-                }
-            </div>
-
-        </main>
+        </Container>
 
 
     );
