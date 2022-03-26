@@ -2,7 +2,12 @@ import React from 'react'
 import Head from "next/head";
 import Header from "./Header";
 
-const Container = (props) => {
+interface IProps {
+    children:any,
+
+
+}
+const Container = (props: IProps) => {
     const {children} = props;
     return (
         <div>
