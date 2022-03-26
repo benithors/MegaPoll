@@ -96,6 +96,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             //     didVote = pollOptionsVoted.data.some(value => value.voted);
             // }
 
+          //  supabase.from<definitions["profiles_2_poll_options"]>("profiles_2_poll_options").select("*");
+
 
             let pollOptionsFilteredByQuestion = allPollOptions.data.filter(value => value.poll_question === pollQuestion.id);
 

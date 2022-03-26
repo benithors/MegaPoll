@@ -73,10 +73,12 @@ const CheckboxForm = (props: IProps) => {
                 insertDataArr.push(insertData)
             }
 
+           //by returning minimal we don't get the inserted row
+           //we dont want the inserted row since, otherwise we would have to setup a select policy for row level security
             const {data, error} = await supabase.from<definitions["profiles_2_poll_options"]>("profiles_2_poll_options")
                 .insert(
                     insertDataArr
-                );
+                ,{returning:'minimal'});
             console.log(data);
 
             if (error) {
