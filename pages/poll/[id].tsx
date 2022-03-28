@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react'
-import {supabase} from "../../utils/SupabaseClient";
+import {supabaseClient} from '@supabase/supabase-auth-helpers/nextjs';
 import {definitions} from "../../types/database";
 import {GetServerSideProps} from "next";
-import {checkCookies,  setCookies} from 'cookies-next';
+import {checkCookies, setCookies} from 'cookies-next';
 import {v4 as uuidv4} from 'uuid';
 import CheckboxForm from "../../components/CheckboxForm";
 import Image from 'next/image'
 import Container from "../../components/Container";
+import Creator from "../../components/Creator";
 
 interface IProps {
     pollData: definitions["polls"],
@@ -30,18 +31,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const id = context.params.id;
     const {req, res} = context;
 
-    const pollInstanceData = await supabase
+    const pollInstanceData = await supabaseClient
         .from<definitions["poll_instance"]>("poll_instance")
         .select("*")
         .eq("url", id.toString()).single();
-    const pollData = await supabase
+    const pollData = await supabaseClient
         .from<definitions["polls"]>("polls")
         .select("*")
         .eq("id", pollInstanceData.data.poll).single();
 
 
     //first we get the question
-    const allQuestions = await supabase
+    const allQuestions = await supabaseClient
         .from<definitions["poll_questions"]>("poll_questions")
         .select("*")
         .eq("poll", pollData.data.id);
@@ -59,12 +60,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     else {
 
         //we gather all poll_question ids, so we can get all poll_options
-        const allPollOptions = await supabase
+        const allPollOptions = await supabaseClient
             .from<definitions["poll_options"]>("poll_options")
             .select("*")
             .in("poll_question", allQuestions.data.map(value => value.id));
 
-        const pollAnswersOptions = await supabase
+        const pollAnswersOptions = await supabaseClient
             .from<definitions["poll_options_answers"]>("poll_options_answers")
             .select("*")
             .in("poll_option", allPollOptions.data.map(value => value.id));
@@ -108,31 +109,30 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Poll = (props: IProps) => {
 
 
-
     const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(props.pollQuestionsWrapper);
     let mySubscription = [null];
     const handleNewOptionsUpdate = (payload: { commit_timestamp?: string; eventType?: "INSERT" | "UPDATE" | "DELETE"; schema?: string; table?: string; new: definitions["poll_options_answers"]; old?: any; errors?: string[]; }) => {
         console.log("update incoming ",
-            payload )
+            payload)
         setOptionsData(prevState => {
             let prevStatePollQuestionWrapper = prevState.slice();
 
             let questionIdx = prevStatePollQuestionWrapper.findIndex(pollQuestionWrapper => pollQuestionWrapper.pollOptionsWrapper.some(pollOptionWrapper => pollOptionWrapper.pollOptionAnswer.id === payload.new.id));
-            console.log("questionIdx : ",questionIdx);
-            console.log("prevStatePollQuestionWrapper : ",prevStatePollQuestionWrapper)
+            console.log("questionIdx : ", questionIdx);
+            console.log("prevStatePollQuestionWrapper : ", prevStatePollQuestionWrapper)
             let iPollQuestion = prevStatePollQuestionWrapper[questionIdx];
             let optionIdx = iPollQuestion.pollOptionsWrapper.findIndex(optionWrapper =>
                 optionWrapper.pollOptionAnswer.id === payload.new.id);
 
-            console.log("optionIdx",optionIdx);
-            console.log("pollOptionsWrapper",iPollQuestion.pollOptionsWrapper);
+            console.log("optionIdx", optionIdx);
+            console.log("pollOptionsWrapper", iPollQuestion.pollOptionsWrapper);
 
 
             iPollQuestion.pollOptionsWrapper[optionIdx].pollOptionAnswer = {
-                poll_option:payload.new.poll_option,
+                poll_option: payload.new.poll_option,
                 id: payload.new.id,
                 votes: payload.new.votes,
-                poll_instance:payload.new.poll_instance
+                poll_instance: payload.new.poll_instance
             };
             prevStatePollQuestionWrapper[questionIdx] = iPollQuestion;
             return [...prevStatePollQuestionWrapper]
@@ -140,14 +140,14 @@ const Poll = (props: IProps) => {
 
     };
 
-
+    // load intial data and set up listeners
     useEffect(() => {
 
         props.pollQuestionsWrapper.forEach((question) => {
             question.pollOptionsWrapper.forEach(optionWrapper => {
-                let subTemp = supabase
+                let subTemp = supabaseClient
                     .from('poll_options_answers:id=eq.' + optionWrapper.pollOptionAnswer.id)
-                    .on('*', payload => {
+                    .on('UPDATE', payload => {
                         handleNewOptionsUpdate(payload);
                     })
                     .subscribe();
@@ -156,15 +156,14 @@ const Poll = (props: IProps) => {
         })
 
 
-
         return () => {
             mySubscription.forEach(sub => {
-                supabase.removeSubscription(sub);
+                supabaseClient.removeSubscription(sub);
                 console.log("Remove supabase subscription by useEffect unmount");
             })
 
         };
-    }, [])  //todo need to figure out why removing the deps array breaks the updates
+    }, [])
 
     //todo bt reimplement this
     function getVotePercentage(value: definitions["poll_options"], options: definitions["poll_options"][]): number {
@@ -242,7 +241,7 @@ const Poll = (props: IProps) => {
 
                             }
 
-
+                            <Creator creator={props.pollData.creator}/>
                         </div>;
                     }
                 )}

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {IPollQuestionWrapper} from "../pages/poll/[id]";
 import SinglePollOptionBox from "./SinglePollOptionBox";
 import {definitions} from "../types/database";
-import {supabase} from "../utils/SupabaseClient";
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
 import {getCookie} from "cookies-next";
 import {useToasts} from "react-toast-notifications";
 
@@ -12,7 +12,7 @@ interface IProps {
     setOptionsData: React.Dispatch<React.SetStateAction<IPollQuestionWrapper[]>>;
 }
 
-export interface pollOption {
+export interface PollOption {
     checkBox: boolean,
     pollOption: definitions["poll_options"],
     pollOptionAnswer: definitions["poll_options_answers"];
@@ -21,13 +21,13 @@ export interface pollOption {
 
 //problem: how do we parse the data so can create a proper query
 const CheckboxForm = (props: IProps) => {
-    const [checkBoxes, setCheckBoxes] = useState<pollOption[]>(getNewCheckBoxState);
+    const [checkBoxes, setCheckBoxes] = useState<PollOption[]>(getNewCheckBoxState);
 
 
-    function getNewCheckBoxState(): pollOption[] {
-        let pollOptionTemp: pollOption[] = [];
+    function getNewCheckBoxState(): PollOption[] {
+        let pollOptionTemp: PollOption[] = [];
         props.pollQ.pollOptionsWrapper.forEach((pollOptionWrapper) => {
-            const newElement: pollOption = {
+            const newElement: PollOption = {
                 checkBox: false,
                 pollOption: pollOptionWrapper.pollOption,
                 pollOptionAnswer: pollOptionWrapper.pollOptionAnswer
@@ -75,7 +75,7 @@ const CheckboxForm = (props: IProps) => {
 
            //by returning minimal we don't get the inserted row
            //we dont want the inserted row since, otherwise we would have to setup a select policy for row level security
-            const {data, error} = await supabase.from<definitions["profiles_2_poll_options"]>("profiles_2_poll_options")
+            const {data, error} = await supabaseClient.from<definitions["profiles_2_poll_options"]>("profiles_2_poll_options")
                 .insert(
                     insertDataArr
                 ,{returning:'minimal'});

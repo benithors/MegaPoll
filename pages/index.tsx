@@ -1,10 +1,9 @@
 import Link from 'next/link'
-import {supabase} from "../utils/SupabaseClient";
-
+import {supabaseClient} from '@supabase/supabase-auth-helpers/nextjs';
 import {definitions} from "../types/database";
 import Image from "next/image";
 import React from "react";
-import {isErrorWithMessage, toErrorWithMessage} from "../utils/ErrorUtil";
+import {isErrorWithMessage, toErrorWithMessage} from "../lib/errorUtil";
 import {useRouter} from "next/router";
 import Container from "../components/Container";
 
@@ -13,8 +12,9 @@ import Container from "../components/Container";
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps() {
-    const {data, error} = await supabase.from<definitions["front_page"]>("front_page").select("*");
+    const {data, error} = await supabaseClient.from<definitions["front_page"]>("front_page").select("*");
 
+        //todo BT handle error
     return {
         props: {
             frontPage: data,
@@ -37,8 +37,9 @@ function Home(props: IProps) {
 
     const router = useRouter();
 
+
     async function createFromTemplate(uuid: string) {
-        const {data, error} = await supabase.rpc("fn_create_poll_from_template", {polluuid: uuid});
+        const {data, error} = await supabaseClient.rpc("fn_create_poll_from_template", {polluuid: uuid});
         if (isErrorWithMessage(error)) {
             console.log(toErrorWithMessage(error));
             //todo bt add error for user

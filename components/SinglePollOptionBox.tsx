@@ -1,10 +1,10 @@
 import React from 'react'
-import {pollOption} from "./CheckboxForm";
+import {PollOption} from "./CheckboxForm";
 
 
 interface IProps {
-    checkBoxes: pollOption[];
-    setCheckBoxes: React.Dispatch<React.SetStateAction<pollOption[]>>;
+    checkBoxes: PollOption[];
+    setCheckBoxes: React.Dispatch<React.SetStateAction<PollOption[]>>;
     idx: number;
     multiPoll:boolean
 }

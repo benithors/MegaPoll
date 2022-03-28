@@ -1,6 +1,6 @@
 import React from 'react'
-import {isEmpty} from "../utils/StringUtils";
-import {IPollQuestionCreation} from "../utils/PollUtil";
+import {isEmpty} from "../lib/stringUtils";
+import {IPollQuestionCreation} from "../lib/pollUtil";
 
 interface IProps {
     pollQuestionFormData: IPollQuestionCreation[],

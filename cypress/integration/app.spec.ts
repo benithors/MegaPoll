@@ -1,7 +1,7 @@
 // cypress/integration/app.spec.ts
 
-import {isEmpty} from "../../utils/StringUtils";
-import {areThereValidOption, cleanPollQuestionCreation, copyPoll} from "../../utils/PollUtil";
+import {isEmpty} from "../../lib/stringUtils";
+import {areThereValidOption, cleanPollQuestionCreation, copyPoll} from "../../lib/pollUtil";
 
 describe('Test StringUtil', () => {
     it('should return true on empty string', function () {

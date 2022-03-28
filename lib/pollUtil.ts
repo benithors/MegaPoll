@@ -1,4 +1,4 @@
-import {isEmpty} from "./StringUtils";
+import {isEmpty} from "./stringUtils";
 
 export interface IPollQuestionCreation {
     pollQuestion: string,
