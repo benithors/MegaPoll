@@ -485,6 +485,7 @@ export interface paths {
           poll_description?: parameters["rowFilter.polls.poll_description"];
           uuid?: parameters["rowFilter.polls.uuid"];
           cover_image?: parameters["rowFilter.polls.cover_image"];
+          creator?: parameters["rowFilter.polls.creator"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -541,6 +542,7 @@ export interface paths {
           poll_description?: parameters["rowFilter.polls.poll_description"];
           uuid?: parameters["rowFilter.polls.uuid"];
           cover_image?: parameters["rowFilter.polls.cover_image"];
+          creator?: parameters["rowFilter.polls.creator"];
         };
         header: {
           /** Preference */
@@ -561,6 +563,7 @@ export interface paths {
           poll_description?: parameters["rowFilter.polls.poll_description"];
           uuid?: parameters["rowFilter.polls.uuid"];
           cover_image?: parameters["rowFilter.polls.cover_image"];
+          creator?: parameters["rowFilter.polls.creator"];
         };
         body: {
           /** polls */
@@ -585,7 +588,7 @@ export interface paths {
           updated_at?: parameters["rowFilter.profiles.updated_at"];
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
-          website?: parameters["rowFilter.profiles.website"];
+          follower_count?: parameters["rowFilter.profiles.follower_count"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -640,7 +643,7 @@ export interface paths {
           updated_at?: parameters["rowFilter.profiles.updated_at"];
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
-          website?: parameters["rowFilter.profiles.website"];
+          follower_count?: parameters["rowFilter.profiles.follower_count"];
         };
         header: {
           /** Preference */
@@ -659,7 +662,7 @@ export interface paths {
           updated_at?: parameters["rowFilter.profiles.updated_at"];
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
-          website?: parameters["rowFilter.profiles.website"];
+          follower_count?: parameters["rowFilter.profiles.follower_count"];
         };
         body: {
           /** profiles */
@@ -809,6 +812,8 @@ export interface paths {
             poll_question_data: string;
             /** Format: character varying */
             poll_name: string;
+            /** Format: uuid */
+            user_id: string;
             /** Format: character varying */
             poll_description: string;
           };
@@ -973,6 +978,12 @@ export interface definitions {
     uuid: string;
     /** Format: character varying */
     cover_image?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    creator?: string;
   };
   profiles: {
     /**
@@ -984,11 +995,11 @@ export interface definitions {
     /** Format: timestamp with time zone */
     updated_at?: string;
     /** Format: text */
-    username?: string;
+    username: string;
     /** Format: text */
     avatar_url?: string;
-    /** Format: text */
-    website?: string;
+    /** Format: integer */
+    follower_count: number;
   };
   profiles_2_poll_options: {
     /**
@@ -1138,6 +1149,8 @@ export interface parameters {
   "rowFilter.polls.uuid": string;
   /** Format: character varying */
   "rowFilter.polls.cover_image": string;
+  /** Format: uuid */
+  "rowFilter.polls.creator": string;
   /** @description profiles */
   "body.profiles": definitions["profiles"];
   /** Format: uuid */
@@ -1148,8 +1161,8 @@ export interface parameters {
   "rowFilter.profiles.username": string;
   /** Format: text */
   "rowFilter.profiles.avatar_url": string;
-  /** Format: text */
-  "rowFilter.profiles.website": string;
+  /** Format: integer */
+  "rowFilter.profiles.follower_count": string;
   /** @description profiles_2_poll_options */
   "body.profiles_2_poll_options": definitions["profiles_2_poll_options"];
   /** Format: bigint */
