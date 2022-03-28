@@ -89,7 +89,8 @@ function Home(props: IProps) {
                                 <div className="card-body self-end">
                                     <h2 className="card-title">{value.poll_name}</h2>
                                     <div className="card-actions justify-end">
-                                        <button onClick={event => createFromTemplate(value.uuid)} className="btn btn-primary">Vote Now</button>
+                                        <button onClick={event => createFromTemplate(value.uuid)} className="btn btn-primary">Copy Poll Template</button>
+                                        <button className="btn btn-primary">Look at Template</button>
                                     </div>
                                 </div>
                             </div>
