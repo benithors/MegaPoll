@@ -213,10 +213,9 @@ const CreatePoll = () => {
                         </text>
 
                         {error && <p>{error.message}</p>}
-                        |vercel env|{process.env.VERCEL + router.pathname}
-                        |basepath|{BASE_PATH}
                         <Auth
-                            redirectTo={process.env.VERCEL_URL + router.pathname}
+
+                            redirectTo={BASE_PATH + router.pathname}
                             supabaseClient={supabaseClient}
                             providers={['twitch']}
                             socialLayout="horizontal"
