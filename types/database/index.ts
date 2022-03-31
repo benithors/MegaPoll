@@ -781,6 +781,30 @@ export interface paths {
       };
     };
   };
+  "/rpc/fn_get_question_data": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: uuid */
+            user_profile: string;
+            /** Format: uuid */
+            user_cookie_identifier: string;
+            /** Format: bigint */
+            user_poll_instance: number;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/fn_create_poll_from_template": {
     post: {
       parameters: {
