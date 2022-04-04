@@ -26,7 +26,7 @@ export interface IPollOptionWrapper {
 export interface IPollQuestionWrapper {
     pollQuestion: definitions["poll_questions"];
     pollOptionsWrapper: IPollOptionWrapper[];
-    voted:boolean;
+    voted: boolean;
 }
 
 
@@ -53,12 +53,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Poll = (props: IProps) => {
 
-    const { user, error } = useUser();
+    const {user, error} = useUser();
     const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(
         null
     );
     const router = useRouter();
-
 
 
     async function loadInitialOptionData() {
@@ -75,15 +74,14 @@ const Poll = (props: IProps) => {
             setCookies("voter", uuidv4(), {maxAge: 604800}); //a week
         }
 
-        const {data,error} = await supabaseClient.rpc("get_poll_instance_data", {
+        const {data, error} = await supabaseClient.rpc("get_poll_instance_data", {
             provided_poll_instance: router.query.id,
             provided_cookie: getCookie("voter"),
-            provided_profile: user? user.id : null,
+            provided_profile: user ? user.id : null,
         });
-        if(isErrorWithMessage(error)){
+        if (isErrorWithMessage(error)) {
             console.log(error);
         }
-
 
 
         let pollOptionWrapper: IPollOptionWrapper[] = [];
@@ -114,13 +112,14 @@ const Poll = (props: IProps) => {
             mySubscription.push(subTemp);
         })
 
+        //check if the voter cookie has been set and if not create one
 
         for (const pollQuestion of allQuestions.data) {
             let wrappers = pollOptionWrapper.filter(
                 (value) => value.pollOption.poll_question === pollQuestion.id
             );
             const pollQuestionTemp: IPollQuestionWrapper = {
-                pollOptionsWrapper:wrappers,
+                pollOptionsWrapper: wrappers,
                 pollQuestion: pollQuestion,
                 voted: wrappers.some((value) => value.voted),
             };
@@ -146,19 +145,17 @@ const Poll = (props: IProps) => {
         async function loadData() {
             await loadInitialOptionData();
         }
+
         loadData();
 
         return () => {
             mySubscription.forEach((sub) => {
-                if(sub)
-                supabaseClient.removeSubscription(sub).then(r => {
-                }).catch(e => {
+                supabaseClient.removeSubscription(sub).catch(e => {
                     console.log("error removing subscription", e);
                 });
             });
         };
     }, [router.isReady, user]);
-
 
 
     //todo bt reimplement this
