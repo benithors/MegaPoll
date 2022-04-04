@@ -1,5 +1,6 @@
 {
-  "name": "nextjs-supabase",
+  "name": "Social-Poll",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -7,7 +8,7 @@
     "start": "next start",
     "cypress": "cypress open",
     "lint": "next lint",
-    "update-types": "npx openapi-typescript https://crtqyixuufelpnrkgtjh.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNjQyMTY2NjYwLCJleHAiOjE5NTc3NDI2NjB9.rIlVQz22dENczT4odu-hkLv1SbggIGHZ4F_6i4cEIM0 --output types/database/index.ts"
+    "update-types": "npx openapi-typescript https://hmfmmtwuiizjwrkaaapo.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtZm1tdHd1aWl6andya2FhYXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg2NjM1NjIsImV4cCI6MTk2NDIzOTU2Mn0.-l6MJn7Lvy6KH9OP87lZXpCS_aoRuEEuGwHqHTT-EEg --output types/database/index.ts"
   },
   "dependencies": {
     "@next/eslint-plugin-next": "^12.0.8",
@@ -15,7 +16,7 @@
     "@supabase/supabase-js": "^1.29.1",
     "cookies-next": "^2.0.3",
     "daisyui": "^1.22.2",
-    "next": "12.0.8",
+    "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.26.0",
@@ -25,9 +26,10 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.0",
-    "@types/node": "17.0.8",
-    "@types/react": "17.0.38",
     "autoprefixer": "^10.4.2",
+    "@types/javascript-time-ago": "2.0.3",
+    "@types/node": "17.0.23",
+    "@types/react": "17.0.42",
     "cypress": "^9.5.1",
     "eslint": "^7.32.0",
     "eslint-config-next": "12.0.8",

@@ -1,19 +1,9 @@
-import React from 'react'
+import React from "react";
 
-
-interface IProps {
-
-}
+interface IProps {}
 
 const index = (props: IProps) => {
+  return <div>https://heroicons.com/</div>;
+};
 
-    return (
-        <div>
-            https://heroicons.com/
-        </div>
-
-
-    );
-}
-
-export default index
+export default index;

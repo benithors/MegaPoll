@@ -14,7 +14,7 @@ import Container from "../components/Container";
 export async function getStaticProps() {
     const {data, error} = await supabaseClient.from<definitions["front_page"]>("front_page").select("*");
 
-        //todo BT handle error
+    //todo BT handle error
     return {
         props: {
             frontPage: data,
@@ -38,8 +38,8 @@ function Home(props: IProps) {
     const router = useRouter();
 
 
-    async function createFromTemplate(uuid: string) {
-        const {data, error} = await supabaseClient.rpc("fn_create_poll_from_template", {polluuid: uuid});
+    async function createFromTemplate(id:number) {
+        const {data, error} = await supabaseClient.rpc("fn_create_poll_from_template", {provided_poll_template: id});
         if (isErrorWithMessage(error)) {
             console.log(toErrorWithMessage(error));
             //todo bt add error for user
@@ -89,7 +89,7 @@ function Home(props: IProps) {
                                 <div className="card-body self-end">
                                     <h2 className="card-title">{value.poll_name}</h2>
                                     <div className="card-actions justify-end">
-                                        <button onClick={event => createFromTemplate(value.uuid)} className="btn btn-primary">Copy Poll Template</button>
+                                        <button onClick={event => createFromTemplate(value.id)} className="btn btn-primary">Copy Poll Template</button>
                                         <button className="btn btn-primary">Look at Template</button>
                                     </div>
                                 </div>

@@ -1,3 +1,3 @@
 export function isEmpty(str) {
-    return  str == null || !str || !str.trim();
+  return str == null || !str || !str.trim();
 }
