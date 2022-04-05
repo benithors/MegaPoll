@@ -146,6 +146,9 @@ export interface paths {
           poll_instance?: parameters["rowFilter.poll_option_votes.poll_instance"];
           poll_option?: parameters["rowFilter.poll_option_votes.poll_option"];
           votes?: parameters["rowFilter.poll_option_votes.votes"];
+          top_profile_1?: parameters["rowFilter.poll_option_votes.top_profile_1"];
+          top_profile_2?: parameters["rowFilter.poll_option_votes.top_profile_2"];
+          top_profile_3?: parameters["rowFilter.poll_option_votes.top_profile_3"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -200,6 +203,9 @@ export interface paths {
           poll_instance?: parameters["rowFilter.poll_option_votes.poll_instance"];
           poll_option?: parameters["rowFilter.poll_option_votes.poll_option"];
           votes?: parameters["rowFilter.poll_option_votes.votes"];
+          top_profile_1?: parameters["rowFilter.poll_option_votes.top_profile_1"];
+          top_profile_2?: parameters["rowFilter.poll_option_votes.top_profile_2"];
+          top_profile_3?: parameters["rowFilter.poll_option_votes.top_profile_3"];
         };
         header: {
           /** Preference */
@@ -218,6 +224,9 @@ export interface paths {
           poll_instance?: parameters["rowFilter.poll_option_votes.poll_instance"];
           poll_option?: parameters["rowFilter.poll_option_votes.poll_option"];
           votes?: parameters["rowFilter.poll_option_votes.votes"];
+          top_profile_1?: parameters["rowFilter.poll_option_votes.top_profile_1"];
+          top_profile_2?: parameters["rowFilter.poll_option_votes.top_profile_2"];
+          top_profile_3?: parameters["rowFilter.poll_option_votes.top_profile_3"];
         };
         body: {
           /** poll_option_votes */
@@ -933,6 +942,24 @@ export interface definitions {
     poll_option: number;
     /** Format: bigint */
     votes: number;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    top_profile_1?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    top_profile_2?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    top_profile_3?: string;
   };
   /** @description Contains the votes of a user by either cookie or profile */
   poll_option_votes_2_users: {
@@ -1112,6 +1139,12 @@ export interface parameters {
   "rowFilter.poll_option_votes.poll_option": string;
   /** Format: bigint */
   "rowFilter.poll_option_votes.votes": string;
+  /** Format: uuid */
+  "rowFilter.poll_option_votes.top_profile_1": string;
+  /** Format: uuid */
+  "rowFilter.poll_option_votes.top_profile_2": string;
+  /** Format: uuid */
+  "rowFilter.poll_option_votes.top_profile_3": string;
   /** @description poll_option_votes_2_users */
   "body.poll_option_votes_2_users": definitions["poll_option_votes_2_users"];
   /** Format: bigint */
