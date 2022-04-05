@@ -158,16 +158,14 @@ const Poll = (props: IProps) => {
     }, [router.isReady, user]);
 
 
-    //todo bt reimplement this
-    /*  function getVotePercentage(
-        value: definitions["poll_options"],
-        options: definitions["poll_options"][]
-      ): number {
-        if (value.votes === 0) {
-          return 0;
+    function getVotePercentage(
+        votes: number, pollOptionsWrapper: IPollOptionWrapper[]): number {
+        if (votes === 0) {
+            return 0;
         }
-        return (100 * value.votes) / options.reduce((a, b) => +a + +b.votes, 0);
-      }*/
+        return (100 * votes) / pollOptionsWrapper.reduce((a, b) => +a + +b.pollOptionVotes.votes, 0);
+    }
+
 
     const handleNewOptionsUpdate = (payload: {
         commit_timestamp?: string;
@@ -244,14 +242,14 @@ const Poll = (props: IProps) => {
                                                         <div className={"w-2/4"}>
                                                             <progress
                                                                 className="progress progress-primary"
-                                                                value={100}
+                                                                value={getVotePercentage(value.pollOptionVotes.votes, pollQ.pollOptionsWrapper)}
                                                                 max="100"
                                                             />
                                                         </div>
                                                         <div>
                                                             {value.voted ?
 
-                                                                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                                                                <label tabIndex={0} className="avatar-group -space-x-6">
                                                                     {user ? (
                                                                         <Image
                                                                             src={user.user_metadata.avatar_url}
