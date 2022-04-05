@@ -95,7 +95,7 @@ const Poll = (props: IProps) => {
 
                 },
                 pollOption: {
-                    option: value.poll_option_option,
+                    option: value.option,
                     id: value.poll_option_id,
                     poll_question: value.poll_question,
                 },
