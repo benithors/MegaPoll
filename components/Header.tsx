@@ -5,6 +5,7 @@ import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
+import {BASE_PATH} from "../lib/constants";
 
 interface IProps {}
 
@@ -106,7 +107,7 @@ const Header = (props: IProps) => {
                 <>
                   {error && <p>{error.message}</p>}
                   <Auth
-                    redirectTo={process.env.NEXT_PUBLIC_VERCEL_URL + router.asPath}
+                    redirectTo={BASE_PATH + router.asPath}
                     supabaseClient={supabaseClient}
                     providers={["twitch"]}
                     socialLayout="horizontal"

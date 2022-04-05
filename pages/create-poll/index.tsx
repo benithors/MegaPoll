@@ -9,6 +9,7 @@ import {useToasts} from "react-toast-notifications";
 import {areThereValidOption, cleanPollQuestionCreation, copyPoll, IPollQuestionCreation,} from "../../lib/pollUtil";
 import {uuid} from "@supabase/gotrue-js/dist/main/lib/helpers";
 import Container from "../../components/Container";
+import {BASE_PATH} from "../../lib/constants";
 
 const CreatePoll = () => {
     const [pollQuestionFormData, setPollQuestionFormData] = React.useState<IPollQuestionCreation[]>([
@@ -298,11 +299,11 @@ const CreatePoll = () => {
                     </div>
                 ) : (
                     <div className={"flex flex-col"}>
-                        <text>You need to be logged in before creating a Poll</text>
+                        <text>You need to be logged in before creating a Poll {BASE_PATH}</text>
 
                         {error && <p>{error.message}</p>}
                         <Auth
-                            redirectTo={process.env.NEXT_PUBLIC_VERCEL_URL + router.pathname}
+                            redirectTo={BASE_PATH + router.pathname}
                             supabaseClient={supabaseClient}
                             providers={["twitch"]}
                             socialLayout="horizontal"
