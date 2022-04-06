@@ -11,6 +11,7 @@ import Creator from "../../components/Creator";
 import {useRouter} from "next/router";
 import {useUser} from "@supabase/supabase-auth-helpers/react";
 import {isErrorWithMessage} from "../../lib/errorUtil";
+import VoteBar from "../../components/VoteBar";
 
 
 interface IProps {
@@ -27,6 +28,20 @@ export interface IPollQuestionWrapper {
     pollQuestion: definitions["poll_questions"];
     pollOptionsWrapper: IPollOptionWrapper[];
     voted: boolean;
+}
+
+
+export interface IPollInstanceData {
+    voted: boolean,
+    poll_option_id: number,
+    option: string,
+    poll_question: number,
+    poll_option_votes_id: number,
+    poll_option_votes_instance: string,
+    poll_option_votes_votes: number,
+    top_profile_1: string,
+    top_profile_2: string,
+    top_profile_3: string
 }
 
 
@@ -74,7 +89,7 @@ const Poll = (props: IProps) => {
             setCookies("voter", uuidv4(), {maxAge: 604800}); //a week
         }
 
-        const {data, error} = await supabaseClient.rpc("get_poll_instance_data", {
+        const {data, error} = await supabaseClient.rpc<IPollInstanceData>("get_poll_instance_data", {
             provided_poll_instance: router.query.id,
             provided_cookie: getCookie("voter"),
             provided_profile: user ? user.id : null,
@@ -92,7 +107,9 @@ const Poll = (props: IProps) => {
                     poll_option: value.poll_option_id,
                     poll_instance: router.query.id as string,
                     votes: value.poll_option_votes_votes,
-
+                    top_profile_1: value.top_profile_1,
+                    top_profile_2: value.top_profile_2,
+                    top_profile_3: value.top_profile_3
                 },
                 pollOption: {
                     option: value.option,
@@ -158,13 +175,7 @@ const Poll = (props: IProps) => {
     }, [router.isReady, user]);
 
 
-    function getVotePercentage(
-        votes: number, pollOptionsWrapper: IPollOptionWrapper[]): number {
-        if (votes === 0) {
-            return 0;
-        }
-        return (100 * votes) / pollOptionsWrapper.reduce((a, b) => +a + +b.pollOptionVotes.votes, 0);
-    }
+
 
 
     const handleNewOptionsUpdate = (payload: {
@@ -197,6 +208,9 @@ const Poll = (props: IProps) => {
                 id: payload.new.id,
                 votes: payload.new.votes,
                 poll_instance: payload.new.poll_instance,
+                top_profile_1: payload.new.top_profile_1,
+                top_profile_2: payload.new.top_profile_2,
+                top_profile_3: payload.new.top_profile_3
             };
             prevStatePollQuestionWrapper[questionIdx] = iPollQuestion;
             return [...prevStatePollQuestionWrapper];
@@ -235,54 +249,7 @@ const Poll = (props: IProps) => {
                                     {pollQ.voted ? (
                                         <div className="p-6 space-y-2 artboard  w-full " key={index}>
                                             {pollQ.pollOptionsWrapper.map((value, idx) => (
-                                                <div key={idx}>
-                                                    <div>{value.pollOption.option}</div>
-
-                                                    <div className={"flex flex-row justify-between"}>
-                                                        <div className={"w-2/4"}>
-                                                            <progress
-                                                                className="progress progress-primary"
-                                                                value={getVotePercentage(value.pollOptionVotes.votes, pollQ.pollOptionsWrapper)}
-                                                                max="100"
-                                                            />
-                                                        </div>
-                                                        <div>
-                                                            {value.voted ?
-
-                                                                <label tabIndex={0} className="avatar-group -space-x-6">
-                                                                    {user ? (
-                                                                        <Image
-                                                                            src={user.user_metadata.avatar_url}
-                                                                            alt="Picture of the author"
-                                                                            width={75}
-                                                                            height={75}
-                                                                            className="rounded-full"
-                                                                        />
-                                                                    ) : (
-                                                                        <svg
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            className="h-6 w-6"
-                                                                            fill="none"
-                                                                            viewBox="0 0 24 24"
-                                                                            stroke="currentColor"
-                                                                            strokeWidth={2}
-                                                                        >
-                                                                            <path
-                                                                                strokeLinecap="round"
-                                                                                strokeLinejoin="round"
-                                                                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                                            />
-                                                                        </svg>
-                                                                    )}
-                                                                </label>
-                                                                :
-
-                                                                <></>
-                                                            }
-                                                            Votes {value.pollOptionVotes.votes}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <VoteBar key={idx} pollOptionWrapper={value} user={user} pollOptionWrapperArray={pollQ.pollOptionsWrapper}/>
                                             ))}
                                         </div>
                                     ) : (

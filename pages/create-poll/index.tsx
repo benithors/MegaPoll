@@ -126,8 +126,6 @@ const CreatePoll = () => {
     useEffect(() => {
         //assign poll name from the session storage
         if (sessionStorage.getItem("pollName")) {
-            console.log('pollName', sessionStorage.getItem("pollName"));
-
             setPollName(sessionStorage.getItem("pollName"));
         }
         //assign poll description from the session storage
