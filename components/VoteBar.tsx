@@ -12,7 +12,6 @@ interface IProps {
 
 const VoteBar = (props: IProps) => {
 
-
     function getVotePercentage(
         votes: number, pollOptionsWrapper: IPollOptionWrapper[]): number {
         if (votes === 0) {
@@ -52,6 +51,20 @@ const VoteBar = (props: IProps) => {
         loadData();
     }, [props.pollOptionWrapper.pollOptionVotes.top_profile_2])
 
+    function getVoteNumber() {
+        let votes = props.pollOptionWrapper.pollOptionVotes.votes;
+        if (profile1) {
+            votes -= 1;
+        }
+        if (profile2) {
+            votes -= 1;
+        }
+        if (profile3) {
+            votes -= 1;
+        }
+
+        return votes;
+    }
 
     useEffect(() => {
         async function loadData() {
@@ -69,6 +82,7 @@ const VoteBar = (props: IProps) => {
         <div>
             <div>{props.pollOptionWrapper.pollOption.option}</div>
             <div className={"flex flex-row justify-between"}>
+
                 <div className={"w-2/4"}>
                     <progress
                         className="progress progress-primary"
@@ -78,46 +92,48 @@ const VoteBar = (props: IProps) => {
                 </div>
                 <div>
                 </div>
-                <div className="avatar-group -space-x-6">
+                <div className="flex -space-x-3">
 
                     {profile1 ?
-
-                        <div className="avatar">
-                            <div className="w-12">
-                                <img src={profile1.avatar_url}/>
+                        <div className="tooltip" data-tip={profile1.username}>
+                            <div className="w-12" >
+                                <img className={'rounded-full'} src={profile1.avatar_url}/>
                             </div>
                         </div>
                         :
                         <></>
                     }
                     {profile2 ?
-
-                        <div className="avatar">
-                            <div className="w-12">
-                                <img src={profile2.avatar_url}/>
+                        <div className="tooltip" data-tip={profile2.username}>
+                            <div className="w-12" >
+                                <img className={'rounded-full'} src={profile2.avatar_url}/>
                             </div>
                         </div>
                         :
                         <></>
                     }
                     {profile3 ?
-                        <div className="avatar">
+                        <div className="tooltip" data-tip={profile3.username}>
                             <div className="w-12">
-                                <img src={profile3.avatar_url}/>
+                                <img className={'rounded-full'} src={profile3.avatar_url}/>
                             </div>
                         </div>
                         :
                         <></>
                     }
-                    <div className="avatar placeholder">
-                        <div className="w-12 bg-neutral-focus text-neutral-content">
-                            <span>+{props.pollOptionWrapper.pollOptionVotes.votes}</span>
-                        </div>
-                    </div>
+                    {
+                        getVoteNumber() >= 1 ?
+                            <div className="avatar placeholder">
+                                <div className="w-12 bg-neutral-focus text-neutral-content rounded-full">
+                                    <span>+{getVoteNumber()}</span>
+                                </div>
+                            </div>
+                            :
+                            <></>
+                    }
                 </div>
             </div>
         </div>
-
     );
 }
 
