@@ -5,13 +5,16 @@ import CookieBar from "./CookieBar";
 
 interface IProps {
     children: any;
+    background?: string;
 }
 
 const Container = (props: IProps) => {
     const {children} = props;
 
     return (
-        <div>
+
+        <div className={"w-screen " + props.background}>
+
             <Head>
                 <title>Social Poll</title>
                 <meta name="description" content="Your Favorite Social Poll Maker"/>
