@@ -56,6 +56,13 @@ function Home(props: IProps) {
         })
     }
 
+    function openInstance(poll_instance: string) {
+        router.push({
+            pathname: '/poll/[id]',
+            query: {id: poll_instance},
+        })
+    }
+
     return (
         <Container>
             <div className={"text-8xl"}>
@@ -64,11 +71,6 @@ function Home(props: IProps) {
                 </h1>
             </div>
             <div className={"mt-16 "}>
-
-                <Link href="/create-poll">
-                    <button className="btn btn-ghost text-2xl">HOW TO USE?</button>
-                </Link>
-
                 <Link href="/create-poll">
                     <button className="btn btn-primary text-2xl">CREATE POLL</button>
                 </Link>
@@ -88,9 +90,10 @@ function Home(props: IProps) {
                                 </figure>
                                 <div className="card-body self-end">
                                     <h2 className="card-title">{value.poll_name}</h2>
+                                    <h2 className="card-subtitle">{value.votes} total votes</h2>
                                     <div className="card-actions justify-end">
-                                        <button onClick={event => createFromTemplate(value.id)} className="btn btn-primary">Copy Poll Template</button>
-                                        <button className="btn btn-primary">Look at Template</button>
+                                        <button onClick={event => createFromTemplate(value.poll_template)} className="btn btn-primary">Copy it!</button>
+                                        <button onClick={event => openInstance(value.poll_instance)} className="btn btn-primary">Vote HERE!</button>
                                     </div>
                                 </div>
                             </div>
@@ -104,3 +107,4 @@ function Home(props: IProps) {
 }
 
 export default Home
+

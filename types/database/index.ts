@@ -16,7 +16,9 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.front_page.id"];
+          poll_instance?: parameters["rowFilter.front_page.poll_instance"];
+          votes?: parameters["rowFilter.front_page.votes"];
+          poll_template?: parameters["rowFilter.front_page.poll_template"];
           poll_name?: parameters["rowFilter.front_page.poll_name"];
           poll_description?: parameters["rowFilter.front_page.poll_description"];
           cover_image?: parameters["rowFilter.front_page.cover_image"];
@@ -816,6 +818,41 @@ export interface paths {
       };
     };
   };
+  "/votes_per_poll_template_and_instance": {
+    get: {
+      parameters: {
+        query: {
+          poll_instance?: parameters["rowFilter.votes_per_poll_template_and_instance.poll_instance"];
+          votes?: parameters["rowFilter.votes_per_poll_template_and_instance.votes"];
+          poll_template?: parameters["rowFilter.votes_per_poll_template_and_instance.poll_template"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["votes_per_poll_template_and_instance"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
   "/rpc/get_poll_instance_data": {
     post: {
       parameters: {
@@ -893,11 +930,19 @@ export interface paths {
 export interface definitions {
   front_page: {
     /**
+     * Format: character varying
+     * @description Note:
+     * This is a Foreign Key to `poll_instances.id`.<fk table='poll_instances' column='id'/>
+     */
+    poll_instance?: string;
+    /** Format: numeric */
+    votes?: number;
+    /**
      * Format: bigint
      * @description Note:
-     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `poll_templates.id`.<fk table='poll_templates' column='id'/>
      */
-    id?: number;
+    poll_template?: number;
     /** Format: character varying */
     poll_name?: string;
     /** Format: character varying */
@@ -1078,6 +1123,22 @@ export interface definitions {
     /** Format: bigint */
     followers?: number;
   };
+  votes_per_poll_template_and_instance: {
+    /**
+     * Format: character varying
+     * @description Note:
+     * This is a Foreign Key to `poll_instances.id`.<fk table='poll_instances' column='id'/>
+     */
+    poll_instance?: string;
+    /** Format: numeric */
+    votes?: number;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `poll_templates.id`.<fk table='poll_templates' column='id'/>
+     */
+    poll_template?: number;
+  };
 }
 
 export interface parameters {
@@ -1115,8 +1176,12 @@ export interface parameters {
   limit: string;
   /** @description front_page */
   "body.front_page": definitions["front_page"];
+  /** Format: character varying */
+  "rowFilter.front_page.poll_instance": string;
+  /** Format: numeric */
+  "rowFilter.front_page.votes": string;
   /** Format: bigint */
-  "rowFilter.front_page.id": string;
+  "rowFilter.front_page.poll_template": string;
   /** Format: character varying */
   "rowFilter.front_page.poll_name": string;
   /** Format: character varying */
@@ -1203,6 +1268,14 @@ export interface parameters {
   "rowFilter.profiles_extended.id": string;
   /** Format: bigint */
   "rowFilter.profiles_extended.followers": string;
+  /** @description votes_per_poll_template_and_instance */
+  "body.votes_per_poll_template_and_instance": definitions["votes_per_poll_template_and_instance"];
+  /** Format: character varying */
+  "rowFilter.votes_per_poll_template_and_instance.poll_instance": string;
+  /** Format: numeric */
+  "rowFilter.votes_per_poll_template_and_instance.votes": string;
+  /** Format: bigint */
+  "rowFilter.votes_per_poll_template_and_instance.poll_template": string;
 }
 
 export interface operations {}
