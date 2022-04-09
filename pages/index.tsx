@@ -6,6 +6,7 @@ import React from "react";
 import {isErrorWithMessage, toErrorWithMessage} from "../lib/errorUtil";
 import {useRouter} from "next/router";
 import Container from "../components/Container";
+import CookieBar from "../components/CookieBar";
 
 
 // This function gets called at build time on server-side.
@@ -38,7 +39,8 @@ function Home(props: IProps) {
     const router = useRouter();
 
 
-    async function createFromTemplate(id:number) {
+
+    async function createFromTemplate(id: number) {
         const {data, error} = await supabaseClient.rpc("fn_create_poll_from_template", {provided_poll_template: id});
         if (isErrorWithMessage(error)) {
             console.log(toErrorWithMessage(error));
@@ -101,6 +103,8 @@ function Home(props: IProps) {
                     )
                 })}
             </div>
+
+            <CookieBar/>
         </Container>
 
     )
