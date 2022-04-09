@@ -20,9 +20,9 @@ const Container = (props: IProps) => {
                 <meta name="description" content="Your Favorite Social Poll Maker"/>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
-            <main className={"flex flex-col h-screen px-14 xl:px-64"}>
+            <main className={"flex flex-col h-screen px-14 xl:px-64 overflow-x-hidden"}>
                 <Header/>
-                <div className={"mt-32"}>
+                <div className={"mt-32 flex flex-col"}>
                     {children}
                 </div>
                 <CookieBar/>
