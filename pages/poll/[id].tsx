@@ -86,7 +86,7 @@ const Poll = (props: IProps) => {
 
 
         if (!checkCookies("voter")) {
-            setCookies("voter", uuidv4(), {maxAge: 604800}); //a week
+            setCookies("voter", uuidv4() );
         }
 
         const {data, error} = await supabaseClient.rpc<IPollInstanceData>("get_poll_instance_data", {
