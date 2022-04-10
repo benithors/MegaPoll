@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Header from "./Header";
 import CookieBar from "./CookieBar";
+import Footer from "./Footer";
 
 interface IProps {
     children: any;
@@ -13,20 +14,20 @@ const Container = (props: IProps) => {
 
     return (
 
-        <div className={"w-screen " + props.background}>
+        <div className={"w-screen flex flex-col"}>
 
             <Head>
                 <title>Social Poll</title>
                 <meta name="description" content="Your Favorite Social Poll Maker"/>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
-            <main className={"flex flex-col h-screen px-14 xl:px-64 overflow-x-hidden"}>
+            <main className={"max-w-screen-xl self-center flex flex-col  px-6 md:px-14 xl:px-64"}>
                 <Header/>
-                <div className={"mt-32 flex flex-col"}>
                     {children}
-                </div>
                 <CookieBar/>
+
             </main>
+            <Footer/>
         </div>
     );
 };

@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import {supabaseClient} from '@supabase/supabase-auth-helpers/nextjs';
 import {definitions} from "../types/database";
-import Image from "next/image";
 import React from "react";
 import {isErrorWithMessage, toErrorWithMessage} from "../lib/errorUtil";
 import {useRouter} from "next/router";
 import Container from "../components/Container";
 import CookieBar from "../components/CookieBar";
+import PollCard from "../components/PollCard";
 
 
 // This function gets called at build time on server-side.
@@ -65,50 +65,32 @@ function Home(props: IProps) {
     }
 
     return (
-        <Container background={"bg-[url('/static/animatedBG.svg')]"}>
+        <Container>
 
-            <div className={" text-9xl font-bold mt-32 text-center"}>
+            <div className={"component-preview text-7xl md:text-8xl xl:text-9xl font-bold mt-24 md:mt-28 xl:mt-32 text-center "}>
                 <text className={"text-primary"}>
                     Share Your {" "}
                 </text>
-                <text className={"text-accent"}>
+                <text className={"text-secondary"}>
                     Opinion
                 </text>
 
-            </div>
-            <div className={"flex flex-row pt-16 self-start"}>
-                {props.frontPage.map((value: definitions["front_page"], index) => {
-                    return (
-                        <div className={"px-3"} key={index}>
-                            <div className="card w-full h-full bg-base-100 shadow-xl image-full">
-                                <figure className={"row-start-1"}>
-                                    <Image
-                                        src={value.cover_image}
-                                        alt={value.poll_description}
-                                        width={500}
-                                        height={500}
-                                    />
-                                </figure>
-                                <div className="card-body self-end">
-                                    <h2 className="card-title">{value.poll_name}</h2>
-                                    <h2 className="card-subtitle">{value.votes} total votes</h2>
-                                    <div className="card-actions justify-end">
-                                        <button onClick={event => createFromTemplate(value.poll_template)} className="btn btn-primary">Copy it!</button>
-                                        <button onClick={event => openInstance(value.poll_instance)} className="btn btn-primary">Vote HERE!</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })}
             </div>
             <button className="btn btn-accent text-2xl self-center mt-14">
                 <Link href="/create-poll">
                     CREATE POLL
                 </Link>
             </button>
-
-
+            <div className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 pt-16 self-start"}>
+                {props.frontPage.map((value: definitions["front_page"], index) => {
+                    return (
+                        <PollCard key={index}
+                                  poll={value}
+                                  openInstance={openInstance}
+                                  createFromTemplate={createFromTemplate}/>
+                    )
+                })}
+            </div>
             <CookieBar/>
         </Container>
 
@@ -116,4 +98,5 @@ function Home(props: IProps) {
 }
 
 export default Home
+
 
