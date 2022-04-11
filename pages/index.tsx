@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import Container from "../components/Container";
 import CookieBar from "../components/CookieBar";
 import PollCard from "../components/PollCard";
+import Title from "../components/Title";
 
 
 // This function gets called at build time on server-side.
@@ -67,15 +68,7 @@ function Home(props: IProps) {
     return (
         <Container>
 
-            <div className={"component-preview text-7xl md:text-8xl xl:text-9xl font-bold mt-24 md:mt-28 xl:mt-32 text-center "}>
-                <text className={"text-primary"}>
-                    Share Your {" "}
-                </text>
-                <text className={"text-secondary"}>
-                    Opinion
-                </text>
-
-            </div>
+            <Title firstPart={"Share Your"} secondPart={"Opinion"}/>
             <button className="btn btn-accent text-2xl self-center mt-14">
                 <Link href="/create-poll">
                     CREATE POLL

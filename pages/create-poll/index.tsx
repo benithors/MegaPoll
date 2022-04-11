@@ -10,14 +10,12 @@ import {areThereValidOption, cleanPollQuestionCreation, copyPoll, IPollQuestionC
 import {uuid} from "@supabase/gotrue-js/dist/main/lib/helpers";
 import Container from "../../components/Container";
 import {BASE_PATH} from "../../lib/constants";
+import Title from "../../components/Title";
+import {IconXOctagon} from "@supabase/ui";
 
 const CreatePoll = () => {
     const [pollQuestionFormData, setPollQuestionFormData] = React.useState<IPollQuestionCreation[]>([
-        {
-            pollQuestion: "",
-            pollOptions: [""],
-            multiPoll: false,
-        },
+        getEmptyPollItem(),
     ]);
     const {user, error} = useUser();
     const router = useRouter();
@@ -73,12 +71,10 @@ const CreatePoll = () => {
         let coverImage;
         if (selectedImage) {
             const path = uuid();
-            console.log("uuid " + path);
             const {data, error} = await supabaseClient.storage
                 .from("pollimages")
                 .upload(path, selectedImage);
             if (data) {
-                console.log(data);
                 const {publicURL, error} = supabaseClient.storage
                     .from("pollimages")
                     .getPublicUrl(path);
@@ -86,9 +82,7 @@ const CreatePoll = () => {
                 if (isErrorWithMessage(error)) {
                     console.log(error);
                 }
-                console.log("upload worked " + coverImage);
             }
-            console.log(error);
         }
 
         const params = {
@@ -98,7 +92,6 @@ const CreatePoll = () => {
             cover_image: isEmpty(coverImage) ? null : coverImage,
             poll_question_data: copy,
         };
-        console.log("````", params);
         const {data, error} = await supabaseClient.rpc("fn_create_poll", params);
         if (isErrorWithMessage(error)) {
             console.log(getErrorMessage(error));
@@ -120,7 +113,6 @@ const CreatePoll = () => {
             });
         }
     }
-
 
 
     useEffect(() => {
@@ -167,22 +159,16 @@ const CreatePoll = () => {
     }, [pollQuestionFormData]);
 
 
-    useEffect(() => {
-            //save image so it can be reloaded later
-            if (selectedImage) {
-                const reader = new FileReader();
-                reader.readAsDataURL(selectedImage);
-                reader.onload = () => {
-                    setSelectedImage(reader.result);
-                };
-            }
-
-
-
-    }, [selectedImage]);
-
+    function getEmptyPollItem() {
+        return {
+            pollQuestion: "",
+            pollOptions: [""],
+            multiPoll: false,
+        };
+    }
 
     function increaseArraySize(index: number, e: { target: { value: string } }) {
+
         setPollQuestionFormData((prevState) => {
             let pollQuestionCreationArr = [...prevState];
             let pollQuestionCreation = pollQuestionCreationArr[index];
@@ -196,13 +182,8 @@ const CreatePoll = () => {
                 !isEmpty(lastPollQuestions.pollQuestion) &&
                 pollQuestionCreationArr.length < 15
             ) {
-                let pollQuestionCreationTemp: IPollQuestionCreation = {
-                    pollQuestion: "",
-                    pollOptions: [""],
-                    multiPoll: false,
-                };
 
-                pollQuestionCreationArr.push(pollQuestionCreationTemp);
+                pollQuestionCreationArr.push(getEmptyPollItem());
             }
             return pollQuestionCreationArr;
         });
@@ -216,20 +197,53 @@ const CreatePoll = () => {
         setPollQuestionFormData(pollQuestionCreationArr);
     }
 
+    function deleteEntry(providedIndex: number) {
+        //check if there is at least one element left
+        console.log(providedIndex);
+        console.log(pollQuestionFormData.length, "length");
+        if (providedIndex === 0) {
+            //clear data at index 0
+            setPollQuestionFormData((prevState) => {
+                let pollQuestionCreationArr = [...prevState];
+                pollQuestionCreationArr[0] = getEmptyPollItem();
+                return pollQuestionCreationArr;
+            });
+            return;
+        }
+
+        if(pollQuestionFormData.length ===2){
+            setPollQuestionFormData((prevState) => {
+                let pollQuestionCreationArr = [...prevState];
+                pollQuestionCreationArr[providedIndex] = getEmptyPollItem();
+                return pollQuestionCreationArr;
+            });
+            return;
+        }else
+        {
+            //delete the poll question at index
+            let pollQuestionCreationArr = [...pollQuestionFormData];
+            pollQuestionCreationArr.splice(providedIndex, 1);
+            setPollQuestionFormData(pollQuestionCreationArr);
+        }
+
+
+    }
+
     return (
         <Container>
-            <div className={"mt-16 text-4xl self-center"}>Create a Poll Tempalte</div>
+            <Title firstPart={"Share Your"} secondPart={"Questions"}/>
 
-            <div className="form-control md:w-2/4">
+            <div className="form-control  md:flex-col md:flex md:items-center">
                 <label className="label">
                     <span className="label-text">Poll Name</span>
                 </label>
                 <input
+
                     type="text"
                     defaultValue={pollName || ""}
                     onChange={(event) => setPollName(event.target.value)}
                     placeholder="Give your Poll a name"
-                    className="input input-bordered"
+                    className="input input-bordered md:w-2/3"
                 />
 
                 <label className="label">
@@ -237,7 +251,7 @@ const CreatePoll = () => {
                 </label>
                 <textarea
                     defaultValue={pollDescription || ""}
-                    className="textarea h-24 textarea-bordered"
+                    className="textarea h-24 textarea-bordered md:w-2/3"
                     onChange={(event) => setPollDescription(event.target.value)}
                     placeholder="Describe what the poll is about"
                 ></textarea>
@@ -257,41 +271,48 @@ const CreatePoll = () => {
                         alt={selectedImage ? selectedImage.name : null}
                     />
                 </div>
-                <div className={"mt-16 flex flex-col divide-y divide-white-200 h-fit"}>
+                <div className={"mt-16 flex flex-col divide-y divide-white-200 h-fit md:w-2/3"}>
                     {pollQuestionFormData.map((value, index) => {
                         return (
-                            <div className="flex flex-col  pt-5  mb-8" key={index}>
-                                <input
-                                    value={value.pollQuestion || ""}
-                                    onChange={(event) => increaseArraySize(index, event)}
-                                    type="text"
-                                    placeholder="Type your question here"
-                                    className="mb-5 input input-accent input-bordered input-lg w-full "
-                                />
-                                <CreatePollInput
+                            <div className={"flex flex-row"}>
+                                <div className="flex flex-col pt-5 mb-8 flex-grow" key={index}>
 
-                                    pollQuestionFormData={pollQuestionFormData}
-                                    setPollOptions={setPollQuestionFormData}
-                                    pollQuestionIndex={index}
-                                />
-                                <div className={"mt-4"}>
                                     <input
-                                        onChange={() => changeMultiPollState(index)}
-                                        checked={pollQuestionFormData[index].multiPoll}
-                                        type="checkbox"
-                                        value={pollQuestionFormData[index].multiPoll ? "true" : "false"}
-                                        className="checkbox checkbox-md mr-4"
+                                        value={value.pollQuestion || ""}
+                                        onChange={(event) => increaseArraySize(index, event)}
+                                        type="text"
+                                        placeholder="Type your question here"
+                                        className="mb-5 input input-accent input-bordered input-lg w-full "
                                     />
-                                    Are multiple answers allowed?
+                                    <CreatePollInput
+
+                                        pollQuestionFormData={pollQuestionFormData}
+                                        setPollOptions={setPollQuestionFormData}
+                                        pollQuestionIndex={index}
+                                    />
+                                    <div className={"mt-4"}>
+                                        <input
+                                            onChange={() => changeMultiPollState(index)}
+                                            checked={pollQuestionFormData[index].multiPoll}
+                                            type="checkbox"
+                                            value={pollQuestionFormData[index].multiPoll ? "true" : "false"}
+                                            className="checkbox checkbox-md mr-4"
+                                        />
+                                        Are multiple answers allowed?
+                                    </div>
                                 </div>
+                                <button onClick={event => deleteEntry(index)} className={"flex-col flex"}>
+                                    <IconXOctagon className={"stroke-2 stroke-red-500"}/>
+                                </button>
+
                             </div>
                         );
                     })}
                 </div>
 
                 {user ? (
-                    <div>
-                        <button onClick={submitPoll} className="btn btn-primary bg-red">
+                    <div className={"flex flex-col w-full items-center"}>
+                        <button onClick={submitPoll} className="btn btn-wide btn-primary bg-red">
                             Submit Poll
                         </button>
                     </div>
