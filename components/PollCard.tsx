@@ -1,7 +1,6 @@
 import React from 'react'
 import Image from "next/image";
 import {definitions} from "../types/database";
-import {IconThumbsUp} from "@supabase/ui";
 import CountUp from 'react-countup';
 
 
@@ -32,8 +31,8 @@ const PollCard = (props: IProps) => {
     <div className="items-center text-center ">
         <h2 className="card-title flex-grow">{props.poll.poll_name}</h2>
         <div className="card-actions justify-end">
-            <button onClick={event => props.createFromTemplate(props.poll.poll_template)} className="btn btn-primary w-full">Copy template!</button>
-            <button onClick={event => props.openInstance(props.poll.poll_instance)} className="btn btn-primary w-full">Vote HERE!</button>
+            <button onClick={() => props.createFromTemplate(props.poll.poll_template)} className="btn btn-primary w-full">Copy template!</button>
+            <button onClick={() => props.openInstance(props.poll.poll_instance)} className="btn btn-primary w-full">Vote HERE!</button>
         </div>
     </div>
     </div>

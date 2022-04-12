@@ -10,20 +10,32 @@ interface IProps {
 const CookieBar = (props: IProps) => {
 
     const [showCookieBar, setShowCookieBar] = React.useState(false);
+    const [allowCookies, setAllowCookies] = React.useState(null);
 
 
     useEffect(() => {
-        setShowCookieBar(!checkCookies("cookies-allowed"))
-    }, []);
+        if (!checkCookies('analytics-cookies-allowed')) {
+            setShowCookieBar(true)
+        }
+    }, [])
+
 
     useEffect(() => {
-        setCookies("cookies-allowed", showCookieBar)
-    }, [showCookieBar]);
+        if (allowCookies === null) {
+            return
+        }
+
+        setShowCookieBar(false);
+        setCookies('analytics-cookies-allowed',allowCookies)
+        console.log('allowcookies')
+    }, [allowCookies])
 
     return (
         <div>
             {showCookieBar &&
-                <div className={"absolute z-50 bottom-0 left-0 w-screen h-fit bg-gray-200 text-black pt-7 pb-7 pl-8"}>
+            <div className={"fixed z-50 bottom-0 left-0 w-screen h-fit bg-gray-200 text-black pt-7 pb-7 pl-8 flex flex-col"}>
+                <div className={'max-w-screen-xl w-screen h-fit text-black pt-7 pb-7 pl-8  self-center'}>
+
                     <h2 className={"pb-4 font-bold"}>
                         Your privacy is important to us
                     </h2>
@@ -36,17 +48,19 @@ const CookieBar = (props: IProps) => {
                             </Link>
                         </div>
                     </div>
-                    <button className="btn btn-secondary" onClick={event => {
-                        setShowCookieBar(false);
+                    <button className="btn btn-secondary" onClick={() => {
+                        setAllowCookies(true);
                     }}>
                         Accept Cookies
                     </button>
-                    <button className="pl-4 btn btn-ghost" onClick={event => {
-                        setShowCookieBar(false);
+                    <button className="pl-4 btn btn-ghost" onClick={() => {
+                        setAllowCookies(false);
                     }}>
                         Only necessary Cookies
                     </button>
+
                 </div>
+            </div>
             }
         </div>
 
