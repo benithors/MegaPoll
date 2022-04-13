@@ -86,7 +86,7 @@ const Poll = (props: IProps) => {
 
 
         if (!checkCookies("voter")) {
-            setCookies("voter", uuidv4() );
+            setCookies("voter", uuidv4());
         }
 
         const {data, error} = await supabaseClient.rpc<IPollInstanceData>("get_poll_instance_data", {
@@ -175,9 +175,6 @@ const Poll = (props: IProps) => {
     }, [router.isReady, user]);
 
 
-
-
-
     const handleNewOptionsUpdate = (payload: {
         commit_timestamp?: string;
         eventType?: "INSERT" | "UPDATE" | "DELETE";
@@ -237,7 +234,7 @@ const Poll = (props: IProps) => {
                     <></>
                 )}
 
-                <div className="divider"></div>
+                <div className="divider"/>
 
                 {optionsData ?
                     <div>
@@ -249,7 +246,7 @@ const Poll = (props: IProps) => {
                                     {pollQ.voted ? (
                                         <div className="p-6 space-y-2 artboard  w-full " key={index}>
                                             {pollQ.pollOptionsWrapper.map((value, idx) => (
-                                            <VoteBar key={idx} pollOptionWrapper={value} user={user} pollOptionWrapperArray={pollQ.pollOptionsWrapper}/>
+                                                <VoteBar key={idx} pollOptionWrapper={value} user={user} pollOptionWrapperArray={pollQ.pollOptionsWrapper}/>
                                             ))}
                                         </div>
                                     ) : (

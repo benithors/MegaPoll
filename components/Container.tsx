@@ -14,7 +14,7 @@ const Container = (props: IProps) => {
 
     return (
 
-        <div className={"w-screen flex flex-col h-screen min-h-full"}>
+        <div className={"w-screen flex flex-col h-screen min-h-full overflow-x-hidden"}>
 
             <Head>
                 <title>Social Poll</title>

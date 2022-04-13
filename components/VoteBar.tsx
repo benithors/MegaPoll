@@ -33,6 +33,9 @@ const VoteBar = (props: IProps) => {
                 setProfile1(data);
             }
         }
+        if(!props.pollOptionWrapper.pollOptionVotes.top_profile_1){
+            return;
+        }
 
         loadData();
     }, [props.pollOptionWrapper.pollOptionVotes.top_profile_1])
@@ -48,6 +51,9 @@ const VoteBar = (props: IProps) => {
             }
         }
 
+        if(!props.pollOptionWrapper.pollOptionVotes.top_profile_2){
+            return;
+        }
         loadData();
     }, [props.pollOptionWrapper.pollOptionVotes.top_profile_2])
 
@@ -76,6 +82,9 @@ const VoteBar = (props: IProps) => {
             }
         }
 
+        if(!props.pollOptionWrapper.pollOptionVotes.top_profile_3){
+            return;
+        }
         loadData();
     }, [props.pollOptionWrapper.pollOptionVotes.top_profile_3])
     return (

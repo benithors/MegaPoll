@@ -238,7 +238,6 @@ const CreatePoll = () => {
                     <span className="label-text">Poll Name</span>
                 </label>
                 <input
-
                     type="text"
                     defaultValue={pollName || ""}
                     onChange={(event) => setPollName(event.target.value)}
@@ -254,7 +253,7 @@ const CreatePoll = () => {
                     className="textarea h-24 textarea-bordered md:w-2/3"
                     onChange={(event) => setPollDescription(event.target.value)}
                     placeholder="Describe what the poll is about"
-                ></textarea>
+                />
 
                 <label className="label">
                     <span className="label-text">Cover Image of the Poll</span>
@@ -274,7 +273,7 @@ const CreatePoll = () => {
                 <div className={"mt-16 flex flex-col divide-y divide-white-200 h-fit md:w-2/3"}>
                     {pollQuestionFormData.map((value, index) => {
                         return (
-                            <div className={"flex flex-row"}>
+                            <div key={index} className={"flex flex-row"}>
                                 <div className="flex flex-col pt-5 mb-8 flex-grow" key={index}>
 
                                     <input
@@ -301,7 +300,7 @@ const CreatePoll = () => {
                                         Are multiple answers allowed?
                                     </div>
                                 </div>
-                                <button onClick={event => deleteEntry(index)} className={"flex-col flex"}>
+                                <button onClick={() => deleteEntry(index)} className={"flex-col flex"}>
                                     <IconXOctagon className={"stroke-2 stroke-red-500"}/>
                                 </button>
 
@@ -319,7 +318,6 @@ const CreatePoll = () => {
                 ) : (
                     <div className={"flex flex-col"}>
                         <text>You need to be logged in before creating a Poll {BASE_PATH}</text>
-
                         {error && <p>{error.message}</p>}
                         <Auth
                             redirectTo={BASE_PATH + router.pathname}
