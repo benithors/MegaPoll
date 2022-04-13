@@ -84,7 +84,6 @@ function Home(props: IProps) {
                     )
                 })}
             </div>
-            <CookieBar/>
         </Container>
 
     )
