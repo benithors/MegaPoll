@@ -4,7 +4,6 @@ export default function Document() {
   return (
     <Html lang="en" data-theme="synthwave">
       <Head>
-
         <link href="/static/favicons/favicon.ico" rel="shortcut icon" />
         <link href="/static/favicons/site.webmanifest" rel="manifest" />
         <link
