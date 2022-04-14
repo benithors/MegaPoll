@@ -24,7 +24,7 @@ const Container = (props: IProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className={'flex flex-col'}>
         <Header />
         <div
           className={
