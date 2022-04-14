@@ -26,7 +26,7 @@ const Header = (props: IProps) => {
     }, [user]);
 
     return (
-        <div className={"fixed bg-black top-0 left-0 w-screen h-20 z-50 flex flex-row justify-center "}>
+        <div className={"fixed bg-black top-0 left-0 w-screen h-20 z-50 flex flex-row justify-center drop-shadow-2xl "}>
             <div className={'flex flex-row justify-between w-full max-w-screen-xl '}>
                 <Link href="/">
                     <button className={'ml-8 '}>
