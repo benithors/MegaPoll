@@ -9,7 +9,8 @@
     "cypress": "cypress open",
     "lint": "next lint",
     "update-types": "npx openapi-typescript https://hmfmmtwuiizjwrkaaapo.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtZm1tdHd1aWl6andya2FhYXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg2NjM1NjIsImV4cCI6MTk2NDIzOTU2Mn0.-l6MJn7Lvy6KH9OP87lZXpCS_aoRuEEuGwHqHTT-EEg --output types/database/index.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --write ./components ./lib ./pages "
   },
   "dependencies": {
     "@next/eslint-plugin-next": "^12.0.8",
@@ -41,7 +42,7 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
     "postcss": "^8.4.5",
-    "prettier": "^2.6.2",
+    "prettier": "2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.8",
     "tailwindcss": "^3.0.13",
     "typescript": "4.6.2"

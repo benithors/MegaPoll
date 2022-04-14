@@ -65,12 +65,12 @@ function Home(props: IProps) {
   return (
     <Container>
       <Title firstPart={"Share Your"} secondPart={"Opinion"} />
-      <button className="btn btn-accent z-10 mt-14 mb-8 self-center text-2xl">
+      <button className="btn btn-accent z-10 mt-4 md:mt-14 mb-8 self-center text-2xl">
         <Link href="/create-poll">CREATE A POLL</Link>
       </button>
       <PaddingContainer
         className={
-          "grid w-11/12 grid-cols-1 gap-4 self-center rounded-2xl bg-white bg-opacity-10 pt-16 backdrop-blur-2xl sm:grid-cols-2 md:grid-cols-3"
+          "grid w-full md:w-11/12 grid-cols-1 gap-4 self-center rounded-2xl bg-white bg-opacity-10 pt-16 backdrop-blur-2xl sm:grid-cols-2 md:grid-cols-3"
         }
       >
         {props.frontPage.map((value: definitions["front_page"], index) => {

@@ -1,19 +1,9 @@
-import React from 'react'
+import React from "react";
 
-
-interface IProps {
-
-}
+interface IProps {}
 
 const index = (props: IProps) => {
+  return <div>privacy todo</div>;
+};
 
-    return (
-        <div>
-            privacy todo
-        </div>
-
-
-    );
-}
-
-export default index
+export default index;

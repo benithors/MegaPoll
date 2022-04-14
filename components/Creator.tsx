@@ -16,14 +16,13 @@ const Creator = (props: IProps) => {
       .eq("id", props.creator)
       .single();
 
-
     console.log(data, error, "data");
     if (!isErrorWithMessage(error)) {
       setCreatorData({
         avatar_url: data.avatar_url,
         username: data.username,
         created_at: data.created_at,
-        id: props.creator
+        id: props.creator,
       });
     } else {
       console.log(error);

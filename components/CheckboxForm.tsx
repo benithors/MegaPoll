@@ -87,7 +87,9 @@ const CheckboxForm = (props: IProps) => {
       //by returning minimal we don't get the inserted row
       //we dont want the inserted row since, otherwise we would have to setup a select policy for row level security
       const { data, error } = await supabaseClient
-        .from<definitions["poll_option_votes_2_users"]>("poll_option_votes_2_users")
+        .from<definitions["poll_option_votes_2_users"]>(
+          "poll_option_votes_2_users"
+        )
         .insert(insertDataArr, { returning: "minimal" });
 
       if (error) {
