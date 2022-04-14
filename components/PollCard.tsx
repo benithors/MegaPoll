@@ -16,7 +16,7 @@ const PollCard = (props: IProps) => {
       <div className={" relative mb-8 flex  h-32 flex-col md:px-3"}>
         <div
           className={
-            "text-1xl absolute right-1 top-1 -translate-y-10  -translate-y-5 rounded-md bg-secondary p-1 z-10"
+            "text-1xl absolute right-1 top-1 z-10  -translate-y-10 -translate-y-5 rounded-md bg-secondary p-1"
           }
         >
           <CountUp end={props.poll.votes} duration={3} /> Votes

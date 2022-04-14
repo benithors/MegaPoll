@@ -16,7 +16,7 @@ import { uuid } from "@supabase/gotrue-js/dist/main/lib/helpers";
 import Container from "../../components/Container";
 import { BASE_PATH } from "../../lib/constants";
 import Title from "../../components/Title";
-import {IconXCircle, IconXOctagon} from "@supabase/ui";
+import { IconXCircle, IconXOctagon } from "@supabase/ui";
 
 const CreatePoll = () => {
   const [pollQuestionFormData, setPollQuestionFormData] = React.useState<
@@ -305,13 +305,12 @@ const CreatePoll = () => {
                     Are multiple answers allowed?
                   </div>
                   <button
-                      onClick={() => deleteEntry(index)}
-                      className={"flex flex-col absolute -translate-y-5"}
+                    onClick={() => deleteEntry(index)}
+                    className={"absolute flex -translate-y-5 flex-col"}
                   >
                     <IconXCircle className={"stroke-red-500 stroke-2"} />
                   </button>
                 </div>
-
               </div>
             );
           })}
