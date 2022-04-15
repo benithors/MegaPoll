@@ -12,16 +12,15 @@ interface IProps {
 
 const PollCard = (props: IProps) => {
   return (
-    <div className={"flex flex-col rounded-2xl bg-primary-content md:p-4"}>
-      <div className={" relative mb-8 flex  h-32 flex-col md:px-3"}>
+    <div className={"flex flex-col rounded-2xl md:bg-primary-content md:p-4 w-full"}>
+      <div className={"relative mb-2 md:mb-8 flex h-64 flex-col md:px-3"}>
         <div
           className={
-            "text-1xl absolute right-1 top-1 z-10  -translate-y-10 -translate-y-5 rounded-md bg-secondary p-1"
+            "text-1xl absolute right-1 top-1 z-10  md:-translate-y-10 -translate-y-5 rounded-md bg-secondary p-1"
           }
         >
           <CountUp end={props.poll.votes} duration={3} /> Votes
         </div>
-        <button className="h-full transform shadow-2xl transition-all duration-200 ease-in-out hover:scale-110 ">
           <Link
             href={{
               pathname: "/poll/[id]",
@@ -36,16 +35,15 @@ const PollCard = (props: IProps) => {
               className={"rounded"}
             />
           </Link>
-        </button>
       </div>
       <div className="flex grow flex-col items-center text-center">
-        <div className={"grow"}>
-          <h2 className="card-title">{props.poll.poll_name}</h2>
+        <div className={"sm:grow"}>
+          <h2 className="card-title font-bold">{props.poll.poll_name}</h2>
         </div>
-        <div className="card-actions">
+        <div className="flex flex-col w-full">
           <button
             onClick={() => props.createFromTemplate(props.poll.poll_template)}
-            className="btn btn-primary w-full"
+            className="btn glass w-full mb-4"
           >
             Copy template!
           </button>

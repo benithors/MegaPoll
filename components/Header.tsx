@@ -18,7 +18,7 @@ const Header = (props: IProps) => {
   return (
     <nav
       className={
-        "sticky top-0 left-0 z-50 flex h-20 w-screen flex-row  justify-center bg-white bg-opacity-30 drop-shadow-2xl backdrop-blur-xl "
+        "sticky top-0 left-0 z-50 flex h-20 w-full flex-row  justify-center bg-white bg-opacity-30 drop-shadow-2xl backdrop-blur-xl "
       }
     >
       <div
