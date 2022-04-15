@@ -45,7 +45,7 @@ export default function Document() {
           name="google-site-verification"
         />
       </Head>
-      <body>
+      <body className={' bg-gradient-to-br  from-primary-content to-primary'}>
         <Main />
         <NextScript />
       </body>

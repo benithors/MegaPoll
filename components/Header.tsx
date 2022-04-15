@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import { Auth, useUser } from "@supabase/supabase-auth-helpers/react";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
@@ -15,11 +15,11 @@ const Header = (props: IProps) => {
   const [data, setData] = useState();
   const router = useRouter();
 
-
   return (
     <nav
       className={
-        "sticky top-0 left-0 z-50 flex h-13 md:h-20 w-full flex-row  justify-center bg-white bg-opacity-30 drop-shadow-2xl backdrop-blur-xl "}
+        "h-13 sticky top-0 left-0 z-50 flex w-full flex-row justify-center  bg-white bg-opacity-30 drop-shadow-2xl backdrop-blur-xl md:h-20 "
+      }
     >
       <div
         className={

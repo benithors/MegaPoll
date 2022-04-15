@@ -15,7 +15,7 @@ const Container = (props: IProps) => {
   return (
     <div
       className={
-        "relative flex h-full min-h-full w-full flex-col bg-gradient-to-br  from-primary-content to-primary"
+        "relative flex h-full min-h-full w-full flex-col"
       }
     >
       <Head>
