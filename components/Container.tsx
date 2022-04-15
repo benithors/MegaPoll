@@ -13,11 +13,7 @@ const Container = (props: IProps) => {
   const { children } = props;
 
   return (
-    <div
-      className={
-        "relative flex h-full min-h-full w-full flex-col"
-      }
-    >
+    <div className={"relative flex h-full min-h-full w-full flex-col"}>
       <Head>
         <title>Social Poll</title>
         <meta name="description" content="Your Favorite Social Poll Maker" />

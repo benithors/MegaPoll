@@ -5,7 +5,7 @@ interface IProps {}
 
 const Footer = (props: IProps) => {
   return (
-    <footer className="footer footer-center mt-16 rounded bg-base-200 bg-white bg-opacity-30 p-10 text-base-content backdrop-blur-xl">
+    <footer className="footer footer-center mt-16 rounded bg-base-200 bg-white p-10 text-base-content">
       <div className="grid grid-flow-col gap-4">
         <a className="link-hover link">About us</a>
         <a className="link-hover link">Privacy</a>
