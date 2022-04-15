@@ -65,15 +65,14 @@ function Home(props: IProps) {
   return (
     <Container>
       <Title firstPart={"Share Your"} secondPart={"Opinion"} />
-      <button className="btn btn-accent z-10 mt-4 mb-8 self-center text-2xl md:mt-14">
+      <button className="btn btn-accent mt-4 mb-8 self-center text-2xl md:mt-14">
         <Link href="/create-poll">CREATE A POLL</Link>
       </button>
       <PaddingContainer
         className={
-          "grid w-full grid-cols-1 gap-4 self-center rounded-2xl bg-white bg-opacity-10 md:pt-8 backdrop-blur-2xl sm:grid-cols-2 md:w-11/12 xl:grid-cols-3"
+          "grid w-full grid-cols-1 gap-4 self-center rounded-2xl bg-white bg-opacity-10 backdrop-blur-2xl sm:grid-cols-2 md:w-11/12 md:pt-8 xl:grid-cols-3"
         }
       >
-
         {props.frontPage.map((value: definitions["front_page"], index) => {
           return (
             <PollCard
@@ -83,7 +82,6 @@ function Home(props: IProps) {
               createFromTemplate={createFromTemplate}
             />
           );
-
         })}
       </PaddingContainer>
     </Container>

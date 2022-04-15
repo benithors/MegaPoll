@@ -28,7 +28,7 @@ const Container = (props: IProps) => {
         <Header />
         <div
           className={
-            "mt-8 flex max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32 w-full"
+            "mt-8 flex w-full max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32"
           }
         >
           {children}
