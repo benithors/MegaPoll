@@ -26,22 +26,22 @@ const PollCard = (props: IProps) => {
           <CountUp end={props.poll.votes} duration={3} /> Votes
         </div>
         <button>
-
-        <Link
-          href={{
-            pathname: "/poll/[id]",
-            query: { id: props.poll.poll_instance },
-          }}
-        >
-          <Image
-            src={props.poll.cover_image}
-            alt={props.poll.poll_description}
-            objectFit={"cover"}
-            layout={"fill"}
-            className={"rounded md:hover:brightness-125 md:hover:scale-125 md:transform-gpu md:transition md:duration-1000 md:ease-in-out "}
-          />
-        </Link>
-
+          <Link
+            href={{
+              pathname: "/poll/[id]",
+              query: { id: props.poll.poll_instance },
+            }}
+          >
+            <Image
+              src={props.poll.cover_image}
+              alt={props.poll.poll_description}
+              objectFit={"cover"}
+              layout={"fill"}
+              className={
+                "rounded md:transform-gpu md:transition md:duration-1000 md:ease-in-out md:hover:scale-125 md:hover:brightness-125 "
+              }
+            />
+          </Link>
         </button>
       </div>
       <div className="flex grow flex-col items-center text-center">

@@ -20,11 +20,11 @@ const Container = (props: IProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={"flex flex-col h-full grow"}>
+      <main className={"flex h-full grow flex-col"}>
         <Header />
         <div
           className={
-            "mt-8 flex w-full h-full max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32"
+            "mt-8 flex h-full w-full max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32"
           }
         >
           {children}
