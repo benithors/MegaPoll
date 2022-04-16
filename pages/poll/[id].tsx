@@ -201,24 +201,14 @@ const Poll = (props: IProps) => {
   };
   return (
     <Container>
-      <div className={"w-full md:px-20 md:pt-16"}>
-        <h1 className={"text-5xl font-medium leading-tight"}>
+      <div className={"w-full md:px-20  md:pt-16"}>
+        <h1 className={"text-5xl font-medium leading-tight break-words"}>
           {props.pollData.poll_name}
         </h1>
-        <h2 className={"pt-16 text-2xl font-medium leading-tight"}>
+        <h2 className={"pt-16 text-2xl font-medium leading-tight italic"}>
           {props.pollData.poll_description}
         </h2>
 
-        {props.pollData.cover_image ? (
-          <Image
-            src={props.pollData.cover_image}
-            alt="Poll cover"
-            width={500}
-            height={500}
-          />
-        ) : (
-          <></>
-        )}
 
         <div className="divider" />
 
@@ -227,8 +217,7 @@ const Poll = (props: IProps) => {
             {optionsData.map((pollQ, index) => {
               return (
                 <div key={index} className={"pb-12"}>
-                  <h1 className={"text-4xl"}>{pollQ.pollQuestion.question}</h1>
-
+                  <h1 className={"text-4xl break-words"}>{pollQ.pollQuestion.question}</h1>
                   {pollQ.voted ? (
                     <div
                       className="artboard w-full space-y-2  p-6 "

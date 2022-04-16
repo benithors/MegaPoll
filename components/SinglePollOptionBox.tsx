@@ -28,12 +28,16 @@ const SinglePollOptionBox = (props: IProps) => {
   return (
     <div className={"flex flex-row justify-between"}>
       {props.checkBoxes[props.idx].pollOption.option}
-      <input
-        onChange={handleClick}
-        checked={props.checkBoxes[props.idx].checkBox}
-        type={"checkbox"}
-        className="checkbox checkbox-md"
-      />
+      <div >
+
+        <input
+            onChange={handleClick}
+            checked={props.checkBoxes[props.idx].checkBox}
+            type={props.multiPoll ? "radio" : "checkbox"}
+            className={(props.multiPoll ?"radio radio-md checked:bg-primary-focus": "checkbox checkbox-md " )}
+        />
+
+      </div>
     </div>
   );
 };

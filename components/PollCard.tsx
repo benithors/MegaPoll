@@ -20,11 +20,13 @@ const PollCard = (props: IProps) => {
       <div className={"relative mb-2 flex h-64 flex-col md:mb-8 md:px-3"}>
         <div
           className={
-            "text-1xl absolute right-1 top-1 z-10  -translate-y-5 rounded-md bg-secondary p-1 md:-translate-y-10"
+            "text-1xl absolute  right-1 top-1 z-10  -translate-y-5 rounded-md bg-secondary p-1 md:-translate-y-10"
           }
         >
           <CountUp end={props.poll.votes} duration={3} /> Votes
         </div>
+        <button>
+
         <Link
           href={{
             pathname: "/poll/[id]",
@@ -36,9 +38,11 @@ const PollCard = (props: IProps) => {
             alt={props.poll.poll_description}
             objectFit={"cover"}
             layout={"fill"}
-            className={"rounded"}
+            className={"rounded md:hover:brightness-125 md:hover:scale-125 md:transform-gpu md:transition md:duration-1000 md:ease-in-out "}
           />
         </Link>
+
+        </button>
       </div>
       <div className="flex grow flex-col items-center text-center">
         <div className={"sm:grow"}>

@@ -35,7 +35,7 @@ export default function Document() {
           name="msapplication-config"
         />
       </Head>
-      <body className={"bg-gradient-to-br  from-primary-content to-primary"}>
+      <body className={"bg-gradient-to-br  from-primary-content to-secondary min-h-screen"}>
         <Main />
         <NextScript />
       </body>

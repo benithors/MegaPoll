@@ -13,18 +13,18 @@ const Container = (props: IProps) => {
   const { children } = props;
 
   return (
-    <div className={"relative flex h-full min-h-full w-full flex-col"}>
+    <div className={"relative flex h-full min-h-screen w-full flex-col"}>
       <Head>
         <title>Social Poll</title>
         <meta name="description" content="Your Favorite Social Poll Maker" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={"flex flex-col"}>
+      <main className={"flex flex-col h-full grow"}>
         <Header />
         <div
           className={
-            "mt-8 flex w-full max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32"
+            "mt-8 flex w-full h-full max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32"
           }
         >
           {children}
