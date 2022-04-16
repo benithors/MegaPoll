@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { definitions } from "../../types/database";
-import { GetServerSideProps } from "next";
 import { checkCookies, getCookie, setCookies } from "cookies-next";
 import { v4 as uuidv4 } from "uuid";
 import CheckboxForm from "../../components/CheckboxForm";
-import Image from "next/image";
 import Container from "../../components/Container";
 import Creator from "../../components/Creator";
 import { useRouter } from "next/router";
@@ -13,9 +11,6 @@ import { useUser } from "@supabase/supabase-auth-helpers/react";
 import { isErrorWithMessage } from "../../lib/errorUtil";
 import VoteBar from "../../components/VoteBar";
 
-interface IProps {
-  pollData: definitions["poll_templates"];
-}
 
 export interface IPollOptionWrapper {
   pollOptionVotes: definitions["poll_option_votes"];
@@ -42,37 +37,30 @@ export interface IPollInstanceData {
   top_profile_3: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.params.id;
-  const pollInstanceData = await supabaseClient
-    .from<definitions["poll_instances"]>("poll_instances")
-    .select("*")
-    .eq("id", id.toString())
-    .single();
-  const pollTemplateData = await supabaseClient
-    .from<definitions["poll_templates"]>("poll_templates")
-    .select("*")
-    .eq("id", pollInstanceData.data.poll_template)
-    .single();
-
-  return {
-    props: {
-      pollData: pollTemplateData.data,
-    },
-  };
-};
-
-const Poll = (props: IProps) => {
-  const { user, error } = useUser();
+const Poll = () => {
+  const { user } = useUser();
+  const [pollData, setPollData] = useState<definitions["poll_templates"]>(null);
   const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(null);
   const router = useRouter();
 
   async function loadInitialOptionData() {
+    const { id } = router.query;
+    const pollInstanceData = await supabaseClient
+      .from<definitions["poll_instances"]>("poll_instances")
+      .select("*")
+      .eq("id", id as string)
+      .single();
+    const pollTemplateData = await supabaseClient
+      .from<definitions["poll_templates"]>("poll_templates")
+      .select("*")
+      .eq("id", pollInstanceData.data.poll_template)
+      .single();
+    setPollData(pollTemplateData.data);
     //first we get the question
     const allQuestions = await supabaseClient
       .from<definitions["poll_questions"]>("poll_questions")
       .select("*")
-      .eq("poll_template", props.pollData.id);
+      .eq("poll_template", pollTemplateData.data.id);
 
     let questionWrapper: IPollQuestionWrapper[] = [];
 
@@ -134,7 +122,7 @@ const Poll = (props: IProps) => {
       questionWrapper.push(pollQuestionTemp);
     }
 
-    setOptionsData((prevState) => [...questionWrapper]);
+    setOptionsData([...questionWrapper]);
   }
 
   let mySubscription = [null];
@@ -202,12 +190,26 @@ const Poll = (props: IProps) => {
   return (
     <Container>
       <div className={"w-full md:px-20  md:pt-16"}>
-        <h1 className={"break-words text-5xl font-medium leading-tight"}>
-          {props.pollData.poll_name}
-        </h1>
-        <h2 className={"pt-16 text-2xl font-medium italic leading-tight"}>
-          {props.pollData.poll_description}
-        </h2>
+        <div>
+          <h1 className={"break-words text-5xl font-medium leading-tight"}>
+            {pollData ? (
+              pollData.poll_name
+            ) : (
+              <div className="w-3/4 animate-pulse">
+                <div className="h-8 rounded bg-slate-200"/>
+              </div>
+            )}
+          </h1>
+          <h2 className={"pt-16 text-2xl font-medium italic leading-tight"}>
+            {pollData ? (
+              pollData.poll_description
+            ) : (
+              <div className="w-2/3 animate-pulse">
+                <div className="h-4 rounded bg-slate-200"/>
+              </div>
+            )}
+          </h2>
+        </div>
 
         <div className="divider" />
 
@@ -245,11 +247,45 @@ const Poll = (props: IProps) => {
             })}
           </div>
         ) : (
-          <div>loading</div>
+          <div className="w-full animate-pulse ">
+            <div className="h-5 w-2/4 rounded bg-slate-200 pt-12"/>
+            <div className={"flex w-full flex-row"}>
+              <div className={"w-2/3 "}>
+                <div className="mt-3 h-3 w-2/3 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-1/3 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-2/4 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-1/4 rounded bg-slate-200"/>
+                <div className="mt-5 h-5 w-2/12 rounded bg-slate-200"/>
+              </div>
+              <div className={"flex w-1/3 flex-col items-end"}>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+              </div>
+            </div>
+
+            <div className="mt-5 h-5 w-2/3 rounded bg-slate-200"/>
+            <div className={"flex w-full flex-row"}>
+              <div className={"w-2/3 "}>
+                <div className="mt-3 h-3 w-2/3 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-1/3 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-2/4 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-1/4 rounded bg-slate-200"/>
+                <div className="mt-5 h-5 w-2/12 rounded bg-slate-200"/>
+              </div>
+              <div className={"flex w-1/3 flex-col items-end"}>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+              </div>
+            </div>
+          </div>
         )}
       </div>
 
-      <Creator creator={props.pollData.creator} />
+      {pollData && <Creator creator={pollData.creator} />}
     </Container>
   );
 };
