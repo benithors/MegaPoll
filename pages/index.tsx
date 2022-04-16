@@ -36,7 +36,6 @@ interface IProps {
 function Home(props: IProps) {
   const router = useRouter();
 
-
   function openInstance(poll_instance: string) {
     router.push({
       pathname: "/poll/[id]",
@@ -58,7 +57,7 @@ function Home(props: IProps) {
         {props.frontPage.map((value: definitions["front_page"], index) => {
           return (
             <PollCard
-                router={router}
+              router={router}
               key={index}
               poll={value}
               openInstance={openInstance}

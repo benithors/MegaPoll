@@ -3,13 +3,13 @@ import Image from "next/image";
 import { definitions } from "../types/database";
 import CountUp from "react-countup";
 import Link from "next/link";
-import {createFromTemplate} from "../lib/pollUtil";
-import {NextRouter} from "next/router";
+import { createFromTemplate } from "../lib/pollUtil";
+import { NextRouter } from "next/router";
 
 interface IProps {
   poll: definitions["front_page"];
   openInstance;
-  router: NextRouter
+  router: NextRouter;
 }
 
 const PollCard = (props: IProps) => {
@@ -52,7 +52,9 @@ const PollCard = (props: IProps) => {
         </div>
         <div className="flex w-full flex-col">
           <button
-            onClick={() => createFromTemplate(props.poll.poll_template,props.router)}
+            onClick={() =>
+              createFromTemplate(props.poll.poll_template, props.router)
+            }
             className="btn glass mb-4 w-full"
           >
             Copy template!

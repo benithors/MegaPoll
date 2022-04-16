@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { useUser } from "@supabase/supabase-auth-helpers/react";
 import { isErrorWithMessage } from "../../lib/errorUtil";
 import VoteBar from "../../components/VoteBar";
-
+import { createFromTemplate } from "../../lib/pollUtil";
 
 export interface IPollOptionWrapper {
   pollOptionVotes: definitions["poll_option_votes"];
@@ -196,16 +196,25 @@ const Poll = () => {
               pollData.poll_name
             ) : (
               <div className="w-3/4 animate-pulse">
-                <div className="h-8 rounded bg-slate-200"/>
+                <div className="h-16 rounded bg-slate-200" />
               </div>
             )}
           </h1>
+          <div className={"mt-3"}>
+            <button
+              onClick={() => createFromTemplate(pollData?.id, router)}
+              className="btn glass mb-4 w-2/12"
+            >
+              Copy template!
+            </button>
+          </div>
+
           <h2 className={"pt-16 text-2xl font-medium italic leading-tight"}>
             {pollData ? (
               pollData.poll_description
             ) : (
               <div className="w-2/3 animate-pulse">
-                <div className="h-4 rounded bg-slate-200"/>
+                <div className="h-6 rounded bg-slate-200" />
               </div>
             )}
           </h2>
@@ -221,6 +230,7 @@ const Poll = () => {
                   <h1 className={"break-words text-4xl"}>
                     {pollQ.pollQuestion.question}
                   </h1>
+
                   {pollQ.voted ? (
                     <div
                       className="artboard w-full space-y-2  p-6 "
@@ -248,37 +258,37 @@ const Poll = () => {
           </div>
         ) : (
           <div className="w-full animate-pulse ">
-            <div className="h-5 w-2/4 rounded bg-slate-200 pt-12"/>
-            <div className={"flex w-full flex-row"}>
+            <div className="h-5 w-2/4 rounded bg-slate-200 pt-12" />
+            <div className={"ml-3 flex w-full flex-row"}>
               <div className={"w-2/3 "}>
-                <div className="mt-3 h-3 w-2/3 rounded bg-slate-200"/>
-                <div className="mt-3 h-3 w-1/3 rounded bg-slate-200"/>
-                <div className="mt-3 h-3 w-2/4 rounded bg-slate-200"/>
-                <div className="mt-3 h-3 w-1/4 rounded bg-slate-200"/>
-                <div className="mt-5 h-5 w-2/12 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-2/3 rounded bg-slate-200" />
+                <div className="mt-3 h-3 w-1/3 rounded bg-slate-200" />
+                <div className="mt-3 h-3 w-2/4 rounded bg-slate-200" />
+                <div className="mt-3 h-3 w-1/4 rounded bg-slate-200" />
+                <div className="mt-5 h-5 w-2/12 rounded bg-slate-200" />
               </div>
               <div className={"flex w-1/3 flex-col items-end"}>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
               </div>
             </div>
 
-            <div className="mt-5 h-5 w-2/3 rounded bg-slate-200"/>
+            <div className="mt-5 h-5 w-2/3 rounded bg-slate-200" />
             <div className={"flex w-full flex-row"}>
               <div className={"w-2/3 "}>
-                <div className="mt-3 h-3 w-2/3 rounded bg-slate-200"/>
-                <div className="mt-3 h-3 w-1/3 rounded bg-slate-200"/>
-                <div className="mt-3 h-3 w-2/4 rounded bg-slate-200"/>
-                <div className="mt-3 h-3 w-1/4 rounded bg-slate-200"/>
-                <div className="mt-5 h-5 w-2/12 rounded bg-slate-200"/>
+                <div className="mt-3 h-3 w-2/3 rounded bg-slate-200" />
+                <div className="mt-3 h-3 w-1/3 rounded bg-slate-200" />
+                <div className="mt-3 h-3 w-2/4 rounded bg-slate-200" />
+                <div className="mt-3 h-3 w-1/4 rounded bg-slate-200" />
+                <div className="mt-5 h-5 w-2/12 rounded bg-slate-200" />
               </div>
               <div className={"flex w-1/3 flex-col items-end"}>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
-                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200"/>
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
+                <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
               </div>
             </div>
           </div>

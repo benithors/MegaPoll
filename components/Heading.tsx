@@ -1,19 +1,13 @@
-import React from 'react'
+import React from "react";
 
 interface IProps {
-children:any
-
+  children: any;
 }
 
 const Heading = (props: IProps) => {
+  return (
+    <div className={"pb-4 pt-4 text-4xl text-secondary"}>{props.children}</div>
+  );
+};
 
-    return (
-        <div className={"text-4xl pb-4 pt-4 text-secondary"}>
-            {props.children}
-        </div>
-
-
-    );
-}
-
-export default Heading
+export default Heading;
