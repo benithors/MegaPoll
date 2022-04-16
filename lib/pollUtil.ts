@@ -1,4 +1,7 @@
 import { isEmpty } from "./stringUtils";
+import {supabaseClient} from "@supabase/supabase-auth-helpers/nextjs";
+import {isErrorWithMessage, toErrorWithMessage} from "./errorUtil";
+import {NextRouter} from "next/router";
 
 export interface IPollQuestionCreation {
   pollQuestion: string;
@@ -52,4 +55,24 @@ export function copyPoll(
   });
 
   return copyTo;
+}
+
+
+export async function createFromTemplate(id: number,router:NextRouter) {
+  const { data, error } = await supabaseClient.rpc(
+      "fn_create_poll_from_template",
+      { provided_poll_template: id }
+  );
+  if (isErrorWithMessage(error)) {
+    console.log(toErrorWithMessage(error));
+    //todo bt add error for user
+    return;
+  }
+
+  console.log(data);
+
+  router.push({
+    pathname: "/poll/[id]",
+    query: { id: data.toString() },
+  });
 }

@@ -23,6 +23,9 @@ const Footer = (props: IProps) => {
         <Link href="/contact">
           <a className="link-hover link">Contact</a>
         </Link>
+        <Link href="/tos">
+          <a className="link-hover link">Terms of Service</a>
+        </Link>
       </div>
       <div>
         <div className="grid grid-flow-row gap-4 sm:grid-flow-col">
