@@ -38,7 +38,7 @@ const PollCard = (props: IProps) => {
               objectFit={"cover"}
               layout={"fill"}
               className={
-                "rounded md:transform-gpu md:transition md:duration-1000 md:ease-in-out md:hover:scale-125 md:hover:brightness-125 "
+                "rounded md:transform-gpu md:transition md:duration-300 md:ease-in-out md:hover:scale-125 md:hover:brightness-125 "
               }
             />
           </Link>
