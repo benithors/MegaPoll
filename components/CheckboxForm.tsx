@@ -6,7 +6,7 @@ import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { getCookie } from "cookies-next";
 import { useToasts } from "react-toast-notifications";
 import { useUser } from "@supabase/supabase-auth-helpers/react";
-
+const axios = require("axios");
 interface IProps {
   pollQ: IPollQuestionWrapper;
   setOptionsData: React.Dispatch<React.SetStateAction<IPollQuestionWrapper[]>>;
@@ -84,14 +84,8 @@ const CheckboxForm = (props: IProps) => {
         insertDataArr.push(insertData);
       }
 
-      //by returning minimal we don't get the inserted row
-      //we dont want the inserted row since, otherwise we would have to setup a select policy for row level security
-      const { data, error } = await supabaseClient
-        .from<definitions["poll_option_votes_2_users"]>(
-          "poll_option_votes_2_users"
-        )
-        .insert(insertDataArr, { returning: "minimal" });
-
+      let axiosResponse = await axios.post("/api/vote", insertDataArr);
+      console.log(axiosResponse);
       if (error) {
         console.log(error);
         addToast("Something went wrong, try it later again", {
