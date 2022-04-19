@@ -253,6 +253,7 @@ export interface paths {
           user_cookie?: parameters["rowFilter.poll_option_votes_2_users.user_cookie"];
           profile?: parameters["rowFilter.poll_option_votes_2_users.profile"];
           poll_option_vote?: parameters["rowFilter.poll_option_votes_2_users.poll_option_vote"];
+          ip?: parameters["rowFilter.poll_option_votes_2_users.ip"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -307,6 +308,7 @@ export interface paths {
           user_cookie?: parameters["rowFilter.poll_option_votes_2_users.user_cookie"];
           profile?: parameters["rowFilter.poll_option_votes_2_users.profile"];
           poll_option_vote?: parameters["rowFilter.poll_option_votes_2_users.poll_option_vote"];
+          ip?: parameters["rowFilter.poll_option_votes_2_users.ip"];
         };
         header: {
           /** Preference */
@@ -325,6 +327,7 @@ export interface paths {
           user_cookie?: parameters["rowFilter.poll_option_votes_2_users.user_cookie"];
           profile?: parameters["rowFilter.poll_option_votes_2_users.profile"];
           poll_option_vote?: parameters["rowFilter.poll_option_votes_2_users.poll_option_vote"];
+          ip?: parameters["rowFilter.poll_option_votes_2_users.ip"];
         };
         body: {
           /** poll_option_votes_2_users */
@@ -1028,6 +1031,8 @@ export interface definitions {
      * This is a Foreign Key to `poll_option_votes.id`.<fk table='poll_option_votes' column='id'/>
      */
     poll_option_vote: number;
+    /** Format: inet */
+    ip: string;
   };
   /** @description Options of a question */
   poll_options: {
@@ -1220,6 +1225,8 @@ export interface parameters {
   "rowFilter.poll_option_votes_2_users.profile": string;
   /** Format: bigint */
   "rowFilter.poll_option_votes_2_users.poll_option_vote": string;
+  /** Format: inet */
+  "rowFilter.poll_option_votes_2_users.ip": string;
   /** @description poll_options */
   "body.poll_options": definitions["poll_options"];
   /** Format: bigint */
