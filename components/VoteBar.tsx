@@ -3,11 +3,22 @@ import { IPollOptionWrapper } from "../pages/poll/[id]";
 import { definitions } from "../types/database";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { getErrorMessage, isErrorWithMessage } from "../lib/errorUtil";
+import { IconUser } from "@supabase/ui";
 
 interface IProps {
   pollOptionWrapper: IPollOptionWrapper;
   user;
   pollOptionWrapperArray: IPollOptionWrapper[];
+}
+
+function VoteBarProfile(props: { profile: definitions["profiles"] }) {
+  return (
+    <div className="tooltip" data-tip={props.profile.username}>
+      <div className="w-12">
+        <img className={"rounded-full"} src={props.profile.avatar_url} />
+      </div>
+    </div>
+  );
 }
 
 const VoteBar = (props: IProps) => {
@@ -41,6 +52,7 @@ const VoteBar = (props: IProps) => {
         setProfile1(data);
       }
     }
+
     if (!props.pollOptionWrapper.pollOptionVotes.top_profile_1) {
       return;
     }
@@ -79,8 +91,26 @@ const VoteBar = (props: IProps) => {
     if (profile3) {
       votes -= 1;
     }
-
     return votes;
+  }
+
+  function displayUserIcon() {
+    if (props.pollOptionWrapper.voted) {
+      if (props.user) {
+        if (
+          (profile1 && profile1.id === props.user.id) ||
+          (profile2 && profile2.id === props.user.id) ||
+          (profile3 && profile3.id === props.user.id)
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    }
+    return false;
   }
 
   useEffect(() => {
@@ -108,7 +138,7 @@ const VoteBar = (props: IProps) => {
       <div className={"flex flex-row justify-between"}>
         <div className={"w-2/4"}>
           <progress
-            className="progress progress-primary"
+            className={"progress progress-primary"}
             value={getVotePercentage(
               props.pollOptionWrapper.pollOptionVotes.votes,
               props.pollOptionWrapperArray
@@ -116,43 +146,29 @@ const VoteBar = (props: IProps) => {
             max="100"
           />
         </div>
-        <div></div>
         <div className="flex -space-x-3">
-          {profile1 ? (
-            <div className="tooltip" data-tip={profile1.username}>
+          {profile1 && <VoteBarProfile profile={profile1} />}
+          {profile2 && <VoteBarProfile profile={profile2} />}
+          {profile3 && <VoteBarProfile profile={profile3} />}
+          {displayUserIcon() && (
+            <div className="tooltip" data-tip="YOU">
               <div className="w-12">
-                <img className={"rounded-full"} src={profile1.avatar_url} />
+                <IconUser
+                  className={
+                    "rounded-full bg-primary-content stroke-white stroke-2"
+                  }
+                  size={48}
+                />
               </div>
             </div>
-          ) : (
-            <></>
           )}
-          {profile2 ? (
-            <div className="tooltip" data-tip={profile2.username}>
-              <div className="w-12">
-                <img className={"rounded-full"} src={profile2.avatar_url} />
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
-          {profile3 ? (
-            <div className="tooltip" data-tip={profile3.username}>
-              <div className="w-12">
-                <img className={"rounded-full"} src={profile3.avatar_url} />
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
-          {getVoteNumber() >= 1 ? (
+
+          {getVoteNumber() >= 1 && (
             <div className="placeholder avatar">
-              <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
+              <div className="h-12 w-12 rounded-full bg-neutral-focus text-neutral-content">
                 <span>+{getVoteNumber()}</span>
               </div>
             </div>
-          ) : (
-            <></>
           )}
         </div>
       </div>

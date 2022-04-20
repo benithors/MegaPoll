@@ -11,6 +11,8 @@ import { useUser } from "@supabase/supabase-auth-helpers/react";
 import { isErrorWithMessage } from "../../lib/errorUtil";
 import VoteBar from "../../components/VoteBar";
 import { createFromTemplate } from "../../lib/pollUtil";
+import Title from "../../components/Title";
+import { BASE_PATH } from "../../lib/constants";
 
 export interface IPollOptionWrapper {
   pollOptionVotes: definitions["poll_option_votes"];
@@ -187,13 +189,16 @@ const Poll = () => {
       return [...prevStatePollQuestionWrapper];
     });
   };
+
+  const [effect, setEffect] = useState(false);
+
   return (
     <Container>
       <div className={"w-full md:px-20  md:pt-16"}>
         <div>
           <h1 className={"break-words text-5xl font-medium leading-tight"}>
             {pollData ? (
-              pollData.poll_name
+              <Title firstPart={pollData.poll_name} />
             ) : (
               <div className="w-3/4 animate-pulse">
                 <div className="h-16 rounded bg-slate-200" />
@@ -203,9 +208,23 @@ const Poll = () => {
           <div className={"mt-3"}>
             <button
               onClick={() => createFromTemplate(pollData?.id, router)}
-              className="btn glass mb-4 w-2/12"
+              className="btn btn-secondary mb-4 w-2/12"
             >
-              Copy template!
+              Copy this template
+            </button>
+
+            <button
+              className={"btn btn-primary " + (effect && "animate-wiggle")}
+              onClick={() => {
+                navigator.clipboard.writeText(BASE_PATH + router.asPath);
+                setEffect(true);
+              }}
+              onAnimationEnd={() => {
+                setEffect(false);
+                console.log("ENDDD");
+              }}
+            >
+              Copy URL
             </button>
           </div>
 

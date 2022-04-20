@@ -264,7 +264,7 @@ const CreatePoll = () => {
           defaultValue={pollName || ""}
           onChange={(event) => setPollName(event.target.value)}
           placeholder="Give your Poll a name"
-          className="input-bordered input md:w-2/3 bg-opacity-30"
+          className="input-bordered input bg-opacity-30 md:w-2/3"
         />
 
         <label className="label">
@@ -272,7 +272,7 @@ const CreatePoll = () => {
         </label>
         <textarea
           defaultValue={pollDescription || ""}
-          className="textarea-bordered textarea h-24 md:w-2/3 bg-opacity-30"
+          className="textarea-bordered textarea h-24 bg-opacity-30 md:w-2/3"
           onChange={(event) => setPollDescription(event.target.value)}
           placeholder="Describe what the poll is about"
         />

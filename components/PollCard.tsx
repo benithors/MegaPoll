@@ -16,7 +16,7 @@ const PollCard = (props: IProps) => {
   return (
     <div
       className={
-        "flex w-full flex-col md:hover:bg-accent-content md:hover:bg-opacity-50  md:p-4 shadow-2xl transition-all md:duration-500 md:ease-in-out md:transform md:hover:scale-105"
+        "flex w-full flex-col shadow-2xl transition-all  md:transform md:p-4 md:duration-500 md:ease-in-out md:hover:scale-105 md:hover:bg-accent-content md:hover:bg-opacity-50"
       }
     >
       <div className={"relative mb-2 flex h-64 flex-col md:mb-8 md:px-3"}>

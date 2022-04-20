@@ -2,7 +2,7 @@ import React from "react";
 
 interface IProps {
   firstPart: string;
-  secondPart: string;
+  secondPart?: string;
 }
 
 const Title = (props: IProps) => {
@@ -13,7 +13,9 @@ const Title = (props: IProps) => {
       }
     >
       <div className={"text-primary"}>{props.firstPart} </div>
-      <div className={"text-secondary"}>{props.secondPart}</div>
+      {props.secondPart && (
+        <div className={"text-secondary"}>{props.secondPart}</div>
+      )}
     </div>
   );
 };

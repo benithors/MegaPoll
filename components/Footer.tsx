@@ -6,7 +6,7 @@ interface IProps {}
 
 const Footer = (props: IProps) => {
   return (
-    <footer className="footer footer-center mt-16 rounded bg-base-200 bg-white p-10 text-base-content">
+    <footer className="footer footer-center mt-16 rounded bg-base-200 p-10 text-base-content">
       <div className="grid grid-flow-row gap-4 sm:grid-flow-col ">
         <Link href="/about">
           <a className="link-hover link">About</a>
