@@ -51,8 +51,7 @@ const CreatePollInput = (props: IProps) => {
               }
               type="text"
               placeholder="Type your poll option"
-              className="input-bordered input-secondary input
-                                  mt-2"
+              className="input-bordered input-secondary input mt-2 bg-opacity-30"
             />
           );
         }

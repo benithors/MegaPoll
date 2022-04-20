@@ -51,7 +51,7 @@ function Home(props: IProps) {
       </button>
       <PaddingContainer
         className={
-          "grid w-full grid-cols-1 gap-4 self-center rounded-2xl bg-white bg-opacity-10 backdrop-blur-2xl sm:grid-cols-2 md:w-11/12 md:pt-8 xl:grid-cols-3"
+          "grid w-full grid-cols-1 gap-4 self-center rounded-2xl  sm:grid-cols-2 md:w-11/12 md:pt-8 xl:grid-cols-3"
         }
       >
         {props.frontPage.map((value: definitions["front_page"], index) => {
