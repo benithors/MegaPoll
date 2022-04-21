@@ -1031,7 +1031,7 @@ export interface definitions {
      * This is a Foreign Key to `poll_option_votes.id`.<fk table='poll_option_votes' column='id'/>
      */
     poll_option_vote: number;
-    /** Format: inet */
+    /** Format: character varying */
     ip: string;
   };
   /** @description Options of a question */
@@ -1225,7 +1225,7 @@ export interface parameters {
   "rowFilter.poll_option_votes_2_users.profile": string;
   /** Format: bigint */
   "rowFilter.poll_option_votes_2_users.poll_option_vote": string;
-  /** Format: inet */
+  /** Format: character varying */
   "rowFilter.poll_option_votes_2_users.ip": string;
   /** @description poll_options */
   "body.poll_options": definitions["poll_options"];
