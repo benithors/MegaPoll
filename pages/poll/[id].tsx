@@ -13,6 +13,7 @@ import VoteBar from "../../components/VoteBar";
 import { createFromTemplate } from "../../lib/pollUtil";
 import Title from "../../components/Title";
 import { BASE_PATH } from "../../lib/constants";
+import { IconCopy } from "@supabase/ui";
 
 export interface IPollOptionWrapper {
   pollOptionVotes: definitions["poll_option_votes"];
@@ -190,11 +191,33 @@ const Poll = () => {
     });
   };
 
-  const [effect, setEffect] = useState(false);
-
+  const [wiggleEffect, setWiggleEffect] = useState(false);
+  const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   return (
     <Container>
       <div className={"w-full md:px-20  md:pt-16"}>
+        <button
+          className={"" + (wiggleEffect && "animate-wiggle")}
+          onClick={() => {
+            navigator.clipboard.writeText(BASE_PATH + router.asPath);
+            setWiggleEffect(true);
+            setShowCopiedTooltip(true);
+          }}
+          onAnimationEnd={() => {
+            setWiggleEffect(false);
+          }}
+        >
+          <div
+            className={
+              showCopiedTooltip
+                ? "tooltip-open tooltip tooltip-accent"
+                : "tooltip"
+            }
+            data-tip={showCopiedTooltip ? "copied!" : "Copy URL"}
+          >
+            <IconCopy className={"stroke-accent"} size={40} />
+          </div>
+        </button>
         <div>
           <h1 className={"break-words text-5xl font-medium leading-tight"}>
             {pollData ? (
@@ -210,21 +233,7 @@ const Poll = () => {
               onClick={() => createFromTemplate(pollData?.id, router)}
               className="btn btn-secondary mb-4 w-2/12"
             >
-              Copy this template
-            </button>
-
-            <button
-              className={"btn btn-primary " + (effect && "animate-wiggle")}
-              onClick={() => {
-                navigator.clipboard.writeText(BASE_PATH + router.asPath);
-                setEffect(true);
-              }}
-              onAnimationEnd={() => {
-                setEffect(false);
-                console.log("ENDDD");
-              }}
-            >
-              Copy URL
+              Copy this into fresh vote!
             </button>
           </div>
 
