@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { checkCookies, setCookies } from "cookies-next";
 
-
 const CookieBar = () => {
   const [showCookieBar, setShowCookieBar] = React.useState(false);
   const [allowCookies, setAllowCookies] = React.useState(null);
@@ -26,12 +25,16 @@ const CookieBar = () => {
   return (
     <>
       {showCookieBar && (
-        <div className={
-            "fixed bottom-0 z-20 left-0 flex h-fit w-full flex-col bg-gray-200 md:pt-7 md:pb-7 md:pl-8 text-black"
-          }>
-          <div className={
-              "h-fit w-full max-w-screen-xl self-center pt-2 pb-2 px-3 md:pt-7 md:pb-7 md:pl-8  text-black"
-            }>
+        <div
+          className={
+            "fixed bottom-0 left-0 z-20 flex h-fit w-full flex-col bg-gray-200 text-black md:pt-7 md:pb-7 md:pl-8"
+          }
+        >
+          <div
+            className={
+              "h-fit w-full max-w-screen-xl self-center px-3 pt-2 pb-2 text-black md:pt-7 md:pb-7  md:pl-8"
+            }
+          >
             <h2 className={"pb-4 font-bold"}>
               Your privacy is important to us
             </h2>
