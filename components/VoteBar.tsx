@@ -10,12 +10,16 @@ interface IProps {
   user;
   pollOptionWrapperArray: IPollOptionWrapper[];
 }
-
+//TODO replace with nextjs image alt and value
 function VoteBarProfile(props: { profile: definitions["profiles"] }) {
   return (
     <div className="tooltip" data-tip={props.profile.username}>
       <div className="w-12">
-        <img className={"rounded-full"} src={props.profile.avatar_url} />
+        <img
+          className={"rounded-full"}
+          src={props.profile.avatar_url}
+          alt={props.profile.username}
+        />
       </div>
     </div>
   );
@@ -158,9 +162,7 @@ const VoteBar = (props: IProps) => {
             <div className="tooltip" data-tip="YOU">
               <div className="w-12">
                 <IconUser
-                  className={
-                    "rounded-full bg-primary-content stroke-white stroke-2"
-                  }
+                  className={"rounded-full bg-secondary stroke-white stroke-2"}
                   size={48}
                 />
               </div>

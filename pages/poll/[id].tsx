@@ -255,15 +255,12 @@ const Poll = () => {
             {optionsData.map((pollQ, index) => {
               return (
                 <div key={index} className={"pb-12"}>
-                  <h1 className={"break-words text-4xl"}>
+                  <h1 className={"break-words text-4xl text-secondary"}>
                     {pollQ.pollQuestion.question}
                   </h1>
 
                   {pollQ.voted ? (
-                    <div
-                      className="artboard w-full space-y-2  p-6 "
-                      key={index}
-                    >
+                    <div className="w-full" key={index}>
                       {pollQ.pollOptionsWrapper.map((value, idx) => (
                         <VoteBar
                           key={idx}

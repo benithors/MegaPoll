@@ -34,7 +34,7 @@ const SinglePollOptionBox = (props: IProps) => {
           checked={props.checkBoxes[props.idx].checkBox}
           type={props.multiPoll ? "radio" : "checkbox"}
           className={
-            "color-red " +
+            "border-2 border-primary " +
             (props.multiPoll
               ? "radio radio-md checked:radio-primary"
               : "checkbox checkbox-md checked:checkbox-primary")
