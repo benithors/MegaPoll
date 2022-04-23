@@ -2,9 +2,7 @@ import React from "react";
 import { IconGitHub, IconMail, IconTwitter } from "@supabase/ui";
 import Link from "next/link";
 
-interface IProps {}
-
-const Footer = (props: IProps) => {
+const Footer = () => {
   return (
     <footer className="footer footer-center mt-16 rounded bg-base-200 p-10 text-base-content">
       <div className="grid grid-flow-row gap-4 sm:grid-flow-col ">

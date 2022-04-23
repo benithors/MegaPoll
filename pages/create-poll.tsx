@@ -13,9 +13,9 @@ import {
   IPollQuestionCreation,
 } from "../lib/pollUtil";
 import { uuid } from "@supabase/gotrue-js/dist/main/lib/helpers";
-import Container from "../components/Container";
+import Container from "../components/structure/Container";
 import { BASE_PATH } from "../lib/constants";
-import Title from "../components/Title";
+import Title from "../components/generic/Title";
 import { IconXCircle } from "@supabase/ui";
 import Compressor from "compressorjs";
 

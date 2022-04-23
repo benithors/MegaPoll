@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Auth, useUser } from "@supabase/supabase-auth-helpers/react";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import { BASE_PATH } from "../lib/constants";
+import { BASE_PATH } from "../../lib/constants";
 import { IconUser } from "@supabase/ui";
 
 interface IProps {}

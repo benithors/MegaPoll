@@ -15,7 +15,7 @@ export default async function handler(
 
   let ip;
   if (process.env.LOCAL === "true") {
-    ip = "123178231823";
+    ip = "123178231823" + Math.random();
   } else {
     ip = request.headers["x-real-ip"];
   }

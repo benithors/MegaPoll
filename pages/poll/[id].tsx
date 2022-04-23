@@ -3,42 +3,21 @@ import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { definitions } from "../../types/database";
 import { checkCookies, getCookie, setCookies } from "cookies-next";
 import { v4 as uuidv4 } from "uuid";
-import CheckboxForm from "../../components/CheckboxForm";
-import Container from "../../components/Container";
-import Creator from "../../components/Creator";
+import Container from "../../components/structure/Container";
 import { useRouter } from "next/router";
 import { useUser } from "@supabase/supabase-auth-helpers/react";
 import { isErrorWithMessage } from "../../lib/errorUtil";
-import VoteBar from "../../components/VoteBar";
 import { createFromTemplate } from "../../lib/pollUtil";
-import Title from "../../components/Title";
+import Title from "../../components/generic/Title";
 import { BASE_PATH } from "../../lib/constants";
 import { IconCopy } from "@supabase/ui";
-
-export interface IPollOptionWrapper {
-  pollOptionVotes: definitions["poll_option_votes"];
-  pollOption: definitions["poll_options"];
-  voted: boolean;
-}
-
-export interface IPollQuestionWrapper {
-  pollQuestion: definitions["poll_questions"];
-  pollOptionsWrapper: IPollOptionWrapper[];
-  voted: boolean;
-}
-
-export interface IPollInstanceData {
-  voted: boolean;
-  poll_option_id: number;
-  option: string;
-  poll_question: number;
-  poll_option_votes_id: number;
-  poll_option_votes_instance: string;
-  poll_option_votes_votes: number;
-  top_profile_1: string;
-  top_profile_2: string;
-  top_profile_3: string;
-}
+import PollOptionQuestion from "../../components/voting/PollOptionQuestion";
+import {
+  IPollInstanceData,
+  IPollOptionWrapper,
+  IPollQuestionWrapper,
+} from "../../lib/interfaces";
+import VoteCreator from "components/voting/VoteCreator";
 
 const Poll = () => {
   const { user } = useUser();
@@ -101,6 +80,7 @@ const Poll = () => {
           poll_question: value.poll_question,
         },
         voted: value.voted,
+        checkBox: false,
       });
       let subTemp = supabaseClient
         .from("poll_option_votes:id=eq." + value.poll_option_votes_id)
@@ -252,31 +232,15 @@ const Poll = () => {
 
         {optionsData ? (
           <div>
-            {optionsData.map((pollQ, index) => {
+            {optionsData.map((pollQ: IPollQuestionWrapper, index: number) => {
               return (
-                <div key={index} className={"pb-12"}>
-                  <h1 className={"break-words text-4xl text-secondary"}>
-                    {pollQ.pollQuestion.question}
-                  </h1>
-
-                  {pollQ.voted ? (
-                    <div className="w-full" key={index}>
-                      {pollQ.pollOptionsWrapper.map((value, idx) => (
-                        <VoteBar
-                          key={idx}
-                          pollOptionWrapper={value}
-                          user={user}
-                          pollOptionWrapperArray={pollQ.pollOptionsWrapper}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <CheckboxForm
-                      key={index}
-                      pollQ={pollQ}
-                      setOptionsData={setOptionsData}
-                    />
-                  )}
+                <div key={index} className={"flex flex-col pb-12"}>
+                  <PollOptionQuestion
+                    setOptionsData={setOptionsData}
+                    user={user}
+                    pollQ={pollQ}
+                    pollQuestionIndex={index}
+                  />
                 </div>
               );
             })}
@@ -320,7 +284,9 @@ const Poll = () => {
         )}
       </div>
 
-      {pollData && <Creator creator={pollData.creator} />}
+      <div className={"self-center"}>
+        {pollData && <VoteCreator creator={pollData.creator} />}
+      </div>
     </Container>
   );
 };

@@ -4,10 +4,10 @@ import { definitions } from "../types/database";
 import React from "react";
 import { isErrorWithMessage, toErrorWithMessage } from "../lib/errorUtil";
 import { useRouter } from "next/router";
-import Container from "../components/Container";
-import PollCard from "../components/PollCard";
-import Title from "../components/Title";
-import PaddingContainer from "../components/PaddingContainer";
+import Container from "../components/structure/Container";
+import Title from "../components/generic/Title";
+import PaddingContainer from "../components/structure/PaddingContainer";
+import PollPreviewCard from "../components/PollPreviewCard";
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
@@ -56,7 +56,7 @@ function Home(props: IProps) {
       >
         {props.frontPage.map((value: definitions["front_page"], index) => {
           return (
-            <PollCard
+            <PollPreviewCard
               router={router}
               key={index}
               poll={value}

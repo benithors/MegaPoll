@@ -2,6 +2,7 @@ import { isEmpty } from "./stringUtils";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { isErrorWithMessage, toErrorWithMessage } from "./errorUtil";
 import { NextRouter } from "next/router";
+import { IPollOptionWrapper } from "./interfaces";
 
 export interface IPollQuestionCreation {
   pollQuestion: string;
@@ -74,4 +75,17 @@ export async function createFromTemplate(id: number, router: NextRouter) {
     pathname: "/poll/[id]",
     query: { id: data.toString() },
   });
+}
+
+export function getVotePercentage(
+  votes: number,
+  pollOptionsWrapper: IPollOptionWrapper[]
+): number {
+  if (votes === 0) {
+    return 0;
+  }
+  return (
+    (100 * votes) /
+    pollOptionsWrapper.reduce((a, b) => +a + +b.pollOptionVotes.votes, 0)
+  );
 }

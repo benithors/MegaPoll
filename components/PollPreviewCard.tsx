@@ -12,7 +12,7 @@ interface IProps {
   router: NextRouter;
 }
 
-const PollCard = (props: IProps) => {
+const PollPreviewCard = (props: IProps) => {
   return (
     <div
       className={
@@ -71,4 +71,4 @@ const PollCard = (props: IProps) => {
   );
 };
 
-export default PollCard;
+export default PollPreviewCard;

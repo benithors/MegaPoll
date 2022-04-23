@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
-import { definitions } from "../types/database";
-import { isErrorWithMessage } from "../lib/errorUtil";
+import { definitions } from "../../types/database";
+import { isErrorWithMessage } from "../../lib/errorUtil";
 import Image from "next/image";
 
 interface IProps {
   creator: string;
 }
 
-const Creator = (props: IProps) => {
+const VoteCreator = (props: IProps) => {
   async function getAvatarForCreator() {
     const { data, error } = await supabaseClient
       .from<definitions["profiles"]>("profiles")
@@ -35,11 +35,12 @@ const Creator = (props: IProps) => {
 
   const [creatorData, setCreatorData] = useState<definitions["profiles"]>();
 
+  //TODO add hover name to image
   return (
     <div className={"pt-16"}>
       {creatorData ? (
-        <div>
-          <h1>Poll Creator: {creatorData.username}</h1>
+        <div className={"text-center"}>
+          <h1 className={"text-primary"}>Poll Creator</h1>
           <Image
             src={creatorData.avatar_url}
             alt="Avatar of the poll creator"
@@ -55,4 +56,4 @@ const Creator = (props: IProps) => {
   );
 };
 
-export default Creator;
+export default VoteCreator;

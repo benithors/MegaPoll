@@ -1,6 +1,6 @@
 import React from "react";
-import Container from "../components/Container";
-import Heading from "../components/Heading";
+import Container from "../components/structure/Container";
+import Heading from "../components/generic/Heading";
 
 interface IProps {}
 
