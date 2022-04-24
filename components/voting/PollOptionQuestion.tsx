@@ -84,7 +84,7 @@ const PollOptionQuestion = (props: IProps) => {
       ))}
       <button
         className={
-          "btn btn-primary btn-sm mt-4 w-2/3 self-end md:w-1/4 " +
+          "btn btn-primary btn-sm mt-4 w-2/4 self-end md:w-1/4 " +
           (props.pollQ.voted && "invisible")
         }
         onClick={submitQuestion}

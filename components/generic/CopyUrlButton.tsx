@@ -9,7 +9,7 @@ const CopyUrlButton = () => {
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   return (
     <button
-      className={"" + (wiggleEffect && "animate-wiggle")}
+      className={"mr-8 " + (wiggleEffect && "animate-wiggle")}
       onClick={() => {
         navigator.clipboard.writeText(BASE_PATH + router.asPath);
         setWiggleEffect(true);

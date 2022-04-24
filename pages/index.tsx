@@ -46,15 +46,27 @@ function Home(props: IProps) {
   return (
     <Container>
       <Title firstPart={"Share Your"} secondPart={"Opinion"} />
-        <div
-            className={'self-center flex flex-row md:text-2xl '}>
+      <div
+        className={
+          "flex flex-col items-center self-center text-xl sm:text-2xl md:flex-row md:text-3xl"
+        }
+      >
+        <div>
+          <span>Free</span>
 
-                Free <div className={'bg-gradient-to-l from-secondary to-primary rounded mx-1 px-1'}>realtime polls</div> for you
-            <div className={'font-extrabold px-1'}>
-                and your community.
-            </div>
-
+          <span
+            className={
+              "mx-1 rounded bg-gradient-to-l from-secondary to-primary px-1"
+            }
+          >
+            realtime polls
+          </span>
         </div>
+        <div>
+          for you
+          <span className={"px-1 font-extrabold"}>and your community.</span>
+        </div>
+      </div>
       <button className="btn btn-accent mt-4 mb-8 self-center text-2xl md:mt-14">
         <Link href="/create-poll">CREATE A POLL</Link>
       </button>

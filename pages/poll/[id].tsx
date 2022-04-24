@@ -19,6 +19,7 @@ import {
 } from "../../lib/interfaces";
 import VoteCreator from "components/voting/VoteCreator";
 import CopyUrlButton from "../../components/generic/CopyUrlButton";
+import PaddingContainer from "../../components/structure/PaddingContainer";
 
 const Poll = () => {
   const { user } = useUser();
@@ -119,7 +120,7 @@ const Poll = () => {
 
   return (
     <Container>
-      <div className={"w-full md:px-20  md:pt-16"}>
+      <PaddingContainer className={""}>
         <div className={"flex flex-row justify-end"}>
           <CopyUrlButton />
         </div>
@@ -200,7 +201,7 @@ const Poll = () => {
             </div>
           </div>
         )}
-      </div>
+      </PaddingContainer>
       <div className={"mt-3 flex flex-row justify-center"}>
         <button
           onClick={() => createFromTemplate(pollData?.id, router)}
