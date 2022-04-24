@@ -17,7 +17,7 @@ const Title = (props: IProps) => {
       {props.secondPart && (
         <div
           className={
-            "bg-gradient-to-r from-secondary to-primary bg-clip-text text-8xl font-extrabold text-transparent"
+            "bg-gradient-to-r from-secondary to-primary bg-clip-text text-7xl md:text-8xl font-extrabold text-transparent"
           }
         >
           {props.secondPart}
