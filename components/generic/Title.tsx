@@ -13,8 +13,15 @@ const Title = (props: IProps) => {
       }
     >
       <div className={"text-primary"}>{props.firstPart} </div>
+
       {props.secondPart && (
-        <div className={"text-secondary"}>{props.secondPart}</div>
+        <div
+          className={
+            "bg-gradient-to-r from-secondary to-primary bg-clip-text text-8xl font-extrabold text-transparent"
+          }
+        >
+          {props.secondPart}
+        </div>
       )}
     </div>
   );

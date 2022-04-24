@@ -24,7 +24,6 @@ const PollOptionQuestion = (props: IProps) => {
     const pollOptions = props.pollQ.pollOptionsWrapper.filter(
       (value) => value.checkBox
     );
-    console.log(pollOptions, "all options");
     if (pollOptions.length === 0) {
       addToast("Select an option before submitting!", {
         appearance: "warning",
@@ -62,7 +61,6 @@ const PollOptionQuestion = (props: IProps) => {
         };
         insertDataArr.push(insertData);
       }
-      console.log(insertDataArr);
       await axios.post("/api/vote", insertDataArr);
       //TODO check for errors
     }
@@ -86,7 +84,7 @@ const PollOptionQuestion = (props: IProps) => {
       ))}
       <button
         className={
-          "btn btn-sm mt-4 w-2/3 self-center " +
+          "btn btn-primary btn-sm mt-4 w-2/3 self-end md:w-1/4 " +
           (props.pollQ.voted && "invisible")
         }
         onClick={submitQuestion}

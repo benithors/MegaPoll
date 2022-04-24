@@ -68,9 +68,6 @@ export async function createFromTemplate(id: number, router: NextRouter) {
     //todo bt add error for user
     return;
   }
-
-  console.log(data);
-
   router.push({
     pathname: "/poll/[id]",
     query: { id: data.toString() },

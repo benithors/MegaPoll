@@ -19,7 +19,6 @@ const CookieBar = () => {
 
     setShowCookieBar(false);
     setCookies("analytics-cookies-allowed", allowCookies);
-    console.log("allowcookies");
   }, [allowCookies]);
 
   return (

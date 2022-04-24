@@ -27,24 +27,24 @@ const PollPreviewCard = (props: IProps) => {
         >
           <CountUp end={props.poll.votes} duration={3} /> Votes
         </div>
-        <button>
-          <Link
-            href={{
-              pathname: "/poll/[id]",
-              query: { id: props.poll.poll_instance },
-            }}
-          >
+        <Link
+          href={{
+            pathname: "/poll/[id]",
+            query: { id: props.poll.poll_instance },
+          }}
+        >
+          <button className={"relative h-full w-full"}>
             <Image
               src={props.poll.cover_image}
               alt={props.poll.poll_description}
               objectFit={"cover"}
               layout={"fill"}
               className={
-                "rounded md:transform-gpu md:transition md:duration-300 md:ease-in-out md:hover:scale-125 md:hover:brightness-125 "
+                "rounded md:transform-gpu md:transition md:duration-300 md:hover:brightness-125 "
               }
             />
-          </Link>
-        </button>
+          </button>
+        </Link>
       </div>
       <div className="flex grow flex-col items-center text-center">
         <div className={"sm:grow"}>
@@ -57,7 +57,7 @@ const PollPreviewCard = (props: IProps) => {
             }
             className="btn glass mb-4 w-full"
           >
-            Copy template!
+            Start Fresh Poll!
           </button>
           <button
             onClick={() => props.openInstance(props.poll.poll_instance)}

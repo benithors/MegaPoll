@@ -89,6 +89,7 @@ const CreatePoll = () => {
               .getPublicUrl(path);
             coverImage = publicURL;
             if (isErrorWithMessage(error)) {
+              //todo add error handling
               console.log(error);
             }
           }
@@ -106,7 +107,6 @@ const CreatePoll = () => {
             params
           );
           if (isErrorWithMessage(createPollResp.error)) {
-            console.log(getErrorMessage(createPollResp.error));
             addToast("Something went wrong, try it again later!", {
               appearance: "error",
               autoDismiss: true,
@@ -128,7 +128,6 @@ const CreatePoll = () => {
         // The compression process is asynchronous,
         // which means you have to access the `result` in the `success` hook function.
         error(err) {
-          console.log("alarm" + err.message);
           addToast("Please only upload images!", {
             appearance: "warning",
             autoDismiss: true,
@@ -224,8 +223,6 @@ const CreatePoll = () => {
 
   function deleteEntry(providedIndex: number) {
     //check if there is at least one element left
-    console.log(providedIndex);
-    console.log(pollQuestionFormData.length, "length");
     if (providedIndex === 0) {
       //clear data at index 0
       setPollQuestionFormData((prevState) => {

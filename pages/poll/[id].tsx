@@ -18,6 +18,7 @@ import {
   IPollQuestionWrapper,
 } from "../../lib/interfaces";
 import VoteCreator from "components/voting/VoteCreator";
+import CopyUrlButton from "../../components/generic/CopyUrlButton";
 
 const Poll = () => {
   const { user } = useUser();
@@ -82,13 +83,6 @@ const Poll = () => {
         voted: value.voted,
         checkBox: false,
       });
-      let subTemp = supabaseClient
-        .from("poll_option_votes:id=eq." + value.poll_option_votes_id)
-        .on("UPDATE", (payload) => {
-          handleNewOptionsUpdate(payload);
-        })
-        .subscribe();
-      mySubscription.push(subTemp);
     });
 
     //check if the voter cookie has been set and if not create one
@@ -108,7 +102,6 @@ const Poll = () => {
     setOptionsData([...questionWrapper]);
   }
 
-  let mySubscription = [null];
   // load intial data and set up listeners
   //todo this could be reworked to only load the data once, right now it gets reloaded once the user is logged in
   useEffect(() => {
@@ -122,82 +115,15 @@ const Poll = () => {
     }
 
     loadData();
-
-    return () => {
-      mySubscription.forEach((sub) => {
-        supabaseClient.removeSubscription(sub).catch((e) => {
-          console.log("error removing subscription", e);
-        });
-      });
-    };
   }, [router.isReady, user]);
 
-  const handleNewOptionsUpdate = (payload: {
-    commit_timestamp?: string;
-    eventType?: "INSERT" | "UPDATE" | "DELETE";
-    schema?: string;
-    table?: string;
-    new: definitions["poll_option_votes"];
-    old?: any;
-    errors?: string[];
-  }) => {
-    setOptionsData((prevState) => {
-      let prevStatePollQuestionWrapper = prevState.slice();
-
-      let questionIdx = prevStatePollQuestionWrapper.findIndex(
-        (pollQuestionWrapper) =>
-          pollQuestionWrapper.pollOptionsWrapper.some(
-            (pollOptionWrapper) =>
-              pollOptionWrapper.pollOptionVotes.id === payload.new.id
-          )
-      );
-
-      let iPollQuestion = prevStatePollQuestionWrapper[questionIdx];
-      let optionIdx = iPollQuestion.pollOptionsWrapper.findIndex(
-        (optionWrapper) => optionWrapper.pollOptionVotes.id === payload.new.id
-      );
-
-      iPollQuestion.pollOptionsWrapper[optionIdx].pollOptionVotes = {
-        poll_option: payload.new.poll_option,
-        id: payload.new.id,
-        votes: payload.new.votes,
-        poll_instance: payload.new.poll_instance,
-        top_profile_1: payload.new.top_profile_1,
-        top_profile_2: payload.new.top_profile_2,
-        top_profile_3: payload.new.top_profile_3,
-      };
-      prevStatePollQuestionWrapper[questionIdx] = iPollQuestion;
-      return [...prevStatePollQuestionWrapper];
-    });
-  };
-
-  const [wiggleEffect, setWiggleEffect] = useState(false);
-  const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   return (
     <Container>
       <div className={"w-full md:px-20  md:pt-16"}>
-        <button
-          className={"" + (wiggleEffect && "animate-wiggle")}
-          onClick={() => {
-            navigator.clipboard.writeText(BASE_PATH + router.asPath);
-            setWiggleEffect(true);
-            setShowCopiedTooltip(true);
-          }}
-          onAnimationEnd={() => {
-            setWiggleEffect(false);
-          }}
-        >
-          <div
-            className={
-              showCopiedTooltip
-                ? "tooltip-open tooltip tooltip-accent"
-                : "tooltip"
-            }
-            data-tip={showCopiedTooltip ? "copied!" : "Copy URL"}
-          >
-            <IconCopy className={"stroke-accent"} size={40} />
-          </div>
-        </button>
+        <div className={"flex flex-row justify-end"}>
+          <CopyUrlButton />
+        </div>
+
         <div>
           <h1 className={"break-words text-5xl font-medium leading-tight"}>
             {pollData ? (
@@ -208,14 +134,6 @@ const Poll = () => {
               </div>
             )}
           </h1>
-          <div className={"mt-3"}>
-            <button
-              onClick={() => createFromTemplate(pollData?.id, router)}
-              className="btn btn-secondary mb-4 w-2/12"
-            >
-              Copy this into fresh vote!
-            </button>
-          </div>
 
           <h2 className={"pt-16 text-2xl font-medium italic leading-tight"}>
             {pollData ? (
@@ -282,6 +200,14 @@ const Poll = () => {
             </div>
           </div>
         )}
+      </div>
+      <div className={"mt-3 flex flex-row justify-center"}>
+        <button
+          onClick={() => createFromTemplate(pollData?.id, router)}
+          className="btn btn-accent mb-4 w-fit"
+        >
+          Restart Vote with new URL!
+        </button>
       </div>
 
       <div className={"self-center"}>

@@ -1,19 +1,20 @@
 import React from "react";
 import { definitions } from "../../types/database";
 
+import Image from "next/image";
 interface IProps {
   profile: definitions["profiles"];
 }
 
-//TODO replace with nextjs image alt and value
 function VoteBarProfile(props: IProps) {
   return (
-    <div className="tooltip" data-tip={props.profile.username}>
-      <div className="w-12">
-        <img
+    <div className="tooltip h-12 w-12" data-tip={props.profile.username}>
+      <div className="relative h-full w-full">
+        <Image
           className={"rounded-full"}
           src={props.profile.avatar_url}
-          alt={props.profile.username}
+          alt={"Creator of poll " + props.profile.username}
+          layout={"fill"}
         />
       </div>
     </div>
