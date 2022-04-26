@@ -11,7 +11,9 @@ FROM (SELECT vp.poll_template,
       FROM votes_per_poll_template_and_instance vp) v
          JOIN poll_templates pt ON v.poll_template = pt.id
 WHERE v.rank = 1
-ORDER BY v.votes DESC;
+ORDER BY v.votes DESC
+LIMIT 6;
+
 
 alter table front_page
     owner to postgres;
