@@ -28,17 +28,17 @@ const Footer = () => {
       <div>
         <div className="grid grid-flow-row gap-4 sm:grid-flow-col">
           <Link href="https://twitter.com/benithors" passHref={true}>
-            <a>
+            <a aria-label={"twitter to the creator of this website"}>
               <IconTwitter className={"stroke-2"} />
             </a>
           </Link>
           <Link href="https://github.com/benithors" passHref={true}>
-            <a>
+            <a aria-label={"github to the creator of this website"}>
               <IconGitHub className={"stroke-2"} />
             </a>
           </Link>
           <Link href="/contact">
-            <a>
+            <a aria-label={"e-mail to the creator of this website"}>
               <IconMail className={"stroke-2"} />
             </a>
           </Link>

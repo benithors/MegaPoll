@@ -27,7 +27,7 @@ const Header = (props: IProps) => {
         }
       >
         <Link href="/">
-          <button className={"ml-8 w-14"}>
+          <button className={"ml-8 w-14"} aria-label={"navigate home"}>
             <svg
               width="100%"
               viewBox="0 0 754 620"
@@ -59,11 +59,15 @@ const Header = (props: IProps) => {
             <Link href="/create-poll">CREATE POLL</Link>
           </button>
           <div className="dropdown-end dropdown ">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+            <button
+              aria-label={"user menu"}
+              tabIndex={0}
+              className="btn btn-ghost btn-circle avatar"
+            >
               {user ? (
                 <Image
                   src={user.user_metadata.avatar_url}
-                  alt="Picture of the author"
+                  alt="User"
                   width={75}
                   height={75}
                   className="rounded-full"
@@ -74,7 +78,7 @@ const Header = (props: IProps) => {
                   size={40}
                 />
               )}
-            </label>
+            </button>
 
             <ul
               tabIndex={0}

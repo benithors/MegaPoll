@@ -9,6 +9,7 @@ const CopyUrlButton = () => {
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   return (
     <button
+      aria-label={"Copy URL of the current page"}
       className={"mr-8 " + (wiggleEffect && "animate-wiggle")}
       onClick={() => {
         navigator.clipboard.writeText(BASE_PATH + router.asPath);
