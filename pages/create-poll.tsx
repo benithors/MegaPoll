@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
+import { IconArrowDownCircle, IconXCircle } from "@supabase/ui";
+import Image from "next/image";
 import CreatePollInput from "../components/CreatePollInput";
 import { isEmpty } from "../lib/stringUtils";
 import { Auth, useUser } from "@supabase/supabase-auth-helpers/react";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
-import { getErrorMessage, isErrorWithMessage } from "../lib/errorUtil";
+import { isErrorWithMessage } from "../lib/errorUtil";
 import { useRouter } from "next/router";
 import { useToasts } from "react-toast-notifications";
 import {
@@ -16,8 +18,9 @@ import { uuid } from "@supabase/gotrue-js/dist/main/lib/helpers";
 import Container from "../components/structure/Container";
 import { BASE_PATH } from "../lib/constants";
 import Title from "../components/generic/Title";
-import { IconXCircle } from "@supabase/ui";
 import Compressor from "compressorjs";
+import { useDropzone } from "react-dropzone";
+import { definitions } from "../types/database";
 
 const CreatePoll = () => {
   const [pollQuestionFormData, setPollQuestionFormData] = React.useState<
@@ -27,8 +30,52 @@ const CreatePoll = () => {
   const router = useRouter();
   const { addToast } = useToasts();
   const [pollName, setPollName] = React.useState<string>();
-  const [pollDescription, setPollDescription] = React.useState<string>();
   const [selectedImage, setSelectedImage] = React.useState(null);
+  const [selectedCategory, setSelectedCategory] = React.useState<string>();
+  const [allCategories, setAllCategories] =
+    React.useState<definitions["poll_categories"][]>();
+
+  async function loadCategories() {
+    let resp = await supabaseClient
+      .from<definitions["poll_categories"]>("poll_categories")
+      .select("*");
+    console.log(resp);
+    if (isErrorWithMessage(resp.error)) {
+      console.log(resp.error);
+    } else {
+      setAllCategories(resp.data);
+    }
+  }
+  useEffect(() => {
+    async function loadData() {
+      await loadCategories();
+    }
+
+    loadData();
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: ".jpg,.jpeg,.png",
+    maxSize: 5000000,
+    multiple: false,
+    onDrop: (acceptedFiles, fileRejections) => {
+      if (fileRejections[0]) {
+        fileRejections[0].errors.forEach((error) => {
+          addToast(error.message, { appearance: "error", autoDismiss: true });
+        });
+        return;
+      }
+      const file = acceptedFiles[0];
+      const compressor = new Compressor(file, {
+        quality: 0.5,
+        success(result) {
+          setSelectedImage(result);
+        },
+        error(err) {
+          console.log(err);
+        },
+      });
+    },
+  });
 
   function areQuestionsValid(
     iPollQuestionCreations: IPollQuestionCreation[]
@@ -55,14 +102,15 @@ const CreatePoll = () => {
       });
       return;
     }
-    if (!pollDescription) {
-      addToast("Poll description missing!", {
+    if (!selectedCategory) {
+      addToast("Category missing!", {
         appearance: "warning",
         autoDismiss: true,
       });
       return;
     }
     let copy = [];
+
     copyPoll(pollQuestionFormData, copy);
 
     copy = cleanPollQuestionCreation(copy);
@@ -78,62 +126,44 @@ const CreatePoll = () => {
 
     if (selectedImage) {
       const path = uuid();
-      new Compressor(selectedImage, {
-        async success(result) {
-          let uploadImageResp = await supabaseClient.storage
-            .from("pollimages")
-            .upload(path, result);
-          if (uploadImageResp.data) {
-            const { publicURL, error } = supabaseClient.storage
-              .from("pollimages")
-              .getPublicUrl(path);
-            coverImage = publicURL;
-            if (isErrorWithMessage(error)) {
-              //todo add error handling
-              console.log(error);
-            }
-          }
-          // Send the compressed image file to server with XMLHttpRequest.
-          const params = {
-            poll_name: pollName,
-            poll_description: pollDescription,
-            user_id: user.id,
-            cover_image: isEmpty(coverImage) ? null : coverImage,
-            poll_question_data: copy,
-          };
-          // eslint-disable-next-line no-redeclare
-          let createPollResp = await supabaseClient.rpc(
-            "fn_create_poll",
-            params
-          );
-          if (isErrorWithMessage(createPollResp.error)) {
-            addToast("Something went wrong, try it again later!", {
-              appearance: "error",
-              autoDismiss: true,
-            });
-          } else {
-            //clear session storage
-            sessionStorage.removeItem("pollQuestions");
-            sessionStorage.removeItem("pollName");
-            sessionStorage.removeItem("pollDescription");
-            sessionStorage.removeItem("selectedImage");
+      let uploadImageResp = await supabaseClient.storage
+        .from("pollimages")
+        .upload(path, selectedImage);
+      if (uploadImageResp.data) {
+        const { publicURL, error } = supabaseClient.storage
+          .from("pollimages")
+          .getPublicUrl(path);
+        coverImage = publicURL;
+        if (isErrorWithMessage(error)) {
+          //todo add error handling
+          console.log(error);
+        }
+      }
+    }
 
-            router.push({
-              pathname: "/poll/[id]",
-              query: { id: createPollResp.data },
-            });
-          }
-        },
-        quality: 0.5,
-        // The compression process is asynchronous,
-        // which means you have to access the `result` in the `success` hook function.
-        error(err) {
-          addToast("Please only upload images!", {
-            appearance: "warning",
-            autoDismiss: true,
-          });
-          return;
-        },
+    const params = {
+      poll_name: pollName,
+      poll_category: selectedCategory,
+      user_id: user.id,
+      cover_image: isEmpty(coverImage) ? null : coverImage,
+      poll_question_data: copy,
+    };
+    let createPollResp = await supabaseClient.rpc("fn_create_poll", params);
+    if (isErrorWithMessage(createPollResp.error)) {
+      addToast("Something went wrong, try it again later!", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    } else {
+      //clear session storage
+      sessionStorage.removeItem("pollQuestions");
+      sessionStorage.removeItem("pollName");
+      sessionStorage.removeItem("pollDescription");
+      sessionStorage.removeItem("selectedImage");
+
+      router.push({
+        pathname: "/poll/[id]",
+        query: { id: createPollResp.data },
       });
     }
   }
@@ -142,10 +172,6 @@ const CreatePoll = () => {
     //assign poll name from the session storage
     if (sessionStorage.getItem("pollName")) {
       setPollName(sessionStorage.getItem("pollName"));
-    }
-    //assign poll description from the session storage
-    if (sessionStorage.getItem("pollDescription")) {
-      setPollDescription(sessionStorage.getItem("pollDescription"));
     }
 
     //assign poll questions from the session storage
@@ -167,13 +193,6 @@ const CreatePoll = () => {
       sessionStorage.setItem("pollName", pollName);
     }
   }, [pollName]);
-
-  useEffect(() => {
-    //save pollDescription in session storage for later use
-    if (pollDescription) {
-      sessionStorage.setItem("pollDescription", pollDescription);
-    }
-  }, [pollDescription]);
 
   useEffect(() => {
     //save pollQuestions in session storage for later use
@@ -252,7 +271,7 @@ const CreatePoll = () => {
     <Container>
       <Title firstPart={"Share Your"} secondPart={"Questions"} />
 
-      <div className="form-control  md:flex md:flex-col md:items-center">
+      <div className="flex w-full flex-col items-center">
         <label className="label">
           <span className="label-text">Poll Name</span>
         </label>
@@ -261,43 +280,75 @@ const CreatePoll = () => {
           defaultValue={pollName || ""}
           onChange={(event) => setPollName(event.target.value)}
           placeholder="Give your Poll a name"
-          className="input-bordered input bg-opacity-30 md:w-2/3"
+          className="input-bordered input w-11/12 bg-opacity-30 md:w-2/3"
         />
+        <label className={"label"}>Category</label>
+        <select
+          defaultValue={"DEFAULT"}
+          onChange={(event) => setSelectedCategory(event.target.value)}
+          className="input-bordered input select w-11/12 bg-opacity-30 md:w-2/3"
+        >
+          <option className={"bg-primary-content"} disabled value={"DEFAULT"}>
+            Pick your Poll Category
+          </option>
 
-        <label className="label">
-          <span className="label-text">Describe the poll</span>
-        </label>
-        <textarea
-          defaultValue={pollDescription || ""}
-          className="textarea-bordered textarea h-24 bg-opacity-30 md:w-2/3"
-          onChange={(event) => setPollDescription(event.target.value)}
-          placeholder="Describe what the poll is about"
-        />
+          {allCategories &&
+            allCategories.map((category, index) => (
+              <option
+                className={"bg-primary-content"}
+                key={index}
+                value={category.id}
+              >
+                {category.name}
+              </option>
+            ))}
+        </select>
 
         <label className="label">
           <span className="label-text">Cover Image of the Poll</span>
         </label>
-        <input
-          type="file"
-          defaultValue={selectedImage || null}
-          onChange={(event) => setSelectedImage(event.target.files[0])}
-          name={"Cover Image"}
-        />
-        <div className={"w-2/3"}>
-          <img
-            src={selectedImage ? URL.createObjectURL(selectedImage) : null}
-            alt={selectedImage ? selectedImage.name : null}
-          />
-        </div>
+        <section
+          className={"flex w-full flex-row items-center justify-center "}
+        >
+          <div
+            className={
+              "input-bordered input  flex h-32 w-11/12 flex-row items-center justify-center bg-opacity-30 md:w-2/3 " +
+              (isDragActive && " border-accent")
+            }
+            {...getRootProps()}
+          >
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <IconArrowDownCircle
+                className={"animate-bounce stroke-accent stroke-2 shadow-2xl"}
+                size={40}
+              />
+            ) : (
+              <p>
+                Drag and drop your cover image here, or click to select image
+              </p>
+            )}
+          </div>
+        </section>
+
+        {selectedImage && (
+          <div className={"relative mt-3 h-full w-2/3"}>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              alt={"cover of the poll"}
+              className={
+                "rounded md:transform-gpu md:transition md:duration-300 md:hover:brightness-125 "
+              }
+            />
+          </div>
+        )}
         <div
-          className={
-            "divide-white-200 mt-16 flex h-fit flex-col divide-y md:w-2/3"
-          }
+          className={"divide-white-200  flex h-fit flex-col divide-y md:w-2/3"}
         >
           {pollQuestionFormData.map((value, index) => {
             return (
               <div key={index} className={"flex flex-row"}>
-                <div className="mb-8 flex flex-grow flex-col pt-5" key={index}>
+                <div className="mb-8 flex flex-grow flex-col pt-8">
                   <input
                     value={value.pollQuestion || ""}
                     onChange={(event) => increaseArraySize(index, event)}
@@ -324,7 +375,7 @@ const CreatePoll = () => {
                   </div>
                   <button
                     onClick={() => deleteEntry(index)}
-                    className={"absolute flex -translate-y-5 flex-col"}
+                    className={"absolute flex -translate-y-6 flex-col"}
                   >
                     <IconXCircle className={"stroke-red-500 stroke-2"} />
                   </button>
@@ -344,10 +395,10 @@ const CreatePoll = () => {
             </button>
           </div>
         ) : (
-          <div className={"flex flex-col"}>
-            <text>
-              You need to be logged in before creating a Poll {BASE_PATH}
-            </text>
+          <div className={"flex w-2/3 flex-col rounded bg-warning p-4"}>
+            <h1 className={"mb-4 text-center text-xl font-bold text-black"}>
+              You need to be logged in before creating a Poll
+            </h1>
             {error && <p>{error.message}</p>}
             <Auth
               redirectTo={BASE_PATH + router.pathname}

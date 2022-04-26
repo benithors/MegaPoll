@@ -57,23 +57,10 @@ const PollOptionVoters = (props: IProps) => {
     loadData();
   }, [props.pollOptionWrapper.pollOptionVotes.top_profile_2]);
 
-  function getVoteNumber() {
-    let votes = props.pollOptionWrapper.pollOptionVotes.votes;
-    if (profile1) {
-      votes -= 1;
-    }
-    if (profile2) {
-      votes -= 1;
-    }
-    if (profile3) {
-      votes -= 1;
-    }
-    return votes;
-  }
-
   function displayUserIcon() {
     if (props.pollOptionWrapper.voted) {
       if (props.user) {
+        //dont display the icon if the user icon is already displayed as top voter, otherwise we have duplicate icons
         if (
           (profile1 && profile1.id === props.user.id) ||
           (profile2 && profile2.id === props.user.id) ||
@@ -81,9 +68,11 @@ const PollOptionVoters = (props: IProps) => {
         ) {
           return false;
         } else {
+          //if user is logged in, but no top voter, display the user icon
           return true;
         }
       } else {
+        //if user is not logged in, but voted for something, display
         return true;
       }
     }
@@ -106,13 +95,11 @@ const PollOptionVoters = (props: IProps) => {
         </div>
       )}
 
-      {getVoteNumber() >= 1 && (
-        <div className="placeholder avatar">
-          <div className="h-12 w-12 rounded-full bg-neutral-focus text-neutral-content">
-            <span>+{getVoteNumber()}</span>
-          </div>
+      <div className="placeholder avatar">
+        <div className="text-2xs h-12 w-12 rounded-full bg-neutral-focus text-neutral-content">
+          {props.pollOptionWrapper.pollOptionVotes.votes}
         </div>
-      )}
+      </div>
     </div>
   );
 };

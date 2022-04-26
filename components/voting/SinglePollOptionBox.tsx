@@ -14,7 +14,7 @@ const SinglePollOptionBox = (props: IProps) => {
     //set checkbox to true
     props.setOptionsData((prevState) => {
       const newState = [...prevState];
-      if (props.multiPoll) {
+      if (!props.multiPoll) {
         newState[props.pollQuestionIndex].pollOptionsWrapper.forEach(
           (pollOption) => {
             pollOption.checkBox = false;
@@ -36,8 +36,8 @@ const SinglePollOptionBox = (props: IProps) => {
       className={
         "border-2 border-primary " +
         (props.multiPoll
-          ? "radio radio-md checked:radio-primary"
-          : "checkbox checkbox-md checked:checkbox-primary")
+          ? "checkbox checkbox-md checked:checkbox-primary"
+          : "radio radio-md checked:radio-primary")
       }
     />
   );

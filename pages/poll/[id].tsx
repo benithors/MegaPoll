@@ -9,8 +9,6 @@ import { useUser } from "@supabase/supabase-auth-helpers/react";
 import { isErrorWithMessage } from "../../lib/errorUtil";
 import { createFromTemplate } from "../../lib/pollUtil";
 import Title from "../../components/generic/Title";
-import { BASE_PATH } from "../../lib/constants";
-import { IconCopy } from "@supabase/ui";
 import PollOptionQuestion from "../../components/voting/PollOptionQuestion";
 import {
   IPollInstanceData,
@@ -135,16 +133,6 @@ const Poll = () => {
               </div>
             )}
           </h1>
-
-          <h2 className={"pt-16 text-2xl font-medium italic leading-tight"}>
-            {pollData ? (
-              pollData.poll_description
-            ) : (
-              <div className="w-2/3 animate-pulse">
-                <div className="h-6 rounded bg-slate-200" />
-              </div>
-            )}
-          </h2>
         </div>
 
         <div className="divider" />
@@ -207,7 +195,7 @@ const Poll = () => {
           onClick={() => createFromTemplate(pollData?.id, router)}
           className="btn btn-accent mb-4 w-fit"
         >
-          Restart Vote with new URL!
+          CLONE THIS POLL!
         </button>
       </div>
 
