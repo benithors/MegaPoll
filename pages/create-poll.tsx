@@ -343,7 +343,9 @@ const CreatePoll = () => {
           </div>
         )}
         <div
-          className={"divide-white-200  flex h-fit flex-col divide-y w-11/12 md:w-2/3"}
+          className={
+            "divide-white-200  flex h-fit w-11/12 flex-col divide-y md:w-2/3"
+          }
         >
           {pollQuestionFormData.map((value, index) => {
             return (
@@ -362,28 +364,28 @@ const CreatePoll = () => {
                     pollQuestionIndex={index}
                   />
                   <div className={"mt-4"}>
-                    <label className={'label w-fit '}>
+                    <label className={"label w-fit "}>
                       Are multiple answers allowed?
                       <input
-                          onChange={() => changeMultiPollState(index)}
-                          checked={pollQuestionFormData[index].multiPoll}
-                          type="checkbox"
-                          value={
-                            pollQuestionFormData[index].multiPoll ? "true" : "false"
-                          }
-                          className="checkbox-primary border-primary border-2 checkbox checkbox-md ml-4"
+                        onChange={() => changeMultiPollState(index)}
+                        checked={pollQuestionFormData[index].multiPoll}
+                        type="checkbox"
+                        value={
+                          pollQuestionFormData[index].multiPoll
+                            ? "true"
+                            : "false"
+                        }
+                        className="checkbox-primary checkbox checkbox-md ml-4 border-2 border-primary"
                       />
                     </label>
-
                   </div>
                   <button
                     onClick={() => deleteEntry(index)}
                     className={"absolute flex -translate-y-6 flex-col"}
-                    aria-label={'remove this question'}
+                    aria-label={"remove this question"}
                   >
                     <IconXCircle className={"stroke-red-500 stroke-2"} />
                   </button>
-
                 </div>
               </div>
             );

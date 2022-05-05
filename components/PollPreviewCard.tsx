@@ -57,7 +57,7 @@ const PollPreviewCard = (props: IProps) => {
             }
             className="btn glass mb-4 w-full"
           >
-            Start Fresh Poll!
+            Clone this Poll!
           </button>
           <button
             onClick={() => props.openInstance(props.poll.poll_instance)}
