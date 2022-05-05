@@ -8,7 +8,7 @@ import Container from "../components/structure/Container";
 import Title from "../components/generic/Title";
 import PaddingContainer from "../components/structure/PaddingContainer";
 import PollPreviewCard from "../components/PollPreviewCard";
-import {NextSeo} from "next-seo";
+import { NextSeo } from "next-seo";
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
@@ -46,31 +46,30 @@ function Home(props: IProps) {
 
   return (
     <Container>
-        <NextSeo
-            title="Socialpoll.me - Share your Polls"
-            description="Free realtime polls for you and your community"
-            robotsProps={{
-                nosnippet: true,
-                notranslate: false,
-                noimageindex: true,
-                noarchive: false,
-                maxSnippet: -1,
-                maxImagePreview: 'none',
-                maxVideoPreview: -1,
-            }}
-            twitter={{
-                handle: '@socialpollme',
-                site: '@socialpollme',
-                cardType: 'summary_large_image',
-            }}
-            openGraph={{
-                type: 'website',
-                locale: 'en_IE',
-                url: 'https://www.socialpoll.me/',
-                site_name: 'SocialPoll',
-            }}
-
-        />
+      <NextSeo
+        title="Socialpoll.me - Share your Polls"
+        description="Free realtime polls for you and your community"
+        robotsProps={{
+          nosnippet: true,
+          notranslate: false,
+          noimageindex: true,
+          noarchive: false,
+          maxSnippet: -1,
+          maxImagePreview: "none",
+          maxVideoPreview: -1,
+        }}
+        twitter={{
+          handle: "@socialpollme",
+          site: "@socialpollme",
+          cardType: "summary_large_image",
+        }}
+        openGraph={{
+          type: "website",
+          locale: "en_IE",
+          url: "https://www.socialpoll.me/",
+          site_name: "SocialPoll",
+        }}
+      />
       <Title firstPart={"Share Your"} secondPart={"Opinion"} />
       <div
         className={
