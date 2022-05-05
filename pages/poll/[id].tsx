@@ -19,6 +19,7 @@ import VoteCreator from "components/voting/VoteCreator";
 import CopyUrlButton from "../../components/generic/CopyUrlButton";
 import PaddingContainer from "../../components/structure/PaddingContainer";
 import { GoogleAdsenseContainer } from "../../components/generic/GoogleAdsenseContainer";
+import {NextSeo} from "next-seo";
 
 const Poll = () => {
   const { user } = useUser();
@@ -119,6 +120,30 @@ const Poll = () => {
 
   return (
     <Container>
+      <NextSeo
+          title={pollData.poll_name}
+          description="Socialpoll.me - Free realtime polls for you and your community"
+          robotsProps={{
+            nosnippet: true,
+            notranslate: false,
+            noimageindex: true,
+            noarchive: false,
+            maxSnippet: -1,
+            maxImagePreview: "none",
+            maxVideoPreview: -1,
+          }}
+          twitter={{
+            handle: "@socialpollme",
+            site: "@socialpollme",
+            cardType: "summary_large_image",
+          }}
+          openGraph={{
+            type: "website",
+            locale: "en_IE",
+            url: "https://www.socialpoll.me/",
+            site_name: "SocialPoll",
+          }}
+      />
       <PaddingContainer className={""}>
         <div className={"flex flex-row justify-end"}>
           <CopyUrlButton />
@@ -151,13 +176,11 @@ const Poll = () => {
                       pollQuestionIndex={index}
                     />
                   </div>
-                  {(optionsData.length === 1 || optionsData.length === 2) && (
-                    <GoogleAdsenseContainer></GoogleAdsenseContainer>
-                  )}
-
-                  {optionsData.length % 3 && (
-                    <GoogleAdsenseContainer></GoogleAdsenseContainer>
-                  )}
+                  {
+                  index === 0 || index % 3 === 0 && (
+                    <GoogleAdsenseContainer />
+                  )
+                  }
                 </>
               );
             })}
