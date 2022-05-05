@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
-import {checkCookies, getCookie, setCookies} from "cookies-next";
-export function enableGoogleAdsense () {
-    const head = document.getElementsByTagName('head')[0]
-    const scriptElement = document.createElement(`script`)
-    scriptElement.type = `text/javascript`
-    scriptElement.async
-    scriptElement.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`
-    scriptElement.crossOrigin = "anonymous"
-    head.appendChild(scriptElement);
+import { checkCookies, getCookie, setCookies } from "cookies-next";
+export function enableGoogleAdsense() {
+  const head = document.getElementsByTagName("head")[0];
+  const scriptElement = document.createElement(`script`);
+  scriptElement.type = `text/javascript`;
+  scriptElement.async;
+  scriptElement.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`;
+  scriptElement.crossOrigin = "anonymous";
+  head.appendChild(scriptElement);
 }
 
 const CookieBar = () => {
@@ -19,15 +19,13 @@ const CookieBar = () => {
     if (!checkCookies("analytics-cookies-allowed")) {
       setShowCookieBar(true);
       return;
-    }else{
-      if(getCookie("analytics-cookies-allowed") === true) {
+    } else {
+      if (getCookie("analytics-cookies-allowed") === true) {
         enableGoogleAdsense();
-          console.log('enabled ads')
+        console.log("enabled ads");
       }
     }
-
   }, []);
-
 
   useEffect(() => {
     if (allowCookies === null) {
@@ -72,7 +70,7 @@ const CookieBar = () => {
                 setAllowCookies(true);
                 enableGoogleAdsense();
 
-                  console.log('enabled ads')
+                console.log("enabled ads");
               }}
             >
               Accept Cookies

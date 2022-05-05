@@ -12,6 +12,11 @@ export interface PollOption {
   pollOption: definitions["poll_options"];
   checkBox: boolean;
 }
+declare global {
+  interface Window { adsbygoogle: any; }
+}
+
+window.adsbygoogle = window.adsbygoogle || {};
 
 export interface IPollQuestionWrapper {
   pollQuestion: definitions["poll_questions"];

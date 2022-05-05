@@ -34,8 +34,11 @@ export default function Document() {
           content="/static/favicons/browserconfig.xml"
           name="msapplication-config"
         />
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5057636178540526"
-                  crossOrigin="anonymous"></script>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5057636178540526"
+          crossOrigin="anonymous"
+        ></script>
       </Head>
       <body
         className={

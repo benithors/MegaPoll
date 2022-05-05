@@ -9,7 +9,7 @@ import Title from "../components/generic/Title";
 import PaddingContainer from "../components/structure/PaddingContainer";
 import PollPreviewCard from "../components/PollPreviewCard";
 import { NextSeo } from "next-seo";
-import {GoogleAdsenseContainer} from "../components/generic/GoogleAdsenseContainer";
+import { GoogleAdsenseContainer } from "../components/generic/GoogleAdsenseContainer";
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
@@ -97,7 +97,7 @@ function Home(props: IProps) {
         <Link href="/create-poll">CREATE A POLL</Link>
       </button>
 
-        <GoogleAdsenseContainer client={'ca-pub-5057636178540526'} />
+      <GoogleAdsenseContainer client={"ca-pub-5057636178540526"} />
       <PaddingContainer
         className={
           "grid w-full grid-cols-1 gap-4 self-center rounded-2xl  sm:grid-cols-2 md:w-11/12 md:pt-8 xl:grid-cols-3"
@@ -113,8 +113,6 @@ function Home(props: IProps) {
             />
           );
         })}
-
-
       </PaddingContainer>
     </Container>
   );
