@@ -68,15 +68,15 @@ function Home(props: IProps) {
           locale: "en_IE",
           url: "https://www.socialpoll.me/",
           site_name: "SocialPoll.me",
-            images: [
-                {
-                    url: 'https://pbs.twimg.com/profile_images/1522287055463714820/4TE0Pt3__400x400.jpg',
-                    width: 400,
-                    height: 400,
-                    alt: 'socialpoll.me',
-                    type: 'image/jpeg',
-                },
-        ],
+          images: [
+            {
+              url: "https://pbs.twimg.com/profile_images/1522287055463714820/4TE0Pt3__400x400.jpg",
+              width: 400,
+              height: 400,
+              alt: "socialpoll.me",
+              type: "image/jpeg",
+            },
+          ],
         }}
       />
       <Title firstPart={"Share Your"} secondPart={"Opinion"} />
