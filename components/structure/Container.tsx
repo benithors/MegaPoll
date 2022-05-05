@@ -33,7 +33,6 @@ const Container = (props: IProps) => {
 
       <Footer />
 
-      <CookieBar />
     </div>
   );
 };

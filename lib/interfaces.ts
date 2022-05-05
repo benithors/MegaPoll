@@ -13,7 +13,9 @@ export interface PollOption {
   checkBox: boolean;
 }
 declare global {
-  interface Window { adsbygoogle: any; }
+  interface Window {
+    adsbygoogle: any;
+  }
 }
 
 window.adsbygoogle = window.adsbygoogle || {};

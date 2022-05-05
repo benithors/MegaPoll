@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-interface Iprops {
-  client: string;
-}
-export function GoogleAdsenseContainer(props: Iprops) {
+
+export function GoogleAdsenseContainer() {
   useEffect(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
@@ -12,7 +10,7 @@ export function GoogleAdsenseContainer(props: Iprops) {
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
-        data-ad-client={props.client}
+        data-ad-client={'ca-pub-5057636178540526'}
         data-ad-format="auto"
         data-full-width-responsive="true"
       ></ins>

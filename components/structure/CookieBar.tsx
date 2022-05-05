@@ -21,7 +21,6 @@ const CookieBar = () => {
       return;
     } else {
       if (getCookie("analytics-cookies-allowed") === true) {
-        enableGoogleAdsense();
         console.log("enabled ads");
       }
     }
@@ -68,7 +67,6 @@ const CookieBar = () => {
               className="btn btn-secondary"
               onClick={() => {
                 setAllowCookies(true);
-                enableGoogleAdsense();
 
                 console.log("enabled ads");
               }}
