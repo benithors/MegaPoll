@@ -10,7 +10,7 @@ export function GoogleAdsenseContainer() {
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
-        data-ad-client={'ca-pub-5057636178540526'}
+        data-ad-client={"ca-pub-5057636178540526"}
         data-ad-format="auto"
         data-full-width-responsive="true"
       ></ins>

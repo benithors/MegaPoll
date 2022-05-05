@@ -18,7 +18,7 @@ import {
 import VoteCreator from "components/voting/VoteCreator";
 import CopyUrlButton from "../../components/generic/CopyUrlButton";
 import PaddingContainer from "../../components/structure/PaddingContainer";
-import {GoogleAdsenseContainer} from "../../components/generic/GoogleAdsenseContainer";
+import { GoogleAdsenseContainer } from "../../components/generic/GoogleAdsenseContainer";
 
 const Poll = () => {
   const { user } = useUser();
@@ -142,24 +142,23 @@ const Poll = () => {
           <div>
             {optionsData.map((pollQ: IPollQuestionWrapper, index: number) => {
               return (
-                  <>
+                <>
+                  <div key={index} className={"flex flex-col pb-12"}>
+                    <PollOptionQuestion
+                      setOptionsData={setOptionsData}
+                      user={user}
+                      pollQ={pollQ}
+                      pollQuestionIndex={index}
+                    />
+                  </div>
+                  {(optionsData.length === 1 || optionsData.length === 2) && (
+                    <GoogleAdsenseContainer></GoogleAdsenseContainer>
+                  )}
 
-                    <div key={index} className={"flex flex-col pb-12"}>
-                      <PollOptionQuestion
-                          setOptionsData={setOptionsData}
-                          user={user}
-                          pollQ={pollQ}
-                          pollQuestionIndex={index}
-                      />
-                    </div>
-                    {(optionsData.length === 1 || optionsData.length === 2) &&(
-                        <GoogleAdsenseContainer></GoogleAdsenseContainer>
-                    )}
-
-                    {(optionsData.length % 3) &&(
-                        <GoogleAdsenseContainer></GoogleAdsenseContainer>
-                    )}
-                  </>
+                  {optionsData.length % 3 && (
+                    <GoogleAdsenseContainer></GoogleAdsenseContainer>
+                  )}
+                </>
               );
             })}
           </div>

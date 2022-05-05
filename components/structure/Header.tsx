@@ -85,7 +85,6 @@ const Header = (props: IProps) => {
               className="menu-compact  dropdown-content menu w-52 bg-base-100 bg-neutral-content p-2 text-black shadow-2xl shadow"
             >
               {user ? (
-
                 <>
                   <li>
                     <button onClick={() => supabaseClient.auth.signOut()}>

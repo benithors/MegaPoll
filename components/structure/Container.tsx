@@ -32,7 +32,6 @@ const Container = (props: IProps) => {
       </main>
 
       <Footer />
-
     </div>
   );
 };
