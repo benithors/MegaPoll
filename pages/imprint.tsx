@@ -19,15 +19,12 @@ const imprint = (props: IProps) => {
         <div>
           Benjamin Thorstensen Bsc.
           <br />
-          Business purpose
-          <br />
-          IT Services
-          <br />
+          Business purpose: IT Services
         </div>
 
         <Heading>Contact</Heading>
         <div>
-          TODO Member of the Vienna Chamber of Commerce (Wirtschaftskammer Wien)
+           Member of the Vienna Chamber of Commerce (Wirtschaftskammer Wien)
         </div>
 
         <Heading>Professional Law</Heading>
@@ -58,8 +55,7 @@ const imprint = (props: IProps) => {
           the email mentioned above!
         </div>
 
-        <Heading>Recording of data on this website</Heading>
-        <div>Cookies TODO</div>
+
       </div>
     </Container>
   );

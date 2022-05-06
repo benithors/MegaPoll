@@ -37,11 +37,9 @@ const Footer = () => {
               <IconGitHub className={"stroke-2"} />
             </a>
           </Link>
-          <Link href="/contact">
-            <a aria-label={"e-mail to the creator of this website"}>
+            <a href="mailto:socialpoll.me@gmail.com" aria-label={"e-mail to the creator of this website"}>
               <IconMail className={"stroke-2"} />
             </a>
-          </Link>
         </div>
       </div>
       <div>
