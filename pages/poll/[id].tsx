@@ -138,7 +138,7 @@ const Poll = (props: IProps) => {
           noimageindex: true,
           noarchive: false,
           maxSnippet: -1,
-          maxImagePreview: "none",
+          maxImagePreview: "standard",
           maxVideoPreview: -1,
         }}
         twitter={{
@@ -158,7 +158,7 @@ const Poll = (props: IProps) => {
               height: 400,
               alt: props.pollTemplateData.poll_name,
               type: "image/jpeg",
-            },
+            }
           ],
         }}
       />

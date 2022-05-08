@@ -55,7 +55,7 @@ function Home(props: IProps) {
           noimageindex: true,
           noarchive: false,
           maxSnippet: -1,
-          maxImagePreview: "none",
+            maxImagePreview: "standard",
           maxVideoPreview: -1,
         }}
         twitter={{
