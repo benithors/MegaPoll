@@ -166,6 +166,15 @@ const Poll = (props: IProps) => {
                 locale: "en_IE",
                 url: "https://www.socialpoll.me/",
                 site_name: "SocialPoll",
+                images: [
+                  {
+                    width: 400,
+                    url: props.pollTemplateData.cover_image,
+                    height: 400,
+                    alt: props.pollTemplateData.poll_name,
+                    type: "image/jpeg",
+                  },
+                ],
               }}
             />
 
