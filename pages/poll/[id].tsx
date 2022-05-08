@@ -20,40 +20,38 @@ import CopyUrlButton from "../../components/generic/CopyUrlButton";
 import PaddingContainer from "../../components/structure/PaddingContainer";
 import { GoogleAdsenseContainer } from "../../components/generic/GoogleAdsenseContainer";
 import { NextSeo } from "next-seo";
-import {GetServerSideProps} from "next";
+import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-
   const id = context.query.id as string;
   const pollInstanceData = await supabaseClient
-      .from<definitions["poll_instances"]>("poll_instances")
-      .select("*")
-      .eq("id", id as string)
-      .single();
+    .from<definitions["poll_instances"]>("poll_instances")
+    .select("*")
+    .eq("id", id as string)
+    .single();
   const pollTemplateData = await supabaseClient
-      .from<definitions["poll_templates"]>("poll_templates")
-      .select("*")
-      .eq("id", pollInstanceData.data.poll_template)
-      .single();
+    .from<definitions["poll_templates"]>("poll_templates")
+    .select("*")
+    .eq("id", pollInstanceData.data.poll_template)
+    .single();
 
   return {
     props: {
-      pollTemplateData:pollTemplateData.data,
+      pollTemplateData: pollTemplateData.data,
       pollInstanceData: pollTemplateData.data,
     },
-  }
-}
+  };
+};
 interface IProps {
   pollTemplateData: definitions["poll_templates"];
   pollInstanceData: definitions["poll_instances"];
 }
-const Poll = (props:IProps) => {
+const Poll = (props: IProps) => {
   const { user } = useUser();
   const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(null);
   const router = useRouter();
 
   async function loadInitialOptionData() {
-
     const allQuestions = await supabaseClient
       .from<definitions["poll_questions"]>("poll_questions")
       .select("*")
@@ -65,7 +63,7 @@ const Poll = (props:IProps) => {
       setCookies("voter", uuidv4());
     }
 
-    const iPollRpcInstanceData= await supabaseClient.rpc<IPollInstanceData>(
+    const iPollRpcInstanceData = await supabaseClient.rpc<IPollInstanceData>(
       "get_poll_instance_data",
       {
         provided_poll_instance: router.query.id,
@@ -99,7 +97,6 @@ const Poll = (props:IProps) => {
       });
     });
 
-
     for (const pollQuestion of allQuestions.data) {
       let wrappers = pollOptionWrapper.filter(
         (value) => value.pollOption.poll_question === pollQuestion.id
@@ -132,7 +129,6 @@ const Poll = (props:IProps) => {
 
   return (
     <Container>
-
       <PaddingContainer className={""}>
         <div className={"flex flex-row justify-end"}>
           <CopyUrlButton />
@@ -140,59 +136,58 @@ const Poll = (props:IProps) => {
 
         <div>
           <h1 className={"break-words text-5xl font-medium leading-tight"}>
-              <Title firstPart={props.pollTemplateData.poll_name} />
-
+            <Title firstPart={props.pollTemplateData.poll_name} />
           </h1>
         </div>
 
         <div className="divider" />
 
         {optionsData ? (
-           <>
-             <NextSeo
-                 title={props.pollTemplateData.poll_name}
-                 description="Socialpoll.me - Free realtime polls for you and your community"
-                 robotsProps={{
-                   nosnippet: true,
-                   notranslate: false,
-                   noimageindex: true,
-                   noarchive: false,
-                   maxSnippet: -1,
-                   maxImagePreview: "none",
-                   maxVideoPreview: -1,
-                 }}
-                 twitter={{
-                   handle: "@socialpollme",
-                   site: "@socialpollme",
-                   cardType: "summary_large_image",
-                 }}
-                 openGraph={{
-                   type: "website",
-                   locale: "en_IE",
-                   url: "https://www.socialpoll.me/",
-                   site_name: "SocialPoll",
-                 }}
-             />
+          <>
+            <NextSeo
+              title={props.pollTemplateData.poll_name}
+              description="Socialpoll.me - Free realtime polls for you and your community"
+              robotsProps={{
+                nosnippet: true,
+                notranslate: false,
+                noimageindex: true,
+                noarchive: false,
+                maxSnippet: -1,
+                maxImagePreview: "none",
+                maxVideoPreview: -1,
+              }}
+              twitter={{
+                handle: "@socialpollme",
+                site: "@socialpollme",
+                cardType: "summary_large_image",
+              }}
+              openGraph={{
+                type: "website",
+                locale: "en_IE",
+                url: "https://www.socialpoll.me/",
+                site_name: "SocialPoll",
+              }}
+            />
 
-             <div>
-               {optionsData.map((pollQ: IPollQuestionWrapper, index: number) => {
-                 return (
-                     <div key={index}>
-                       <div  className={"flex flex-col pb-12"}>
-                         <PollOptionQuestion
-                             setOptionsData={setOptionsData}
-                             user={user}
-                             pollQ={pollQ}
-                             pollQuestionIndex={index}
-                         />
-                       </div>
-                       {index === 0 ||
-                           (index % 3 === 0 && <GoogleAdsenseContainer />)}
-                     </div>
-                 );
-               })}
-             </div>
-           </>
+            <div>
+              {optionsData.map((pollQ: IPollQuestionWrapper, index: number) => {
+                return (
+                  <div key={index}>
+                    <div className={"flex flex-col pb-12"}>
+                      <PollOptionQuestion
+                        setOptionsData={setOptionsData}
+                        user={user}
+                        pollQ={pollQ}
+                        pollQuestionIndex={index}
+                      />
+                    </div>
+                    {index === 0 ||
+                      (index % 3 === 0 && <GoogleAdsenseContainer />)}
+                  </div>
+                );
+              })}
+            </div>
+          </>
         ) : (
           <div className="w-full animate-pulse ">
             <div className="h-5 w-2/4 rounded bg-slate-200 pt-12" />
@@ -241,7 +236,7 @@ const Poll = (props:IProps) => {
       </div>
 
       <div className={"self-center"}>
-         <VoteCreator creator={props.pollTemplateData.creator} />
+        <VoteCreator creator={props.pollTemplateData.creator} />
       </div>
     </Container>
   );

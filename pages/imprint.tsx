@@ -24,7 +24,7 @@ const imprint = (props: IProps) => {
 
         <Heading>Contact</Heading>
         <div>
-           Member of the Vienna Chamber of Commerce (Wirtschaftskammer Wien)
+          Member of the Vienna Chamber of Commerce (Wirtschaftskammer Wien)
         </div>
 
         <Heading>Professional Law</Heading>
@@ -54,8 +54,6 @@ const imprint = (props: IProps) => {
           any problematic or illegal content, please contact me immediately at
           the email mentioned above!
         </div>
-
-
       </div>
     </Container>
   );
