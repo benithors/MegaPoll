@@ -129,6 +129,39 @@ const Poll = (props: IProps) => {
 
   return (
     <Container>
+      <NextSeo
+        title={props.pollTemplateData.poll_name}
+        description="Socialpoll.me - Free realtime polls for you and your community"
+        robotsProps={{
+          nosnippet: true,
+          notranslate: false,
+          noimageindex: true,
+          noarchive: false,
+          maxSnippet: -1,
+          maxImagePreview: "none",
+          maxVideoPreview: -1,
+        }}
+        twitter={{
+          handle: "@socialpollme",
+          site: "@socialpollme",
+          cardType: "summary_large_image",
+        }}
+        openGraph={{
+          type: "website",
+          locale: "en_IE",
+          url: "https://www.socialpoll.me/poll/" + props.pollInstanceData.id,
+          site_name: "SocialPoll",
+          images: [
+            {
+              width: 400,
+              url: props.pollTemplateData.cover_image,
+              height: 400,
+              alt: props.pollTemplateData.poll_name,
+              type: "image/jpeg",
+            },
+          ],
+        }}
+      />
       <PaddingContainer className={""}>
         <div className={"flex flex-row justify-end"}>
           <CopyUrlButton />
@@ -144,40 +177,6 @@ const Poll = (props: IProps) => {
 
         {optionsData ? (
           <>
-            <NextSeo
-              title={props.pollTemplateData.poll_name}
-              description="Socialpoll.me - Free realtime polls for you and your community"
-              robotsProps={{
-                nosnippet: true,
-                notranslate: false,
-                noimageindex: true,
-                noarchive: false,
-                maxSnippet: -1,
-                maxImagePreview: "none",
-                maxVideoPreview: -1,
-              }}
-              twitter={{
-                handle: "@socialpollme",
-                site: "@socialpollme",
-                cardType: "summary_large_image",
-              }}
-              openGraph={{
-                type: "website",
-                locale: "en_IE",
-                url: "https://www.socialpoll.me/",
-                site_name: "SocialPoll",
-                images: [
-                  {
-                    width: 400,
-                    url: props.pollTemplateData.cover_image,
-                    height: 400,
-                    alt: props.pollTemplateData.poll_name,
-                    type: "image/jpeg",
-                  },
-                ],
-              }}
-            />
-
             <div>
               {optionsData.map((pollQ: IPollQuestionWrapper, index: number) => {
                 return (
