@@ -158,7 +158,7 @@ const Poll = (props: IProps) => {
               height: 400,
               alt: props.pollTemplateData.poll_name,
               type: "image/jpeg",
-            }
+            },
           ],
         }}
       />
