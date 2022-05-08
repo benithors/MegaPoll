@@ -20,31 +20,44 @@ import CopyUrlButton from "../../components/generic/CopyUrlButton";
 import PaddingContainer from "../../components/structure/PaddingContainer";
 import { GoogleAdsenseContainer } from "../../components/generic/GoogleAdsenseContainer";
 import { NextSeo } from "next-seo";
+import {GetServerSideProps} from "next";
 
-const Poll = () => {
-  const { user } = useUser();
-  const [pollData, setPollData] = useState<definitions["poll_templates"]>(null);
-  const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(null);
-  const router = useRouter();
+export const getServerSideProps: GetServerSideProps = async (context) => {
 
-  async function loadInitialOptionData() {
-    const { id } = router.query;
-    const pollInstanceData = await supabaseClient
+  const id = context.query.id as string;
+  const pollInstanceData = await supabaseClient
       .from<definitions["poll_instances"]>("poll_instances")
       .select("*")
       .eq("id", id as string)
       .single();
-    const pollTemplateData = await supabaseClient
+  const pollTemplateData = await supabaseClient
       .from<definitions["poll_templates"]>("poll_templates")
       .select("*")
       .eq("id", pollInstanceData.data.poll_template)
       .single();
-    setPollData(pollTemplateData.data);
-    //first we get the question
+
+  return {
+    props: {
+      pollTemplateData:pollTemplateData.data,
+      pollInstanceData: pollTemplateData.data,
+    },
+  }
+}
+interface IProps {
+  pollTemplateData: definitions["poll_templates"];
+  pollInstanceData: definitions["poll_instances"];
+}
+const Poll = (props:IProps) => {
+  const { user } = useUser();
+  const [optionsData, setOptionsData] = useState<IPollQuestionWrapper[]>(null);
+  const router = useRouter();
+
+  async function loadInitialOptionData() {
+
     const allQuestions = await supabaseClient
       .from<definitions["poll_questions"]>("poll_questions")
       .select("*")
-      .eq("poll_template", pollTemplateData.data.id);
+      .eq("poll_template", props.pollInstanceData.id);
 
     let questionWrapper: IPollQuestionWrapper[] = [];
 
@@ -52,7 +65,7 @@ const Poll = () => {
       setCookies("voter", uuidv4());
     }
 
-    const { data, error } = await supabaseClient.rpc<IPollInstanceData>(
+    const iPollRpcInstanceData= await supabaseClient.rpc<IPollInstanceData>(
       "get_poll_instance_data",
       {
         provided_poll_instance: router.query.id,
@@ -60,12 +73,12 @@ const Poll = () => {
         provided_profile: user ? user.id : null,
       }
     );
-    if (isErrorWithMessage(error)) {
-      console.log(error);
+    if (isErrorWithMessage(iPollRpcInstanceData.error)) {
+      console.log(iPollRpcInstanceData.error);
     }
 
     let pollOptionWrapper: IPollOptionWrapper[] = [];
-    data.forEach((value) => {
+    iPollRpcInstanceData.data.forEach((value) => {
       pollOptionWrapper.push({
         pollOptionVotes: {
           id: value.poll_option_votes_id,
@@ -86,7 +99,6 @@ const Poll = () => {
       });
     });
 
-    //check if the voter cookie has been set and if not create one
 
     for (const pollQuestion of allQuestions.data) {
       let wrappers = pollOptionWrapper.filter(
@@ -128,13 +140,8 @@ const Poll = () => {
 
         <div>
           <h1 className={"break-words text-5xl font-medium leading-tight"}>
-            {pollData ? (
-              <Title firstPart={pollData.poll_name} />
-            ) : (
-              <div className="w-3/4 animate-pulse">
-                <div className="h-16 rounded bg-slate-200" />
-              </div>
-            )}
+              <Title firstPart={props.pollTemplateData.poll_name} />
+
           </h1>
         </div>
 
@@ -143,7 +150,7 @@ const Poll = () => {
         {optionsData ? (
            <>
              <NextSeo
-                 title={pollData.poll_name}
+                 title={props.pollTemplateData.poll_name}
                  description="Socialpoll.me - Free realtime polls for you and your community"
                  robotsProps={{
                    nosnippet: true,
@@ -170,8 +177,8 @@ const Poll = () => {
              <div>
                {optionsData.map((pollQ: IPollQuestionWrapper, index: number) => {
                  return (
-                     <>
-                       <div key={index} className={"flex flex-col pb-12"}>
+                     <div key={index}>
+                       <div  className={"flex flex-col pb-12"}>
                          <PollOptionQuestion
                              setOptionsData={setOptionsData}
                              user={user}
@@ -181,7 +188,7 @@ const Poll = () => {
                        </div>
                        {index === 0 ||
                            (index % 3 === 0 && <GoogleAdsenseContainer />)}
-                     </>
+                     </div>
                  );
                })}
              </div>
@@ -226,7 +233,7 @@ const Poll = () => {
       </PaddingContainer>
       <div className={"mt-3 flex flex-row justify-center"}>
         <button
-          onClick={() => createFromTemplate(pollData?.id, router)}
+          onClick={() => createFromTemplate(props.pollTemplateData.id, router)}
           className="btn btn-accent mb-4 w-fit"
         >
           CLONE THIS POLL!
@@ -234,7 +241,7 @@ const Poll = () => {
       </div>
 
       <div className={"self-center"}>
-        {pollData && <VoteCreator creator={pollData.creator} />}
+         <VoteCreator creator={props.pollTemplateData.creator} />
       </div>
     </Container>
   );
