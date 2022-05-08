@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       pollTemplateData: pollTemplateData.data,
-      pollInstanceData: pollTemplateData.data,
+      pollInstanceData: pollInstanceData.data,
     },
   };
 };
@@ -55,7 +55,7 @@ const Poll = (props: IProps) => {
     const allQuestions = await supabaseClient
       .from<definitions["poll_questions"]>("poll_questions")
       .select("*")
-      .eq("poll_template", props.pollInstanceData.id);
+      .eq("poll_template", props.pollTemplateData.id);
 
     let questionWrapper: IPollQuestionWrapper[] = [];
 
