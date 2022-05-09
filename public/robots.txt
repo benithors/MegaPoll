@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://socialpoll.me
+
+# Sitemaps
+Sitemap: https://socialpoll.me/sitemap.xml
