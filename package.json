@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "sitemap": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "cypress": "cypress open",
     "lint": "next lint",
@@ -49,6 +50,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
+    "next-sitemap": "^2.5.20",
     "prettier": "2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.8",
     "tailwindcss": "^3.0.13",
