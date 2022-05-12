@@ -1,23 +1,30 @@
-// pages/server-sitemap-index.xml/index.tsx
-import { getServerSideSitemapIndex } from "next-sitemap";
+import { getServerSideSitemap } from "next-sitemap";
 import { GetServerSideProps } from "next";
 import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 import { definitions } from "../../types/database";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const addSiteMaps = [];
+  // Method to source urls from cms
+  // const urls = await fetch('https//example.com/api')
+
+  const fields = [];
   const { data, error } = await supabaseClient
     .from<definitions["sitemap"]>("front_page")
     .select("*");
 
   if (data) {
     data.forEach((page) => {
-      addSiteMaps.push("https://socialpoll.me/poll/" + page.poll_instance);
+      fields.push({
+        loc: "https://socialpoll.me/poll/" + page.poll_instance, // Absolute url
+        lastmod: new Date().toISOString(),
+        // changefreq
+        // priority
+      });
     });
   }
 
-  return getServerSideSitemapIndex(ctx, addSiteMaps);
+  return getServerSideSitemap(ctx, fields);
 };
 
 // Default export to prevent next.js errors
-export default function SitemapIndex() {}
+export default function Sitemap() {}
