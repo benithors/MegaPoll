@@ -910,6 +910,39 @@ export interface paths {
       };
     };
   };
+  "/sitemap": {
+    get: {
+      parameters: {
+        query: {
+          poll_instance?: parameters["rowFilter.sitemap.poll_instance"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["sitemap"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
   "/votes_per_poll_template_and_instance": {
     get: {
       parameters: {
@@ -1229,6 +1262,14 @@ export interface definitions {
     /** Format: bigint */
     followers?: number;
   };
+  sitemap: {
+    /**
+     * Format: character varying
+     * @description Note:
+     * This is a Foreign Key to `poll_instances.id`.<fk table='poll_instances' column='id'/>
+     */
+    poll_instance?: string;
+  };
   votes_per_poll_template_and_instance: {
     /**
      * Format: character varying
@@ -1380,6 +1421,10 @@ export interface parameters {
   "rowFilter.profiles_extended.id": string;
   /** Format: bigint */
   "rowFilter.profiles_extended.followers": string;
+  /** @description sitemap */
+  "body.sitemap": definitions["sitemap"];
+  /** Format: character varying */
+  "rowFilter.sitemap.poll_instance": string;
   /** @description votes_per_poll_template_and_instance */
   "body.votes_per_poll_template_and_instance": definitions["votes_per_poll_template_and_instance"];
   /** Format: character varying */

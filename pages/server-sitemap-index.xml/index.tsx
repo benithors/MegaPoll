@@ -7,7 +7,7 @@ import { definitions } from "../../types/database";
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const addSiteMaps = [];
   const { data, error } = await supabaseClient
-    .from<definitions["front_page"]>("front_page")
+    .from<definitions["sitemap"]>("front_page")
     .select("*");
 
   if (data) {
