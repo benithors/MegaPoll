@@ -7,4 +7,4 @@ Host: https://socialpoll.me
 
 # Sitemaps
 Sitemap: https://socialpoll.me/sitemap.xml
-Sitemap: https://socialpoll.me/server-sitemap-index.xml
+Sitemap: https://socialpoll.me/server-sitemap.xml
