@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   if (data) {
     data.forEach((page) => {
-      addSiteMaps.push("https://socialpoll.me/" + page.poll_instance);
+      addSiteMaps.push("https://socialpoll.me/poll/" + page.poll_instance);
     });
   }
 
