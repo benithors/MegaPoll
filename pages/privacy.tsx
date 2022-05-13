@@ -26,9 +26,6 @@ const privacy = (props: IProps) => {
           In this privacy statement, you will learn which personal data we
           process on our websites and apps, in what way and for what purpose. We
           also inform you about your rights as a data subject.
-          <br />
-          This data privacy statement applies to the online offers and apps of
-          ORF and its subsidiaries and the associated services and functions.
         </InformationContainer>
 
         <InformationContainer
@@ -50,7 +47,7 @@ const privacy = (props: IProps) => {
           Personal data also includes data that only in combination with other
           data, often of another data processor, allow the identification of a
           person, e.g. your IP address in combination with a time when you were
-          online. <br />
+          online. <br/>
         </InformationContainer>
 
         <InformationContainer title={"Data Processing"}>
