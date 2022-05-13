@@ -47,7 +47,7 @@ const privacy = (props: IProps) => {
           Personal data also includes data that only in combination with other
           data, often of another data processor, allow the identification of a
           person, e.g. your IP address in combination with a time when you were
-          online. <br/>
+          online. <br />
         </InformationContainer>
 
         <InformationContainer title={"Data Processing"}>
