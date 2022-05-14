@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
-import { definitions } from "../../types/database";
-import { checkCookies, getCookie, setCookies } from "cookies-next";
-import { v4 as uuidv4 } from "uuid";
-import Container from "../../components/structure/Container";
-import { useRouter } from "next/router";
-import { useUser } from "@supabase/supabase-auth-helpers/react";
-import { isErrorWithMessage } from "../../lib/errorUtil";
-import { createFromTemplate } from "../../lib/pollUtil";
-import Title from "../../components/generic/Title";
-import PollOptionQuestion from "../../components/voting/PollOptionQuestion";
+import React, { useEffect, useState } from 'react';
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
+import { definitions } from '../../types/database';
+import { checkCookies, getCookie, setCookies } from 'cookies-next';
+import { v4 as uuidv4 } from 'uuid';
+import Container from '../../components/structure/Container';
+import { useRouter } from 'next/router';
+import { useUser } from '@supabase/supabase-auth-helpers/react';
+import { isErrorWithMessage } from '../../lib/errorUtil';
+import { createFromTemplate } from '../../lib/pollUtil';
+import Title from '../../components/generic/Title';
+import PollOptionQuestion from '../../components/voting/PollOptionQuestion';
 import {
   IPollInstanceData,
   IPollOptionWrapper,
-  IPollQuestionWrapper,
-} from "../../lib/interfaces";
-import VoteCreator from "components/voting/VoteCreator";
-import CopyUrlButton from "../../components/generic/CopyUrlButton";
-import PaddingContainer from "../../components/structure/PaddingContainer";
-import { NextSeo } from "next-seo";
-import { GetServerSideProps } from "next";
+  IPollQuestionWrapper
+} from '../../lib/interfaces';
+import VoteCreator from 'components/voting/VoteCreator';
+import CopyUrlButton from '../../components/generic/CopyUrlButton';
+import PaddingContainer from '../../components/structure/PaddingContainer';
+import { NextSeo } from 'next-seo';
+import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id as string;
   const pollData = await supabaseClient
-    .from<definitions["poll_data"]>("poll_data")
-    .select("*")
-    .eq("poll_instance_id", id as string)
+    .from<definitions['poll_data']>('poll_data')
+    .select('*')
+    .eq('poll_instance_id', id)
     .single();
 
   return {
     props: {
-      pollData: pollData.data,
-    },
+      pollData: pollData.data
+    }
   };
 };
 interface IProps {
-  pollData: definitions["poll_data"];
+  pollData: definitions['poll_data'];
 }
 const Poll = (props: IProps) => {
   const { user } = useUser();
@@ -45,22 +45,22 @@ const Poll = (props: IProps) => {
 
   async function loadInitialOptionData() {
     const allQuestions = await supabaseClient
-      .from<definitions["poll_questions"]>("poll_questions")
-      .select("*")
-      .eq("poll_template", props.pollData.poll_template_id);
+      .from<definitions['poll_questions']>('poll_questions')
+      .select('*')
+      .eq('poll_template', props.pollData.poll_template_id);
 
     let questionWrapper: IPollQuestionWrapper[] = [];
 
-    if (!checkCookies("voter")) {
-      setCookies("voter", uuidv4());
+    if (!checkCookies('voter')) {
+      setCookies('voter', uuidv4());
     }
 
     const iPollRpcInstanceData = await supabaseClient.rpc<IPollInstanceData>(
-      "get_poll_instance_data",
+      'get_poll_instance_data',
       {
         provided_poll_instance: router.query.id,
-        provided_cookie: getCookie("voter"),
-        provided_profile: user ? user.id : null,
+        provided_cookie: getCookie('voter'),
+        provided_profile: user ? user.id : null
       }
     );
     if (isErrorWithMessage(iPollRpcInstanceData.error)) {
@@ -77,15 +77,15 @@ const Poll = (props: IProps) => {
           votes: value.poll_option_votes_votes,
           top_profile_1: value.top_profile_1,
           top_profile_2: value.top_profile_2,
-          top_profile_3: value.top_profile_3,
+          top_profile_3: value.top_profile_3
         },
         pollOption: {
           option: value.option,
           id: value.poll_option_id,
-          poll_question: value.poll_question,
+          poll_question: value.poll_question
         },
         voted: value.voted,
-        checkBox: false,
+        checkBox: false
       });
     });
 
@@ -96,7 +96,7 @@ const Poll = (props: IProps) => {
       const pollQuestionTemp: IPollQuestionWrapper = {
         pollOptionsWrapper: wrappers,
         pollQuestion: pollQuestion,
-        voted: wrappers.some((value) => value.voted),
+        voted: wrappers.some((value) => value.voted)
       };
       questionWrapper.push(pollQuestionTemp);
     }
@@ -130,37 +130,38 @@ const Poll = (props: IProps) => {
           noimageindex: true,
           noarchive: false,
           maxSnippet: -1,
-          maxImagePreview: "standard",
-          maxVideoPreview: -1,
+          maxImagePreview: 'standard',
+          maxVideoPreview: -1
         }}
         twitter={{
-          handle: "@socialpollme",
-          site: "@socialpollme",
-          cardType: "summary_large_image",
+          handle: '@socialpollme',
+          site: '@socialpollme',
+          cardType: 'summary_large_image'
         }}
         openGraph={{
-          type: "website",
-          locale: "en_IE",
-          url: "https://www.socialpoll.me/poll/" + props.pollData.poll_instance_id,
-          site_name: "SocialPoll",
+          type: 'website',
+          locale: 'en_IE',
+          url:
+            'https://www.socialpoll.me/poll/' + props.pollData.poll_instance_id,
+          site_name: 'SocialPoll',
           images: [
             {
               width: 400,
               url: props.pollData.cover_image,
               height: 400,
               alt: props.pollData.poll_name,
-              type: "image/jpeg",
-            },
-          ],
+              type: 'image/jpeg'
+            }
+          ]
         }}
       />
-      <PaddingContainer className={""}>
-        <div className={"flex flex-row justify-end"}>
+      <PaddingContainer className={''}>
+        <div className={'flex flex-row justify-end'}>
           <CopyUrlButton />
         </div>
 
         <div>
-          <h1 className={"break-words text-5xl font-medium leading-tight"}>
+          <h1 className={'break-words text-5xl font-medium leading-tight'}>
             <Title firstPart={props.pollData.poll_name} />
           </h1>
         </div>
@@ -173,7 +174,7 @@ const Poll = (props: IProps) => {
               {optionsData.map((pollQ: IPollQuestionWrapper, index: number) => {
                 return (
                   <div key={index}>
-                    <div className={"flex flex-col pb-12"}>
+                    <div className={'flex flex-col pb-12'}>
                       <PollOptionQuestion
                         setOptionsData={setOptionsData}
                         user={user}
@@ -189,15 +190,15 @@ const Poll = (props: IProps) => {
         ) : (
           <div className="w-full animate-pulse ">
             <div className="h-5 w-2/4 rounded bg-slate-200 pt-12" />
-            <div className={"ml-3 flex w-full flex-row"}>
-              <div className={"w-2/3 "}>
+            <div className={'ml-3 flex w-full flex-row'}>
+              <div className={'w-2/3 '}>
                 <div className="mt-3 h-3 w-2/3 rounded bg-slate-200" />
                 <div className="mt-3 h-3 w-1/3 rounded bg-slate-200" />
                 <div className="mt-3 h-3 w-2/4 rounded bg-slate-200" />
                 <div className="mt-3 h-3 w-1/4 rounded bg-slate-200" />
                 <div className="mt-5 h-5 w-2/12 rounded bg-slate-200" />
               </div>
-              <div className={"flex w-1/3 flex-col items-end"}>
+              <div className={'flex w-1/3 flex-col items-end'}>
                 <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
                 <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
                 <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
@@ -206,15 +207,15 @@ const Poll = (props: IProps) => {
             </div>
 
             <div className="mt-5 h-5 w-2/3 rounded bg-slate-200" />
-            <div className={"flex w-full flex-row"}>
-              <div className={"w-2/3 "}>
+            <div className={'flex w-full flex-row'}>
+              <div className={'w-2/3 '}>
                 <div className="mt-3 h-3 w-2/3 rounded bg-slate-200" />
                 <div className="mt-3 h-3 w-1/3 rounded bg-slate-200" />
                 <div className="mt-3 h-3 w-2/4 rounded bg-slate-200" />
                 <div className="mt-3 h-3 w-1/4 rounded bg-slate-200" />
                 <div className="mt-5 h-5 w-2/12 rounded bg-slate-200" />
               </div>
-              <div className={"flex w-1/3 flex-col items-end"}>
+              <div className={'flex w-1/3 flex-col items-end'}>
                 <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
                 <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
                 <div className="mt-2 h-5 w-1/12 rounded bg-slate-200" />
@@ -224,16 +225,18 @@ const Poll = (props: IProps) => {
           </div>
         )}
       </PaddingContainer>
-      <div className={"mt-3 flex flex-row justify-center"}>
+      <div className={'mt-3 flex flex-row justify-center'}>
         <button
-          onClick={() => createFromTemplate(props.pollData.poll_template_id, router)}
+          onClick={() =>
+            createFromTemplate(props.pollData.poll_template_id, router)
+          }
           className="btn btn-accent mb-4 w-fit"
         >
           CLONE THIS POLL!
         </button>
       </div>
 
-      <div className={"self-center"}>
+      <div className={'self-center'}>
         <VoteCreator creator={props.pollData.creator} />
       </div>
     </Container>

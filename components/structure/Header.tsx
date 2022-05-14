@@ -1,33 +1,30 @@
-import React, { useState } from "react";
+import React from 'react';
 
-import { Auth, useUser } from "@supabase/supabase-auth-helpers/react";
-import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import Link from "next/link";
-import { BASE_PATH } from "../../lib/constants";
-import { IconUser } from "@supabase/ui";
+import { Auth, useUser } from '@supabase/supabase-auth-helpers/react';
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import Link from 'next/link';
+import { BASE_PATH } from '../../lib/constants';
+import { IconUser } from '@supabase/ui';
 
-interface IProps {}
-
-const Header = (props: IProps) => {
-  const { user, error } = useUser();
-  const [data, setData] = useState();
+const Header = () => {
+  const { user } = useUser();
   const router = useRouter();
 
   return (
     <nav
       className={
-        "h-13 sticky top-0 left-0 z-50 flex w-full flex-row justify-center  bg-white bg-opacity-60 drop-shadow-2xl md:h-20 "
+        'h-13 sticky top-0 left-0 z-50 flex w-full flex-row justify-center  bg-white bg-opacity-60 drop-shadow-2xl md:h-20 '
       }
     >
       <div
         className={
-          "flex w-full max-w-screen-xl flex-row items-center justify-between"
+          'flex w-full max-w-screen-xl flex-row items-center justify-between'
         }
       >
         <Link href="/">
-          <button className={"ml-8 w-14"} aria-label={"navigate home"}>
+          <button className={'ml-8 w-14'} aria-label={'navigate home'}>
             <svg
               width="100%"
               viewBox="0 0 754 620"
@@ -54,13 +51,13 @@ const Header = (props: IProps) => {
           </button>
         </Link>
 
-        <div className={"mr-12 flex h-full flex-row items-center  self-end"}>
+        <div className={'mr-12 flex h-full flex-row items-center  self-end'}>
           <button className="btn btn-accent mr-8 hidden text-lg md:block xl:text-2xl">
             <Link href="/create-poll">CREATE POLL</Link>
           </button>
           <div className="dropdown-end dropdown ">
             <button
-              aria-label={"user menu"}
+              aria-label={'user menu'}
               tabIndex={0}
               className="btn btn-ghost btn-circle avatar"
             >
@@ -74,7 +71,7 @@ const Header = (props: IProps) => {
                 />
               ) : (
                 <IconUser
-                  className={"stroke-primary-content stroke-2"}
+                  className={'stroke-primary-content stroke-2'}
                   size={40}
                 />
               )}
@@ -97,7 +94,7 @@ const Header = (props: IProps) => {
                   <Auth
                     redirectTo={BASE_PATH + router.asPath}
                     supabaseClient={supabaseClient}
-                    providers={["twitch"]}
+                    providers={['twitch']}
                     socialLayout="vertical"
                     socialButtonSize="small"
                     onlyThirdPartyProviders={true}

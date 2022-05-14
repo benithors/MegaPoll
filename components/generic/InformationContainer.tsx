@@ -1,5 +1,5 @@
-import React from "react";
-import Heading from "./Heading";
+import React from 'react';
+import Heading from './Heading';
 
 interface IProps {
   title: string;
@@ -8,7 +8,7 @@ interface IProps {
 
 const Title = (props: IProps) => {
   return (
-    <div className={"pt-5"}>
+    <div className={'pt-5'}>
       <Heading>{props.title}</Heading>
       {props.children}
     </div>

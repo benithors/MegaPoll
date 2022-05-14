@@ -1,23 +1,20 @@
-import React from "react";
-import Container from "../components/structure/Container";
-import Heading from "../components/generic/Heading";
-import InformationContainer from "../components/generic/InformationContainer";
+import React from 'react';
+import Container from '../components/structure/Container';
+import InformationContainer from '../components/generic/InformationContainer';
 
-interface IProps {}
-
-const privacy = (props: IProps) => {
+const privacy = () => {
   return (
     <Container>
       <div
         className={
-          "component-preview mb-8 text-center text-7xl font-bold  text-primary md:text-8xl xl:text-9xl"
+          'component-preview mb-8 text-center text-7xl font-bold  text-primary md:text-8xl xl:text-9xl'
         }
       >
         Privacy
       </div>
 
-      <div className={"flex flex-col px-6"}>
-        <InformationContainer title={"Data Privacy"}>
+      <div className={'flex flex-col px-6'}>
+        <InformationContainer title={'Data Privacy'}>
           SocialPoll.me would like to make the visit to the SocialPoll.me pages
           as pleasant as possible for all its users. For SocialPoll.Me, this
           also includes - right at the forefront - safeguarding the privacy of
@@ -29,7 +26,7 @@ const privacy = (props: IProps) => {
         </InformationContainer>
 
         <InformationContainer
-          title={"Collection and processing of personal data"}
+          title={'Collection and processing of personal data'}
         >
           Personal data is collected and processed on SocialPoll.me exclusively
           for legally permitted purposes and to the extent specified by law.
@@ -50,7 +47,7 @@ const privacy = (props: IProps) => {
           online. <br />
         </InformationContainer>
 
-        <InformationContainer title={"Data Processing"}>
+        <InformationContainer title={'Data Processing'}>
           SocialPoll.me and its subsidiaries process your data, for example,
           when you vote on a poll, create a poll. <br />
           SocialPoll.me process data such as your IP address and browser or app
@@ -75,10 +72,10 @@ const privacy = (props: IProps) => {
           legal claims. <br />
         </InformationContainer>
 
-        <InformationContainer title={"How do we use uploaded images?"}>
+        <InformationContainer title={'How do we use uploaded images?'}>
           The uploaded images are displayed as a visual information on what the
           poll is about, the images are stored on a AWS S3 bucket. <br />
-          SocialPoll.me does not claim the ownership of the images. And the{" "}
+          SocialPoll.me does not claim the ownership of the images. And the{' '}
           <br />
           Uploading an Image creates a Poll that can be shared to the community.
           <br />
@@ -89,14 +86,14 @@ const privacy = (props: IProps) => {
           will not be used as a platform for illegality.
         </InformationContainer>
 
-        <InformationContainer title={"Changes to this Privacy Policy"}>
+        <InformationContainer title={'Changes to this Privacy Policy'}>
           SocialPoll.me may revise the privacy policy from time to time by
           posting the changes here. You can determine the date of the most
           recent changes by looking at the last change date at the bottom of
           this page. <br />
         </InformationContainer>
 
-        <InformationContainer title={"Last change date"}>
+        <InformationContainer title={'Last change date'}>
           Friday, 6 May 2022
         </InformationContainer>
       </div>

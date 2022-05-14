@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { definitions } from "../../../types/database";
-import { createClient } from "@supabase/supabase-js";
-import { sha256 } from "crypto-hash";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { definitions } from '../../../types/database';
+import { createClient } from '@supabase/supabase-js';
+import { sha256 } from 'crypto-hash';
 
 export default async function handler(
   request: NextApiRequest,
@@ -14,10 +14,10 @@ export default async function handler(
   let body = request.body;
 
   let ip;
-  if (process.env.LOCAL === "true") {
-    ip = "123178231823" + Math.random();
+  if (process.env.LOCAL === 'true') {
+    ip = '123178231823' + Math.random();
   } else {
-    ip = request.headers["x-real-ip"];
+    ip = request.headers['x-real-ip'];
   }
 
   let s = await sha256(ip);
@@ -27,7 +27,7 @@ export default async function handler(
   //by returning minimal we don't get the inserted row
   //we dont want the inserted row since, otherwise we would have to setup a select policy for row level security
   await supabaseClient
-    .from<definitions["poll_option_votes_2_users"]>("poll_option_votes_2_users")
-    .insert(body, { returning: "minimal" });
+    .from<definitions['poll_option_votes_2_users']>('poll_option_votes_2_users')
+    .insert(body, { returning: 'minimal' });
   response.status(200).json({});
 }

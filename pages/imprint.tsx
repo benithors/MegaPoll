@@ -1,20 +1,18 @@
-import React from "react";
-import Container from "../components/structure/Container";
-import Heading from "../components/generic/Heading";
+import React from 'react';
+import Container from '../components/structure/Container';
+import Heading from '../components/generic/Heading';
 
-interface IProps {}
-
-const imprint = (props: IProps) => {
+const imprint = () => {
   return (
     <Container>
       <div
         className={
-          "component-preview mb-8 text-center text-7xl font-bold  text-primary md:text-8xl xl:text-9xl"
+          'component-preview mb-8 text-center text-7xl font-bold  text-primary md:text-8xl xl:text-9xl'
         }
       >
         Imprint
       </div>
-      <div className={"flex flex-col px-6"}>
+      <div className={'flex flex-col px-6'}>
         <Heading>Company</Heading>
         <div>
           Benjamin Thorstensen Bsc.

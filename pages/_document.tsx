@@ -1,4 +1,4 @@
-import { Head, Html, Main, NextScript } from "next/document";
+import { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (
@@ -37,7 +37,7 @@ export default function Document() {
       </Head>
       <body
         className={
-          "min-h-screen  bg-gradient-to-br from-primary-content to-secondary"
+          'min-h-screen  bg-gradient-to-br from-primary-content to-secondary'
         }
       >
         <Main />

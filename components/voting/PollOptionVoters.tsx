@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { IconUser } from "@supabase/ui";
-import { definitions } from "../../types/database";
-import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
-import { getErrorMessage, isErrorWithMessage } from "../../lib/errorUtil";
-import VoteBarProfile from "./VoteBarProfile";
-import { IPollOptionWrapper } from "../../lib/interfaces";
+import React, { useEffect, useState } from 'react';
+import { IconUser } from '@supabase/ui';
+import { definitions } from '../../types/database';
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
+import { getErrorMessage, isErrorWithMessage } from '../../lib/errorUtil';
+import VoteBarProfile from './VoteBarProfile';
+import { IPollOptionWrapper } from '../../lib/interfaces';
 
 interface IProps {
   pollOptionWrapper: IPollOptionWrapper;
@@ -12,16 +12,16 @@ interface IProps {
 }
 
 const PollOptionVoters = (props: IProps) => {
-  const [profile1, setProfile1] = useState<definitions["profiles"]>();
-  const [profile2, setProfile2] = useState<definitions["profiles"]>();
-  const [profile3, setProfile3] = useState<definitions["profiles"]>();
+  const [profile1, setProfile1] = useState<definitions['profiles']>();
+  const [profile2, setProfile2] = useState<definitions['profiles']>();
+  const [profile3, setProfile3] = useState<definitions['profiles']>();
 
   useEffect(() => {
     async function loadData() {
       const { data, error } = await supabaseClient
-        .from<definitions["profiles"]>("profiles")
-        .select("*")
-        .eq("id", props.pollOptionWrapper.pollOptionVotes.top_profile_1)
+        .from<definitions['profiles']>('profiles')
+        .select('*')
+        .eq('id', props.pollOptionWrapper.pollOptionVotes.top_profile_1)
         .single();
       if (isErrorWithMessage(error)) {
         getErrorMessage(error);
@@ -40,9 +40,9 @@ const PollOptionVoters = (props: IProps) => {
   useEffect(() => {
     async function loadData() {
       const { data, error } = await supabaseClient
-        .from<definitions["profiles"]>("profiles")
-        .select("*")
-        .eq("id", props.pollOptionWrapper.pollOptionVotes.top_profile_2)
+        .from<definitions['profiles']>('profiles')
+        .select('*')
+        .eq('id', props.pollOptionWrapper.pollOptionVotes.top_profile_2)
         .single();
       if (isErrorWithMessage(error)) {
         getErrorMessage(error);
@@ -56,6 +56,26 @@ const PollOptionVoters = (props: IProps) => {
     }
     loadData();
   }, [props.pollOptionWrapper.pollOptionVotes.top_profile_2]);
+
+  useEffect(() => {
+    async function loadData() {
+      const { data, error } = await supabaseClient
+        .from<definitions['profiles']>('profiles')
+        .select('*')
+        .eq('id', props.pollOptionWrapper.pollOptionVotes.top_profile_3)
+        .single();
+      if (isErrorWithMessage(error)) {
+        getErrorMessage(error);
+      } else {
+        setProfile3(data);
+      }
+    }
+
+    if (!props.pollOptionWrapper.pollOptionVotes.top_profile_3) {
+      return;
+    }
+    loadData();
+  }, [props.pollOptionWrapper.pollOptionVotes.top_profile_3]);
 
   function displayUserIcon() {
     if (props.pollOptionWrapper.voted) {
@@ -88,7 +108,7 @@ const PollOptionVoters = (props: IProps) => {
         <div className="tooltip" data-tip="YOU">
           <div className="w-12">
             <IconUser
-              className={"rounded-full bg-secondary stroke-white stroke-2"}
+              className={'rounded-full bg-secondary stroke-white stroke-2'}
               size={48}
             />
           </div>

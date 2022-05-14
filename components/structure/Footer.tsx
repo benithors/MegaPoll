@@ -1,6 +1,6 @@
-import React from "react";
-import { IconGitHub, IconMail, IconTwitter } from "@supabase/ui";
-import Link from "next/link";
+import React from 'react';
+import { IconGitHub, IconMail, IconTwitter } from '@supabase/ui';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -28,20 +28,20 @@ const Footer = () => {
       <div>
         <div className="grid grid-flow-row gap-4 sm:grid-flow-col">
           <Link href="https://twitter.com/benithors" passHref={true}>
-            <a aria-label={"twitter to the creator of this website"}>
-              <IconTwitter className={"stroke-2"} />
+            <a aria-label={'twitter to the creator of this website'}>
+              <IconTwitter className={'stroke-2'} />
             </a>
           </Link>
           <Link href="https://github.com/benithors" passHref={true}>
-            <a aria-label={"github to the creator of this website"}>
-              <IconGitHub className={"stroke-2"} />
+            <a aria-label={'github to the creator of this website'}>
+              <IconGitHub className={'stroke-2'} />
             </a>
           </Link>
           <a
             href="mailto:socialpoll.me@gmail.com"
-            aria-label={"e-mail to the creator of this website"}
+            aria-label={'e-mail to the creator of this website'}
           >
-            <IconMail className={"stroke-2"} />
+            <IconMail className={'stroke-2'} />
           </a>
         </div>
       </div>

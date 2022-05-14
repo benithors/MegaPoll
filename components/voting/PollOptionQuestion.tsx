@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import PollOptionVote from "./PollOptionVote";
-import { IPollQuestionWrapper } from "../../lib/interfaces";
-import { getCookie } from "cookies-next";
-import axios from "axios";
-import { useToasts } from "react-toast-notifications";
-import SinglePollOptionBox from "./SinglePollOptionBox";
+import React from 'react';
+import PollOptionVote from './PollOptionVote';
+import { IPollQuestionWrapper } from '../../lib/interfaces';
+import { getCookie } from 'cookies-next';
+import axios from 'axios';
+import { useToasts } from 'react-toast-notifications';
 
 interface IProps {
   pollQ: IPollQuestionWrapper;
@@ -25,9 +24,9 @@ const PollOptionQuestion = (props: IProps) => {
       (value) => value.checkBox
     );
     if (pollOptions.length === 0) {
-      addToast("Select an option before submitting!", {
-        appearance: "warning",
-        autoDismiss: true,
+      addToast('Select an option before submitting!', {
+        appearance: 'warning',
+        autoDismiss: true
       });
     } else {
       //we need to update voted to true so the vote form is replaced by the vote stats
@@ -57,18 +56,18 @@ const PollOptionQuestion = (props: IProps) => {
         const insertData = {
           profile: props.user ? props.user.id : null,
           poll_option_vote: checkbox.pollOptionVotes.id,
-          user_cookie: getCookie("voter").toString(),
+          user_cookie: getCookie('voter').toString()
         };
         insertDataArr.push(insertData);
       }
-      await axios.post("/api/vote", insertDataArr);
+      await axios.post('/api/vote', insertDataArr);
       //TODO check for errors
     }
   }
 
   return (
     <>
-      <h1 className={"break-words text-4xl text-secondary"}>
+      <h1 className={'break-words text-4xl text-secondary'}>
         {props.pollQ.pollQuestion.question}
       </h1>
       {props.pollQ.pollOptionsWrapper.map((pollOption, idx) => (
@@ -84,8 +83,8 @@ const PollOptionQuestion = (props: IProps) => {
       ))}
       <button
         className={
-          "btn btn-primary btn-sm mt-4 w-2/4 self-end md:w-1/4 " +
-          (props.pollQ.voted && "invisible")
+          'btn btn-primary btn-sm mt-4 w-2/4 self-end md:w-1/4 ' +
+          (props.pollQ.voted && 'invisible')
         }
         onClick={submitQuestion}
       >

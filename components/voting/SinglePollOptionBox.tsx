@@ -1,5 +1,5 @@
-import React from "react";
-import { IPollOptionWrapper, IPollQuestionWrapper } from "../../lib/interfaces";
+import React from 'react';
+import { IPollOptionWrapper, IPollQuestionWrapper } from '../../lib/interfaces';
 
 interface IProps {
   pollOptionIndex: number;
@@ -32,12 +32,12 @@ const SinglePollOptionBox = (props: IProps) => {
     <input
       onChange={(e) => handleClick(e.target.checked)}
       checked={props.pollOptionWrapper.checkBox}
-      type={props.multiPoll ? "radio" : "checkbox"}
+      type={props.multiPoll ? 'radio' : 'checkbox'}
       className={
-        "border-2 border-primary " +
+        'border-2 border-primary ' +
         (props.multiPoll
-          ? "checkbox checkbox-md checked:checkbox-primary"
-          : "radio radio-md checked:radio-primary")
+          ? 'checkbox checkbox-md checked:checkbox-primary'
+          : 'radio radio-md checked:radio-primary')
       }
     />
   );

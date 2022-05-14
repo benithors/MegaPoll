@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface IProps {
   firstPart: string;
@@ -9,15 +9,15 @@ const Title = (props: IProps) => {
   return (
     <div
       className={
-        "component-preview mb-8 text-center text-7xl font-bold  md:text-8xl xl:text-9xl "
+        'component-preview mb-8 text-center text-7xl font-bold  md:text-8xl xl:text-9xl '
       }
     >
-      <div className={"text-primary"}>{props.firstPart} </div>
+      <div className={'text-primary'}>{props.firstPart} </div>
 
       {props.secondPart && (
         <div
           className={
-            "bg-gradient-to-r from-secondary to-primary bg-clip-text text-7xl font-extrabold text-transparent md:text-8xl"
+            'bg-gradient-to-r from-secondary to-primary bg-clip-text text-7xl font-extrabold text-transparent md:text-8xl'
           }
         >
           {props.secondPart}

@@ -1,26 +1,25 @@
-import React, { useCallback, useEffect } from "react";
-import { IconArrowDownCircle, IconXCircle } from "@supabase/ui";
-import Image from "next/image";
-import CreatePollInput from "../components/CreatePollInput";
-import { isEmpty } from "../lib/stringUtils";
-import { Auth, useUser } from "@supabase/supabase-auth-helpers/react";
-import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
-import { isErrorWithMessage } from "../lib/errorUtil";
-import { useRouter } from "next/router";
-import { useToasts } from "react-toast-notifications";
+import React, { useEffect } from 'react';
+import { IconArrowDownCircle, IconXCircle } from '@supabase/ui';
+import CreatePollInput from '../components/CreatePollInput';
+import { isEmpty } from '../lib/stringUtils';
+import { Auth, useUser } from '@supabase/supabase-auth-helpers/react';
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
+import { isErrorWithMessage } from '../lib/errorUtil';
+import { useRouter } from 'next/router';
+import { useToasts } from 'react-toast-notifications';
 import {
   areThereValidOption,
   cleanPollQuestionCreation,
   copyPoll,
-  IPollQuestionCreation,
-} from "../lib/pollUtil";
-import { uuid } from "@supabase/gotrue-js/dist/main/lib/helpers";
-import Container from "../components/structure/Container";
-import { BASE_PATH } from "../lib/constants";
-import Title from "../components/generic/Title";
-import Compressor from "compressorjs";
-import { useDropzone } from "react-dropzone";
-import { definitions } from "../types/database";
+  IPollQuestionCreation
+} from '../lib/pollUtil';
+import { uuid } from '@supabase/gotrue-js/dist/main/lib/helpers';
+import Container from '../components/structure/Container';
+import { BASE_PATH } from '../lib/constants';
+import Title from '../components/generic/Title';
+import Compressor from 'compressorjs';
+import { useDropzone } from 'react-dropzone';
+import { definitions } from '../types/database';
 
 const CreatePoll = () => {
   const [pollQuestionFormData, setPollQuestionFormData] = React.useState<
@@ -33,12 +32,12 @@ const CreatePoll = () => {
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [selectedCategory, setSelectedCategory] = React.useState<string>();
   const [allCategories, setAllCategories] =
-    React.useState<definitions["poll_categories"][]>();
+    React.useState<definitions['poll_categories'][]>();
 
   async function loadCategories() {
     let resp = await supabaseClient
-      .from<definitions["poll_categories"]>("poll_categories")
-      .select("*");
+      .from<definitions['poll_categories']>('poll_categories')
+      .select('*');
     console.log(resp);
     if (isErrorWithMessage(resp.error)) {
       console.log(resp.error);
@@ -54,27 +53,27 @@ const CreatePoll = () => {
     loadData();
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: ".jpg,.jpeg,.png",
+    accept: '.jpg,.jpeg,.png',
     maxSize: 5000000,
     multiple: false,
     onDrop: (acceptedFiles, fileRejections) => {
       if (fileRejections[0]) {
         fileRejections[0].errors.forEach((error) => {
-          addToast(error.message, { appearance: "error", autoDismiss: true });
+          addToast(error.message, { appearance: 'error', autoDismiss: true });
         });
         return;
       }
       const file = acceptedFiles[0];
-      const compressor = new Compressor(file, {
+      new Compressor(file, {
         quality: 0.5,
         success(result) {
           setSelectedImage(result);
         },
         error(err) {
           console.log(err);
-        },
+        }
       });
-    },
+    }
   });
 
   function areQuestionsValid(
@@ -96,16 +95,16 @@ const CreatePoll = () => {
   //TODO server side validation
   async function submitPoll() {
     if (!pollName) {
-      addToast("Poll name missing!", {
-        appearance: "warning",
-        autoDismiss: true,
+      addToast('Poll name missing!', {
+        appearance: 'warning',
+        autoDismiss: true
       });
       return;
     }
     if (!selectedCategory) {
-      addToast("Category missing!", {
-        appearance: "warning",
-        autoDismiss: true,
+      addToast('Category missing!', {
+        appearance: 'warning',
+        autoDismiss: true
       });
       return;
     }
@@ -116,9 +115,9 @@ const CreatePoll = () => {
     copy = cleanPollQuestionCreation(copy);
 
     if (!areQuestionsValid(copy)) {
-      addToast("Every question must have at least two poll options!", {
-        appearance: "warning",
-        autoDismiss: true,
+      addToast('Every question must have at least two poll options!', {
+        appearance: 'warning',
+        autoDismiss: true
       });
       return;
     }
@@ -127,11 +126,11 @@ const CreatePoll = () => {
     if (selectedImage) {
       const path = uuid();
       let uploadImageResp = await supabaseClient.storage
-        .from("pollimages")
+        .from('pollimages')
         .upload(path, selectedImage);
       if (uploadImageResp.data) {
         const { publicURL, error } = supabaseClient.storage
-          .from("pollimages")
+          .from('pollimages')
           .getPublicUrl(path);
         coverImage = publicURL;
         if (isErrorWithMessage(error)) {
@@ -146,51 +145,51 @@ const CreatePoll = () => {
       poll_category: selectedCategory,
       user_id: user.id,
       cover_image: isEmpty(coverImage) ? null : coverImage,
-      poll_question_data: copy,
+      poll_question_data: copy
     };
-    let createPollResp = await supabaseClient.rpc("fn_create_poll", params);
+    let createPollResp = await supabaseClient.rpc('fn_create_poll', params);
     if (isErrorWithMessage(createPollResp.error)) {
-      addToast("Something went wrong, try it again later!", {
-        appearance: "error",
-        autoDismiss: true,
+      addToast('Something went wrong, try it again later!', {
+        appearance: 'error',
+        autoDismiss: true
       });
     } else {
       //clear session storage
-      sessionStorage.removeItem("pollQuestions");
-      sessionStorage.removeItem("pollName");
-      sessionStorage.removeItem("pollDescription");
-      sessionStorage.removeItem("selectedImage");
+      sessionStorage.removeItem('pollQuestions');
+      sessionStorage.removeItem('pollName');
+      sessionStorage.removeItem('pollDescription');
+      sessionStorage.removeItem('selectedImage');
 
       router.push({
-        pathname: "/poll/[id]",
-        query: { id: createPollResp.data },
+        pathname: '/poll/[id]',
+        query: { id: createPollResp.data }
       });
     }
   }
 
   useEffect(() => {
     //assign poll name from the session storage
-    if (sessionStorage.getItem("pollName")) {
-      setPollName(sessionStorage.getItem("pollName"));
+    if (sessionStorage.getItem('pollName')) {
+      setPollName(sessionStorage.getItem('pollName'));
     }
 
     //assign poll questions from the session storage
-    if (sessionStorage.getItem("pollQuestions")) {
+    if (sessionStorage.getItem('pollQuestions')) {
       setPollQuestionFormData(
-        JSON.parse(sessionStorage.getItem("pollQuestions"))
+        JSON.parse(sessionStorage.getItem('pollQuestions'))
       );
     }
 
     //assign poll image from the session storage
-    if (sessionStorage.getItem("pollImage")) {
-      setSelectedImage(sessionStorage.getItem("pollImage"));
+    if (sessionStorage.getItem('pollImage')) {
+      setSelectedImage(sessionStorage.getItem('pollImage'));
     }
   }, []);
 
   useEffect(() => {
     //save pollName in session storage for later use
     if (pollName) {
-      sessionStorage.setItem("pollName", pollName);
+      sessionStorage.setItem('pollName', pollName);
     }
   }, [pollName]);
 
@@ -198,7 +197,7 @@ const CreatePoll = () => {
     //save pollQuestions in session storage for later use
     if (pollQuestionFormData) {
       sessionStorage.setItem(
-        "pollQuestions",
+        'pollQuestions',
         JSON.stringify(pollQuestionFormData)
       );
     }
@@ -206,9 +205,9 @@ const CreatePoll = () => {
 
   function getEmptyPollItem() {
     return {
-      pollQuestion: "",
-      pollOptions: [""],
-      multiPoll: false,
+      pollQuestion: '',
+      pollOptions: [''],
+      multiPoll: false
     };
   }
 
@@ -258,7 +257,6 @@ const CreatePoll = () => {
         pollQuestionCreationArr[providedIndex] = getEmptyPollItem();
         return pollQuestionCreationArr;
       });
-      return;
     } else {
       //delete the poll question at index
       let pollQuestionCreationArr = [...pollQuestionFormData];
@@ -269,7 +267,7 @@ const CreatePoll = () => {
 
   return (
     <Container>
-      <Title firstPart={"Share Your"} secondPart={"Questions"} />
+      <Title firstPart={'Share Your'} secondPart={'Questions'} />
 
       <div className="flex w-full flex-col items-center">
         <label className="label">
@@ -277,25 +275,25 @@ const CreatePoll = () => {
         </label>
         <input
           type="text"
-          defaultValue={pollName || ""}
+          defaultValue={pollName || ''}
           onChange={(event) => setPollName(event.target.value)}
           placeholder="Give your Poll a name"
           className="input-bordered input w-11/12 bg-opacity-30 md:w-2/3"
         />
-        <label className={"label"}>Category</label>
+        <label className={'label'}>Category</label>
         <select
-          defaultValue={"DEFAULT"}
+          defaultValue={'DEFAULT'}
           onChange={(event) => setSelectedCategory(event.target.value)}
           className="input-bordered input select w-11/12 bg-opacity-30 md:w-2/3"
         >
-          <option className={"bg-primary-content"} disabled value={"DEFAULT"}>
+          <option className={'bg-primary-content'} disabled value={'DEFAULT'}>
             Pick your Poll Category
           </option>
 
           {allCategories &&
             allCategories.map((category, index) => (
               <option
-                className={"bg-primary-content"}
+                className={'bg-primary-content'}
                 key={index}
                 value={category.id}
               >
@@ -308,19 +306,19 @@ const CreatePoll = () => {
           <span className="label-text">Cover Image of the Poll</span>
         </label>
         <section
-          className={"flex w-full flex-row items-center justify-center "}
+          className={'flex w-full flex-row items-center justify-center '}
         >
           <div
             className={
-              "input-bordered input  flex h-32 w-11/12 flex-row items-center justify-center bg-opacity-30 md:w-2/3 " +
-              (isDragActive && " border-accent")
+              'input-bordered input  flex h-32 w-11/12 flex-row items-center justify-center bg-opacity-30 md:w-2/3 ' +
+              (isDragActive && ' border-accent')
             }
             {...getRootProps()}
           >
             <input {...getInputProps()} />
             {isDragActive ? (
               <IconArrowDownCircle
-                className={"animate-bounce stroke-accent stroke-2 shadow-2xl"}
+                className={'animate-bounce stroke-accent stroke-2 shadow-2xl'}
                 size={40}
               />
             ) : (
@@ -332,27 +330,27 @@ const CreatePoll = () => {
         </section>
 
         {selectedImage && (
-          <div className={"relative mt-3 h-full w-2/3"}>
+          <div className={'relative mt-3 h-full w-2/3'}>
             <img
               src={URL.createObjectURL(selectedImage)}
-              alt={"cover of the poll"}
+              alt={'cover of the poll'}
               className={
-                "rounded md:transform-gpu md:transition md:duration-300 md:hover:brightness-125 "
+                'rounded md:transform-gpu md:transition md:duration-300 md:hover:brightness-125 '
               }
             />
           </div>
         )}
         <div
           className={
-            "divide-white-200  flex h-fit w-11/12 flex-col divide-y md:w-2/3"
+            'divide-white-200  flex h-fit w-11/12 flex-col divide-y md:w-2/3'
           }
         >
           {pollQuestionFormData.map((value, index) => {
             return (
-              <div key={index} className={"flex flex-row"}>
+              <div key={index} className={'flex flex-row'}>
                 <div className="mb-8 flex flex-grow flex-col pt-8">
                   <input
-                    value={value.pollQuestion || ""}
+                    value={value.pollQuestion || ''}
                     onChange={(event) => increaseArraySize(index, event)}
                     type="text"
                     placeholder="Type your question here"
@@ -363,8 +361,8 @@ const CreatePoll = () => {
                     setPollOptions={setPollQuestionFormData}
                     pollQuestionIndex={index}
                   />
-                  <div className={"mt-4"}>
-                    <label className={"label w-fit "}>
+                  <div className={'mt-4'}>
+                    <label className={'label w-fit '}>
                       Are multiple answers allowed?
                       <input
                         onChange={() => changeMultiPollState(index)}
@@ -372,8 +370,8 @@ const CreatePoll = () => {
                         type="checkbox"
                         value={
                           pollQuestionFormData[index].multiPoll
-                            ? "true"
-                            : "false"
+                            ? 'true'
+                            : 'false'
                         }
                         className="checkbox-primary checkbox checkbox-md ml-4 border-2 border-primary"
                       />
@@ -381,10 +379,10 @@ const CreatePoll = () => {
                   </div>
                   <button
                     onClick={() => deleteEntry(index)}
-                    className={"absolute flex -translate-y-6 flex-col"}
-                    aria-label={"remove this question"}
+                    className={'absolute flex -translate-y-6 flex-col'}
+                    aria-label={'remove this question'}
                   >
-                    <IconXCircle className={"stroke-red-500 stroke-2"} />
+                    <IconXCircle className={'stroke-red-500 stroke-2'} />
                   </button>
                 </div>
               </div>
@@ -393,7 +391,7 @@ const CreatePoll = () => {
         </div>
 
         {user ? (
-          <div className={"flex w-full flex-col items-center"}>
+          <div className={'flex w-full flex-col items-center'}>
             <button
               onClick={submitPoll}
               className="bg-red btn btn-primary btn-wide"
@@ -402,15 +400,15 @@ const CreatePoll = () => {
             </button>
           </div>
         ) : (
-          <div className={"flex w-2/3 flex-col rounded bg-warning p-4"}>
-            <h1 className={"mb-4 text-center text-xl font-bold text-black"}>
+          <div className={'flex w-2/3 flex-col rounded bg-warning p-4'}>
+            <h1 className={'mb-4 text-center text-xl font-bold text-black'}>
               You need to be logged in before creating a Poll
             </h1>
             {error && <p>{error.message}</p>}
             <Auth
               redirectTo={BASE_PATH + router.pathname}
               supabaseClient={supabaseClient}
-              providers={["twitch"]}
+              providers={['twitch']}
               socialLayout="horizontal"
               socialButtonSize="xlarge"
               onlyThirdPartyProviders={true}

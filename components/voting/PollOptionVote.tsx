@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import VoteBar from "./VoteBar";
-import { IPollOptionWrapper, IPollQuestionWrapper } from "../../lib/interfaces";
-import PollOptionVoters from "./PollOptionVoters";
-import SinglePollOptionBox from "./SinglePollOptionBox";
-import { definitions } from "../../types/database";
-import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
+import React, { useEffect } from 'react';
+import VoteBar from './VoteBar';
+import { IPollOptionWrapper, IPollQuestionWrapper } from '../../lib/interfaces';
+import PollOptionVoters from './PollOptionVoters';
+import SinglePollOptionBox from './SinglePollOptionBox';
+import { definitions } from '../../types/database';
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
 
 interface IProps {
   pollOptionWrapper: IPollOptionWrapper;
@@ -18,10 +18,10 @@ interface IProps {
 const PollOptionVote = (props: IProps) => {
   const handleNewOptionsUpdate = (payload: {
     commit_timestamp?: string;
-    eventType?: "INSERT" | "UPDATE" | "DELETE";
+    eventType?: 'INSERT' | 'UPDATE' | 'DELETE';
     schema?: string;
     table?: string;
-    new: definitions["poll_option_votes"];
+    new: definitions['poll_option_votes'];
     old?: any;
     errors?: string[];
   }) => {
@@ -36,7 +36,7 @@ const PollOptionVote = (props: IProps) => {
         poll_instance: payload.new.poll_instance,
         top_profile_1: payload.new.top_profile_1,
         top_profile_2: payload.new.top_profile_2,
-        top_profile_3: payload.new.top_profile_3,
+        top_profile_3: payload.new.top_profile_3
       };
       return [...prevStatePollQuestionWrapper];
     });
@@ -46,31 +46,31 @@ const PollOptionVote = (props: IProps) => {
   useEffect(() => {
     realtimeSub = supabaseClient
       .from(
-        "poll_option_votes:id=eq." + props.pollOptionWrapper.pollOptionVotes.id
+        'poll_option_votes:id=eq.' + props.pollOptionWrapper.pollOptionVotes.id
       )
-      .on("UPDATE", (payload) => {
+      .on('UPDATE', (payload) => {
         handleNewOptionsUpdate(payload);
       })
       .subscribe();
 
     return () => {
       supabaseClient.removeSubscription(realtimeSub).catch((e) => {
-        console.log("error removing subscription", e);
+        console.log('error removing subscription', e);
       });
     };
   }, []);
   return (
-    <div className={"border-t-2 "}>
+    <div className={'border-t-2 '}>
       <div>{props.pollOptionWrapper.pollOption.option}</div>
-      <div className={"flex w-full flex-row items-center"}>
-        <div className={"w-full " + (!props.pollQ.voted && "invisible")}>
+      <div className={'flex w-full flex-row items-center'}>
+        <div className={'w-full ' + (!props.pollQ.voted && 'invisible')}>
           <VoteBar
             user={props.user}
             pollOptionWrapper={props.pollOptionWrapper}
             pollOptionWrapperArray={props.pollQ.pollOptionsWrapper}
           />
         </div>
-        <div className={"flex h-14 w-2/6 flex-row justify-end"}>
+        <div className={'flex h-14 w-2/6 flex-row justify-end'}>
           {props.pollQ.voted ? (
             <PollOptionVoters
               pollOptionWrapper={props.pollOptionWrapper}

@@ -1,32 +1,29 @@
-import React from "react";
-import Container from "../components/structure/Container";
-import Heading from "../components/generic/Heading";
-import InformationContainer from "../components/generic/InformationContainer";
-import { EmailContactButton } from "../components/generic/EmailContactButton";
+import React from 'react';
+import Container from '../components/structure/Container';
+import InformationContainer from '../components/generic/InformationContainer';
+import { EmailContactButton } from '../components/generic/EmailContactButton';
 
-interface IProps {}
-
-const tos = (props: IProps) => {
+const tos = () => {
   return (
     <Container>
-      <div className={"flex flex-col px-6"}>
+      <div className={'flex flex-col px-6'}>
         <div
           className={
-            "component-preview mb-8 text-center text-7xl font-bold  text-primary md:text-8xl xl:text-9xl"
+            'component-preview mb-8 text-center text-7xl font-bold  text-primary md:text-8xl xl:text-9xl'
           }
         >
           Terms of Service
         </div>
 
-        <InformationContainer title={"Preamble"}>
+        <InformationContainer title={'Preamble'}>
           Benjamin Thorstensen (hereinafter referred to as the Operator)
           operates the website SocialPoll.me, a web-based application for
           creating social polls. These Terms of Use apply to all users of the
           platform SocialPoll.me (hereinafter: the User).
         </InformationContainer>
 
-        <InformationContainer title={"Things you should not do"}>
-          <ul className={"ml-5 list-disc"}>
+        <InformationContainer title={'Things you should not do'}>
+          <ul className={'ml-5 list-disc'}>
             <li>
               Do NOT post hate speech (i.e. demeaning race, gender, age,
               religious or sexual orientation, etc.)
@@ -52,11 +49,11 @@ const tos = (props: IProps) => {
           </ul>
         </InformationContainer>
 
-        <InformationContainer title={"Things to do"}>
+        <InformationContainer title={'Things to do'}>
           Have fun and enjoy the site!
         </InformationContainer>
 
-        <InformationContainer title={"Rights of use"}>
+        <InformationContainer title={'Rights of use'}>
           The Operator has the right to restrict the use of the Platform without
           giving reasons or to block Users. By giving consent, the User agrees
           that the Operator may store the User’s sha256 encrypted IP address to
@@ -64,7 +61,7 @@ const tos = (props: IProps) => {
         </InformationContainer>
 
         <InformationContainer
-          title={"Responsibility for User-Generated Content"}
+          title={'Responsibility for User-Generated Content'}
         >
           The User may create or upload User-Generated Content while using the
           Service. The User is solely responsible for the content of, and for
@@ -75,13 +72,13 @@ const tos = (props: IProps) => {
           Content.
         </InformationContainer>
 
-        <InformationContainer title={"The Operator May Remove Content"}>
+        <InformationContainer title={'The Operator May Remove Content'}>
           The Operator has the right to refuse or remove any User-Generated
           Content that, in our sole discretion, violates any laws or
           Socialpoll.me terms or policies.
         </InformationContainer>
 
-        <InformationContainer title={"License Grant to Us"}>
+        <InformationContainer title={'License Grant to Us'}>
           We need the legal right to do things like host Your Content, publish
           it, and share it. You grant us and our legal successors the right to
           store, archive, parse, and display Your Content, and make incidental
@@ -92,7 +89,7 @@ const tos = (props: IProps) => {
           servers; share it with other users.
         </InformationContainer>
 
-        <InformationContainer title={"Rights and obligations of the User"}>
+        <InformationContainer title={'Rights and obligations of the User'}>
           <div>
             The User undertakes to refrain from any actions that endanger the
             functionality or operation of the software. In particular, the User
@@ -113,7 +110,7 @@ const tos = (props: IProps) => {
           </div>
         </InformationContainer>
 
-        <InformationContainer title={"Warranty and liability"}>
+        <InformationContainer title={'Warranty and liability'}>
           <div>
             Any warranty for the results of the software and its availability is
             excluded. If, nevertheless, a warranty claim should exist, the
@@ -121,14 +118,14 @@ const tos = (props: IProps) => {
           </div>
         </InformationContainer>
 
-        <InformationContainer title={"Confidentiality and data protection"}>
+        <InformationContainer title={'Confidentiality and data protection'}>
           <div>
             All data protection information is available to the User at privacy
             tab linked at the bottom of the page.
           </div>
         </InformationContainer>
 
-        <InformationContainer title={"Terms of Service breach"}>
+        <InformationContainer title={'Terms of Service breach'}>
           If you’d like to request the deletion of your images or other images,
           that may be in breach the terms of service, please provide the full
           image or the poll URLs and a detailed reason why the images should be
@@ -138,7 +135,7 @@ const tos = (props: IProps) => {
           <EmailContactButton />
         </InformationContainer>
 
-        <InformationContainer title={"Concluding provisions"}>
+        <InformationContainer title={'Concluding provisions'}>
           <div>
             Legal disputes arising from this Contract are governed exclusively
             by Austrian law. Application of the UN Convention for the
@@ -155,14 +152,14 @@ const tos = (props: IProps) => {
           </div>
         </InformationContainer>
 
-        <InformationContainer title={"Changes to Terms of Service"}>
+        <InformationContainer title={'Changes to Terms of Service'}>
           SocialPoll.me may revise the privacy policy from time to time by
           posting the changes here. You can determine the date of the most
           recent changes by looking at the last change date at the bottom of
           this page. <br />
         </InformationContainer>
 
-        <InformationContainer title={"Last change date"}>
+        <InformationContainer title={'Last change date'}>
           Friday, 6 May 2022
         </InformationContainer>
       </div>

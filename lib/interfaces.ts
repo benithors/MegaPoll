@@ -1,15 +1,15 @@
-import { definitions } from "../types/database";
+import { definitions } from '../types/database';
 
 export interface IPollOptionWrapper {
-  pollOptionVotes: definitions["poll_option_votes"];
-  pollOption: definitions["poll_options"];
+  pollOptionVotes: definitions['poll_option_votes'];
+  pollOption: definitions['poll_options'];
   voted: boolean;
   checkBox: boolean;
 }
 
 export interface PollOption {
-  pollOptionVote: definitions["poll_option_votes"];
-  pollOption: definitions["poll_options"];
+  pollOptionVote: definitions['poll_option_votes'];
+  pollOption: definitions['poll_options'];
   checkBox: boolean;
 }
 declare global {
@@ -21,7 +21,7 @@ declare global {
 window.adsbygoogle = window.adsbygoogle || {};
 
 export interface IPollQuestionWrapper {
-  pollQuestion: definitions["poll_questions"];
+  pollQuestion: definitions['poll_questions'];
   pollOptionsWrapper: IPollOptionWrapper[];
   voted: boolean;
 }

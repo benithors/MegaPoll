@@ -1,6 +1,6 @@
-import React from "react";
-import { isEmpty } from "../lib/stringUtils";
-import { IPollQuestionCreation } from "../lib/pollUtil";
+import React from 'react';
+import { isEmpty } from '../lib/stringUtils';
+import { IPollQuestionCreation } from '../lib/pollUtil';
 
 interface IProps {
   pollQuestionFormData: IPollQuestionCreation[];
@@ -24,7 +24,7 @@ function increaseArraySize(
     const lastPollOption = pollOptions[pollOptions.length - 1];
 
     if (!isEmpty(lastPollOption) && pollOptions.length < 15) {
-      pollOptions.push("");
+      pollOptions.push('');
     }
     pollQuestionCreation.pollOptions = pollOptions;
     pollQuestionCreationArr[pollQuestionIndex] = pollQuestionCreation;
@@ -40,7 +40,7 @@ const CreatePollInput = (props: IProps) => {
           return (
             <input
               key={index}
-              value={value || ""}
+              value={value || ''}
               onChange={(event) =>
                 increaseArraySize(
                   props.setPollOptions,
