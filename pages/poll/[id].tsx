@@ -18,7 +18,6 @@ import {
 import VoteCreator from "components/voting/VoteCreator";
 import CopyUrlButton from "../../components/generic/CopyUrlButton";
 import PaddingContainer from "../../components/structure/PaddingContainer";
-import { GoogleAdsenseContainer } from "../../components/generic/GoogleAdsenseContainer";
 import { NextSeo } from "next-seo";
 import { GetServerSideProps } from "next";
 
@@ -189,8 +188,6 @@ const Poll = (props: IProps) => {
                         pollQuestionIndex={index}
                       />
                     </div>
-                    {index === 0 ||
-                      (index % 3 === 0 && <GoogleAdsenseContainer />)}
                   </div>
                 );
               })}

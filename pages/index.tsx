@@ -8,7 +8,6 @@ import Title from "../components/generic/Title";
 import PaddingContainer from "../components/structure/PaddingContainer";
 import PollPreviewCard from "../components/PollPreviewCard";
 import { NextSeo } from "next-seo";
-import { GoogleAdsenseContainer } from "../components/generic/GoogleAdsenseContainer";
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
