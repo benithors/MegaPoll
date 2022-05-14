@@ -139,6 +139,44 @@ export interface paths {
       };
     };
   };
+  "/poll_data": {
+    get: {
+      parameters: {
+        query: {
+          poll_instance_id?: parameters["rowFilter.poll_data.poll_instance_id"];
+          poll_category?: parameters["rowFilter.poll_data.poll_category"];
+          cover_image?: parameters["rowFilter.poll_data.cover_image"];
+          poll_template_id?: parameters["rowFilter.poll_data.poll_template_id"];
+          poll_name?: parameters["rowFilter.poll_data.poll_name"];
+          creator?: parameters["rowFilter.poll_data.creator"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["poll_data"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
   "/poll_instances": {
     get: {
       parameters: {
@@ -1083,6 +1121,36 @@ export interface definitions {
     /** Format: character varying */
     name: string;
   };
+  poll_data: {
+    /**
+     * Format: character varying
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    poll_instance_id?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `poll_categories.id`.<fk table='poll_categories' column='id'/>
+     */
+    poll_category?: number;
+    /** Format: character varying */
+    cover_image?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    poll_template_id?: number;
+    /** Format: character varying */
+    poll_name?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    creator?: string;
+  };
   /** @description Instantiation of a poll template */
   poll_instances: {
     /**
@@ -1339,6 +1407,20 @@ export interface parameters {
   "rowFilter.poll_categories.id": string;
   /** Format: character varying */
   "rowFilter.poll_categories.name": string;
+  /** @description poll_data */
+  "body.poll_data": definitions["poll_data"];
+  /** Format: character varying */
+  "rowFilter.poll_data.poll_instance_id": string;
+  /** Format: bigint */
+  "rowFilter.poll_data.poll_category": string;
+  /** Format: character varying */
+  "rowFilter.poll_data.cover_image": string;
+  /** Format: bigint */
+  "rowFilter.poll_data.poll_template_id": string;
+  /** Format: character varying */
+  "rowFilter.poll_data.poll_name": string;
+  /** Format: uuid */
+  "rowFilter.poll_data.creator": string;
   /** @description poll_instances */
   "body.poll_instances": definitions["poll_instances"];
   /** Format: character varying */

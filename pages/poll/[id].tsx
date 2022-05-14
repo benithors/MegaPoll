@@ -23,27 +23,20 @@ import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id as string;
-  const pollInstanceData = await supabaseClient
-    .from<definitions["poll_instances"]>("poll_instances")
+  const pollData = await supabaseClient
+    .from<definitions["poll_data"]>("poll_data")
     .select("*")
-    .eq("id", id as string)
-    .single();
-  const pollTemplateData = await supabaseClient
-    .from<definitions["poll_templates"]>("poll_templates")
-    .select("*")
-    .eq("id", pollInstanceData.data.poll_template)
+    .eq("poll_instance_id", id as string)
     .single();
 
   return {
     props: {
-      pollTemplateData: pollTemplateData.data,
-      pollInstanceData: pollInstanceData.data,
+      pollData: pollData.data,
     },
   };
 };
 interface IProps {
-  pollTemplateData: definitions["poll_templates"];
-  pollInstanceData: definitions["poll_instances"];
+  pollData: definitions["poll_data"];
 }
 const Poll = (props: IProps) => {
   const { user } = useUser();
@@ -54,7 +47,7 @@ const Poll = (props: IProps) => {
     const allQuestions = await supabaseClient
       .from<definitions["poll_questions"]>("poll_questions")
       .select("*")
-      .eq("poll_template", props.pollTemplateData.id);
+      .eq("poll_template", props.pollData.poll_template_id);
 
     let questionWrapper: IPollQuestionWrapper[] = [];
 
@@ -129,7 +122,7 @@ const Poll = (props: IProps) => {
   return (
     <Container>
       <NextSeo
-        title={props.pollTemplateData.poll_name}
+        title={props.pollData.poll_name}
         description="Socialpoll.me - Free realtime polls for you and your community"
         robotsProps={{
           nosnippet: true,
@@ -148,14 +141,14 @@ const Poll = (props: IProps) => {
         openGraph={{
           type: "website",
           locale: "en_IE",
-          url: "https://www.socialpoll.me/poll/" + props.pollInstanceData.id,
+          url: "https://www.socialpoll.me/poll/" + props.pollData.poll_instance_id,
           site_name: "SocialPoll",
           images: [
             {
               width: 400,
-              url: props.pollTemplateData.cover_image,
+              url: props.pollData.cover_image,
               height: 400,
-              alt: props.pollTemplateData.poll_name,
+              alt: props.pollData.poll_name,
               type: "image/jpeg",
             },
           ],
@@ -168,7 +161,7 @@ const Poll = (props: IProps) => {
 
         <div>
           <h1 className={"break-words text-5xl font-medium leading-tight"}>
-            <Title firstPart={props.pollTemplateData.poll_name} />
+            <Title firstPart={props.pollData.poll_name} />
           </h1>
         </div>
 
@@ -233,7 +226,7 @@ const Poll = (props: IProps) => {
       </PaddingContainer>
       <div className={"mt-3 flex flex-row justify-center"}>
         <button
-          onClick={() => createFromTemplate(props.pollTemplateData.id, router)}
+          onClick={() => createFromTemplate(props.pollData.poll_template_id, router)}
           className="btn btn-accent mb-4 w-fit"
         >
           CLONE THIS POLL!
@@ -241,7 +234,7 @@ const Poll = (props: IProps) => {
       </div>
 
       <div className={"self-center"}>
-        <VoteCreator creator={props.pollTemplateData.creator} />
+        <VoteCreator creator={props.pollData.creator} />
       </div>
     </Container>
   );
