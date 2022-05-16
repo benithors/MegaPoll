@@ -17,6 +17,7 @@
     .stream {
         position: relative;
         display: inline-block;
+        background-color: #F5D760;
 
     }
 
@@ -24,6 +25,7 @@
     .stream:after {
         content: '';
         display: block;
+        background-color: #F5D760;
         width: 8px;
         height: 8px;
         position: absolute;

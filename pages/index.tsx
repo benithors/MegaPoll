@@ -110,13 +110,10 @@ function Home(props: IProps) {
         }
       >
         {props.frontPage.map((value: definitions['front_page'], index) => {
-          return (
-            <div
-              key={index}
-              className={
-                'md:stream md:bg-accent md:before:bg-accent md:after:bg-accent'
-              }
-            >
+
+
+            return (
+            <div key={index} className={'stream'}>
               <PollPreviewCard
                 router={router}
                 key={index}
