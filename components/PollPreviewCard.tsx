@@ -16,7 +16,7 @@ const PollPreviewCard = (props: IProps) => {
   return (
     <div
       className={
-        'flex w-full flex-col shadow-2xl transition-all  md:transform md:p-4 md:duration-500 md:ease-in-out md:hover:scale-105 md:hover:bg-accent-content md:hover:bg-opacity-50'
+        'stream__thumbnail flex w-full flex-col bg-primary-content shadow-2xl  md:p-4'
       }
     >
       <div className={'relative mb-2 flex h-64 flex-col md:mb-8 md:px-3'}>
