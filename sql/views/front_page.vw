@@ -1,4 +1,4 @@
-create view front_page(votes, poll_template, poll_instance, poll_name, cover_image) as
+create or replace view front_page(votes, poll_template, poll_instance, poll_name, cover_image) as
 SELECT v.votes,
        v.poll_template,
        v.poll_instance,
@@ -10,10 +10,9 @@ FROM (SELECT vp.poll_template,
              row_number() OVER (PARTITION BY vp.poll_template ORDER BY vp.votes DESC) AS rank
       FROM votes_per_poll_template_and_instance vp) v
          JOIN poll_templates pt ON v.poll_template = pt.id
-WHERE v.rank = 1
+WHERE v.rank = 1 and cover_image is not null
 ORDER BY v.votes DESC
 LIMIT 6;
-
 
 alter table front_page
     owner to postgres;
