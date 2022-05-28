@@ -161,7 +161,7 @@ const CreatePoll = () => {
       sessionStorage.removeItem('selectedImage');
 
       router.push({
-        pathname: '/poll/[id]',
+        pathname: '/[id]',
         query: { id: createPollResp.data }
       });
     }
@@ -273,12 +273,11 @@ const CreatePoll = () => {
         <label className="label">
           <span className="label-text">Poll Name</span>
         </label>
-        <input
-          type="text"
+        <textarea
           defaultValue={pollName || ''}
           onChange={(event) => setPollName(event.target.value)}
           placeholder="Give your Poll a name"
-          className="input-bordered input w-11/12 bg-opacity-30 md:w-2/3"
+          className=" textarea w-11/12 bg-opacity-30 md:w-2/3"
         />
         <label className={'label'}>Category</label>
         <select
@@ -349,12 +348,11 @@ const CreatePoll = () => {
             return (
               <div key={index} className={'flex flex-row'}>
                 <div className="mb-8 flex flex-grow flex-col pt-8">
-                  <input
+                  <textarea
                     value={value.pollQuestion || ''}
                     onChange={(event) => increaseArraySize(index, event)}
-                    type="text"
                     placeholder="Type your question here"
-                    className="input-bordered input-accent input input-lg mb-5 w-full bg-opacity-30"
+                    className="textarea-accent textarea mb-5 w-full bg-opacity-30"
                   />
                   <CreatePollInput
                     pollQuestionFormData={pollQuestionFormData}
