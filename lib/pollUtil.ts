@@ -69,7 +69,7 @@ export async function createFromTemplate(id: number, router: NextRouter) {
     return;
   }
   router.push({
-    pathname: '/poll/[id]',
+    pathname: '/[id]',
     query: { id: data.toString() }
   });
 }

@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
-import { definitions } from '../../types/database';
+import { definitions } from '../types/database';
 import { checkCookies, getCookie, setCookies } from 'cookies-next';
 import { v4 as uuidv4 } from 'uuid';
-import Container from '../../components/structure/Container';
+import Container from '../components/structure/Container';
 import { useRouter } from 'next/router';
 import { useUser } from '@supabase/supabase-auth-helpers/react';
-import { isErrorWithMessage } from '../../lib/errorUtil';
-import { createFromTemplate } from '../../lib/pollUtil';
-import Title from '../../components/generic/Title';
-import PollOptionQuestion from '../../components/voting/PollOptionQuestion';
+import { isErrorWithMessage } from '../lib/errorUtil';
+import { createFromTemplate } from '../lib/pollUtil';
+import Title from '../components/generic/Title';
+import PollOptionQuestion from '../components/voting/PollOptionQuestion';
 import {
   IPollInstanceData,
   IPollOptionWrapper,
   IPollQuestionWrapper
-} from '../../lib/interfaces';
+} from '../lib/interfaces';
 import VoteCreator from 'components/voting/VoteCreator';
-import CopyUrlButton from '../../components/generic/CopyUrlButton';
-import PaddingContainer from '../../components/structure/PaddingContainer';
+import CopyUrlButton from '../components/generic/CopyUrlButton';
+import PaddingContainer from '../components/structure/PaddingContainer';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 
@@ -141,8 +141,7 @@ const Poll = (props: IProps) => {
         openGraph={{
           type: 'website',
           locale: 'en_IE',
-          url:
-            'https://www.socialpoll.me/poll/' + props.pollData.poll_instance_id,
+          url: 'https://www.socialpoll.me/' + props.pollData.poll_instance_id,
           site_name: 'SocialPoll',
           images: [
             {
@@ -161,9 +160,7 @@ const Poll = (props: IProps) => {
         </div>
 
         <div>
-          <h1 className={'break-words text-5xl font-medium leading-tight'}>
-            <Title firstPart={props.pollData.poll_name} />
-          </h1>
+          <Title firstPart={props.pollData.poll_name} />
         </div>
 
         <div className="divider" />

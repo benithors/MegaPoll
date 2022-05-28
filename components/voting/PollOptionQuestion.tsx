@@ -67,7 +67,7 @@ const PollOptionQuestion = (props: IProps) => {
 
   return (
     <>
-      <h1 className={'break-words text-4xl text-secondary'}>
+      <h1 className={'break-words pb-4 text-2xl text-secondary md:text-4xl'}>
         {props.pollQ.pollQuestion.question}
       </h1>
       {props.pollQ.pollOptionsWrapper.map((pollOption, idx) => (

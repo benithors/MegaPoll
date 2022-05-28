@@ -38,7 +38,7 @@ function Home(props: IProps) {
 
   function openInstance(poll_instance: string) {
     router.push({
-      pathname: '/poll/[id]',
+      pathname: '/[id]',
       query: { id: poll_instance }
     });
   }
@@ -110,9 +110,7 @@ function Home(props: IProps) {
         }
       >
         {props.frontPage.map((value: definitions['front_page'], index) => {
-
-
-            return (
+          return (
             <div key={index} className={'stream'}>
               <PollPreviewCard
                 router={router}

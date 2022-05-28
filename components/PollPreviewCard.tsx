@@ -29,7 +29,7 @@ const PollPreviewCard = (props: IProps) => {
         </div>
         <Link
           href={{
-            pathname: '/poll/[id]',
+            pathname: '/[id]',
             query: { id: props.poll.poll_instance }
           }}
         >
@@ -40,7 +40,7 @@ const PollPreviewCard = (props: IProps) => {
               objectFit={'cover'}
               layout={'fill'}
               className={
-                'rounded md:transform-gpu md:transition md:duration-300 md:hover:brightness-125 '
+                'md:transform-gpu md:rounded md:transition md:duration-300 md:hover:brightness-125 '
               }
             />
           </button>
@@ -55,13 +55,13 @@ const PollPreviewCard = (props: IProps) => {
             onClick={() =>
               createFromTemplate(props.poll.poll_template, props.router)
             }
-            className="btn glass mb-4 w-full"
+            className="btn glass mb-4 w-full rounded-none md:rounded-md"
           >
             Clone this Poll!
           </button>
           <button
             onClick={() => props.openInstance(props.poll.poll_instance)}
-            className="btn btn-primary w-full"
+            className="btn btn-primary w-full rounded-none md:rounded-md"
           >
             Vote HERE!
           </button>
