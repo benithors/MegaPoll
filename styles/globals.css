@@ -10,6 +10,7 @@
     /* ... */
 
 
+
 }
 
 
@@ -65,4 +66,13 @@
     .stream:hover:after {
         transform: rotate(45deg) scale(1);
     }
+    #gradient-canvas {
+        --gradient-color-1: #ef008f;
+        --gradient-color-2: #6ec3f4;
+        --gradient-color-3: #7038ff;
+        --gradient-color-4: #ffba27;
+
+    }
+
 }
+

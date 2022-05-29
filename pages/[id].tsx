@@ -155,7 +155,7 @@ const Poll = (props: IProps) => {
         }}
       />
       <PaddingContainer className={''}>
-        <div className={'flex flex-row justify-end'}>
+        <div className={'flex flex-row justify-end z-10 mix-blend-color-dodge'}>
           <CopyUrlButton />
         </div>
 
@@ -163,7 +163,7 @@ const Poll = (props: IProps) => {
           <Title firstPart={props.pollData.poll_name} />
         </div>
 
-        <div className="divider" />
+        <div className="divider z-10" />
 
         {optionsData ? (
           <>

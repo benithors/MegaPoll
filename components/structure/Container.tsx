@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Head from 'next/head';
 import Header from './Header';
 import Footer from './Footer';
+import Gradient from "../../lib/gradient";
 
 interface IProps {
   children: any;
@@ -11,6 +12,7 @@ interface IProps {
 const Container = (props: IProps) => {
   const { children } = props;
 
+
   return (
     <div className={'relative flex h-full min-h-screen w-full flex-col'}>
       <Head>
@@ -18,7 +20,6 @@ const Container = (props: IProps) => {
         <meta name="description" content="Your Favorite Social Poll Maker" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={'flex h-full grow flex-col'}>
         <Header />
         <div
@@ -26,6 +27,7 @@ const Container = (props: IProps) => {
             'mt-8 flex h-full w-full max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32'
           }
         >
+
           {children}
         </div>
       </main>

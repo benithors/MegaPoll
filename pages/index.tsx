@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
 import { definitions } from '../types/database';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useRouter } from 'next/router';
 import Container from '../components/structure/Container';
 import Title from '../components/generic/Title';
 import PaddingContainer from '../components/structure/PaddingContainer';
 import PollPreviewCard from '../components/PollPreviewCard';
 import { NextSeo } from 'next-seo';
+import {Gradient} from'lib/gradient'
+import Script from 'next/script';
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
@@ -42,6 +44,7 @@ function Home(props: IProps) {
       query: { id: poll_instance }
     });
   }
+
 
   return (
     <Container>
@@ -78,18 +81,19 @@ function Home(props: IProps) {
           ]
         }}
       />
+
       <Title firstPart={'Share Your'} secondPart={'Opinion'} />
       <div
         className={
-          'flex flex-col items-center self-center text-xl sm:text-2xl md:flex-row md:text-3xl'
+          'flex flex-col z-10 items-center self-center text-xl sm:text-2xl md:flex-row md:text-3xl'
         }
       >
-        <div>
+        <div className={''}>
           <span>Free</span>
 
           <span
             className={
-              'mx-1 mx-1 rounded bg-gradient-to-l from-secondary to-primary px-1'
+              'mx-1 mx-1 rounded bg-gradient-to-l from-secondary to-primary px-1 '
             }
           >
             realtime polls
@@ -100,7 +104,7 @@ function Home(props: IProps) {
           <span className={'px-2 font-extrabold'}>and your community.</span>
         </div>
       </div>
-      <button className="btn btn-accent mt-4 mb-8 self-center text-2xl md:mt-14">
+      <button className=" btn btn-accent mt-4 mb-8 self-center text-2xl md:mt-14">
         <Link href="/create-poll">CREATE A POLL</Link>
       </button>
 
