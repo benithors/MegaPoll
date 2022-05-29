@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
-import {IconArrowDownCircle, IconArrowUpCircle, IconXCircle} from '@supabase/ui';
+import {
+  IconArrowDownCircle,
+  IconArrowUpCircle,
+  IconXCircle
+} from '@supabase/ui';
 import CreatePollInput from '../components/CreatePollInput';
 import { isEmpty } from '../lib/stringUtils';
 import { Auth, useUser } from '@supabase/supabase-auth-helpers/react';
@@ -274,10 +278,7 @@ const CreatePoll = () => {
     pollQuestionCreationArr[index] = pollQuestionCreationArr[index + direction];
     pollQuestionCreationArr[index + direction] = temp;
     setPollQuestionFormData(pollQuestionCreationArr);
-
   }
-
-
 
   return (
     <Container>
@@ -361,7 +362,7 @@ const CreatePoll = () => {
           {pollQuestionFormData.map((value, index) => {
             return (
               <div key={index} className={'flex flex-row '}>
-                <div className="mb-8 flex flex-grow flex-col pt-8 relative">
+                <div className="relative mb-8 flex flex-grow flex-col pt-8">
                   <textarea
                     value={value.pollQuestion || ''}
                     onChange={(event) => increaseArraySize(index, event)}
@@ -389,34 +390,45 @@ const CreatePoll = () => {
                       />
                     </label>
                   </div>
-                  <div className={'w-full h-full pointer-events-none absolute flex flex-row justify-between  -translate-y-6 '}>
-
+                  <div
+                    className={
+                      'pointer-events-none absolute flex h-full w-full -translate-y-6 flex-row  justify-between '
+                    }
+                  >
                     <button
-                        onClick={() => deleteEntry(index)}
-                        className={'flex pointer-events-auto flex-col'}
-                        aria-label={'remove this question'}
+                      onClick={() => deleteEntry(index)}
+                      className={'pointer-events-auto flex flex-col'}
+                      aria-label={'remove this question'}
                     >
                       <IconXCircle className={'stroke-red-500 stroke-2'} />
                     </button>
-                    <div className={'flex pointer-events-auto flex-col justify-between'}>
-
+                    <div
+                      className={
+                        'pointer-events-auto flex flex-col justify-between'
+                      }
+                    >
                       <button
-                          onClick={() => moveEntry(index,-1)}
-                          className={ (index === 0 && 'invisible' )}
-                          aria-label={'move this question up'}
+                        onClick={() => moveEntry(index, -1)}
+                        className={index === 0 && 'invisible'}
+                        aria-label={'move this question up'}
                       >
-                        <IconArrowUpCircle className={'stroke-primary stroke-2'}/>
+                        <IconArrowUpCircle
+                          className={'stroke-primary stroke-2'}
+                        />
                       </button>
                       <button
-                          onClick={() => moveEntry(index,1)}
-                          className={(index === pollQuestionFormData.length - 1 && 'invisible' )}
-                          aria-label={'move this question down'}
+                        onClick={() => moveEntry(index, 1)}
+                        className={
+                          index === pollQuestionFormData.length - 1 &&
+                          'invisible'
+                        }
+                        aria-label={'move this question down'}
                       >
-                        <IconArrowDownCircle className={'stroke-primary stroke-2'}/>
+                        <IconArrowDownCircle
+                          className={'stroke-primary stroke-2'}
+                        />
                       </button>
-
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -455,4 +467,3 @@ const CreatePoll = () => {
 };
 
 export default CreatePoll;
-
