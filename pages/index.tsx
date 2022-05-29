@@ -97,7 +97,7 @@ function Home(props: IProps) {
         </div>
         <div>
           for you
-          <span className={'px-2 font-extrabold'}>and your community.</span>
+        <span className={'px-2 font-extrabold'}>and your community.</span>
         </div>
       </div>
       <button className="btn btn-accent mt-4 mb-8 self-center text-2xl md:mt-14">
