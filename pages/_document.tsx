@@ -37,7 +37,7 @@ export default function Document() {
       </Head>
       <body
         className={
-          'min-h-screen  bg-gradient-to-br from-primary-content to-secondary'
+          'min-h-screen  bg-gradient-to-br from-primary-content to-secondary overflow-x-hidden '
         }
       >
         <Main />

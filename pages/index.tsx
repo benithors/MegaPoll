@@ -38,6 +38,10 @@ interface IProps {
 function Home(props: IProps) {
   const router = useRouter();
 
+    useEffect(() => {
+        var gradient = new Gradient();
+        gradient.initGradient('#gradient-canvas')
+    },[]);
   function openInstance(poll_instance: string) {
     router.push({
       pathname: '/[id]',
@@ -47,6 +51,12 @@ function Home(props: IProps) {
 
   return (
     <Container>
+
+        <canvas
+            id="gradient-canvas"
+            className={
+                ''}
+        ></canvas>
       <NextSeo
         title="Socialpoll.me - Share your Polls"
         description="Free realtime polls for you and your community"
@@ -84,7 +94,7 @@ function Home(props: IProps) {
       <Title firstPart={'Share Your'} secondPart={'Opinion'} />
       <div
         className={
-          'z-10 flex flex-col items-center self-center text-xl sm:text-2xl md:flex-row md:text-3xl'
+          ' flex flex-col items-center self-center text-xl sm:text-2xl md:flex-row md:text-3xl z-10'
         }
       >
         <div className={''}>
@@ -103,11 +113,12 @@ function Home(props: IProps) {
           <span className={'px-2 font-extrabold'}>and your community.</span>
         </div>
       </div>
-      <button className=" btn btn-accent mt-4 mb-8 self-center text-2xl md:mt-14">
-        <Link href="/create-poll">CREATE A POLL</Link>
-      </button>
 
-      <PaddingContainer
+
+        <button className="btn btn-accent mt-4 mb-8 self-center text-2xl md:mt-14 z-10">
+            <Link href="/create-poll">CREATE A POLL</Link>
+        </button>
+        <PaddingContainer
         className={
           'grid w-full grid-cols-1 gap-4 self-center rounded-2xl  sm:grid-cols-2 md:w-11/12 md:pt-8 xl:grid-cols-3'
         }

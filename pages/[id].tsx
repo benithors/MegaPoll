@@ -20,6 +20,7 @@ import CopyUrlButton from '../components/generic/CopyUrlButton';
 import PaddingContainer from '../components/structure/PaddingContainer';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
+import Gradient from "../lib/gradient";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id as string;
@@ -119,6 +120,8 @@ const Poll = (props: IProps) => {
     loadData();
   }, [router.isReady, user]);
 
+
+
   return (
     <Container>
       <NextSeo
@@ -155,7 +158,7 @@ const Poll = (props: IProps) => {
         }}
       />
       <PaddingContainer className={''}>
-        <div className={'z-10 flex flex-row justify-end mix-blend-color-dodge'}>
+        <div className={' flex flex-row justify-end mix-blend-color-dodge'}>
           <CopyUrlButton />
         </div>
 
@@ -163,7 +166,7 @@ const Poll = (props: IProps) => {
           <Title firstPart={props.pollData.poll_name} />
         </div>
 
-        <div className="divider z-10" />
+        <div className="divider" />
 
         {optionsData ? (
           <>
@@ -222,7 +225,7 @@ const Poll = (props: IProps) => {
           </div>
         )}
       </PaddingContainer>
-      <div className={'mt-3 flex flex-row justify-center'}>
+      <div className={' mt-3 flex flex-row justify-center'}>
         <button
           onClick={() =>
             createFromTemplate(props.pollData.poll_template_id, router)
