@@ -284,7 +284,7 @@ const CreatePoll = () => {
     <Container>
       <Title firstPart={'Share Your'} secondPart={'Questions'} />
 
-      <div className="flex w-full flex-col items-center z-10">
+      <div className="z-10 flex w-full flex-col items-center">
         <label className="label">
           <span className="label-text">Poll Name</span>
         </label>

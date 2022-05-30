@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
 import { definitions } from '../types/database';
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Container from '../components/structure/Container';
 import Title from '../components/generic/Title';
 import PaddingContainer from '../components/structure/PaddingContainer';
 import PollPreviewCard from '../components/PollPreviewCard';
 import { NextSeo } from 'next-seo';
-import {Gradient} from'lib/gradient'
+import { Gradient } from 'lib/gradient';
 import Script from 'next/script';
 
 // This function gets called at build time on server-side.
@@ -44,7 +44,6 @@ function Home(props: IProps) {
       query: { id: poll_instance }
     });
   }
-
 
   return (
     <Container>
@@ -85,7 +84,7 @@ function Home(props: IProps) {
       <Title firstPart={'Share Your'} secondPart={'Opinion'} />
       <div
         className={
-          'flex flex-col z-10 items-center self-center text-xl sm:text-2xl md:flex-row md:text-3xl'
+          'z-10 flex flex-col items-center self-center text-xl sm:text-2xl md:flex-row md:text-3xl'
         }
       >
         <div className={''}>

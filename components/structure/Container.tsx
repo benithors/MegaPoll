@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Header from './Header';
 import Footer from './Footer';
-import Gradient from "../../lib/gradient";
+import Gradient from '../../lib/gradient';
 
 interface IProps {
   children: any;
@@ -11,7 +11,6 @@ interface IProps {
 
 const Container = (props: IProps) => {
   const { children } = props;
-
 
   return (
     <div className={'relative flex h-full min-h-screen w-full flex-col'}>
@@ -27,7 +26,6 @@ const Container = (props: IProps) => {
             'mt-8 flex h-full w-full max-w-screen-xl flex-grow flex-col self-center md:mt-12 xl:mt-32'
           }
         >
-
           {children}
         </div>
       </main>
