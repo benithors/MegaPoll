@@ -15,10 +15,10 @@ const privacy = () => {
 
       <div className={'flex flex-col px-6'}>
         <InformationContainer title={'Data Privacy'}>
-          MegaPoll.me would like to make the visit to the MegaPoll.me pages
-          as pleasant as possible for all its users. For MegaPoll.Me, this
-          also includes - right at the forefront - safeguarding the privacy of
-          each individual and protecting personal data.
+          MegaPoll.me would like to make the visit to the MegaPoll.me pages as
+          pleasant as possible for all its users. For MegaPoll.Me, this also
+          includes - right at the forefront - safeguarding the privacy of each
+          individual and protecting personal data.
           <br />
           In this privacy statement, you will learn which personal data we
           process on our websites and apps, in what way and for what purpose. We
@@ -48,8 +48,8 @@ const privacy = () => {
         </InformationContainer>
 
         <InformationContainer title={'Data Processing'}>
-          MegaPoll.me and its subsidiaries process your data, for example,
-          when you vote on a poll, create a poll. <br />
+          MegaPoll.me and its subsidiaries process your data, for example, when
+          you vote on a poll, create a poll. <br />
           MegaPoll.me process data such as your IP address and browser or app
           identifiers for technical operation such as making sure that only one
           vote is casted per poll question. <br />
@@ -75,22 +75,21 @@ const privacy = () => {
         <InformationContainer title={'How do we use uploaded images?'}>
           The uploaded images are displayed as a visual information on what the
           poll is about, the images are stored on a AWS S3 bucket. <br />
-          MegaPoll.me does not claim the ownership of the images. And the{' '}
-          <br />
+          MegaPoll.me does not claim the ownership of the images. And the <br />
           Uploading an Image creates a Poll that can be shared to the community.
           <br />
           No matter what your privacy settings are, every poll and therefor
           image can always be accessed and viewed by anyone who types in that
-          exact URL. No image uploaded to MegaPoll.me is ever completely
-          hidden from public view. This is mainly to ensure that MegaPoll.me
-          will not be used as a platform for illegality.
+          exact URL. No image uploaded to MegaPoll.me is ever completely hidden
+          from public view. This is mainly to ensure that MegaPoll.me will not
+          be used as a platform for illegality.
         </InformationContainer>
 
         <InformationContainer title={'Changes to this Privacy Policy'}>
-          MegaPoll.me may revise the privacy policy from time to time by
-          posting the changes here. You can determine the date of the most
-          recent changes by looking at the last change date at the bottom of
-          this page. <br />
+          MegaPoll.me may revise the privacy policy from time to time by posting
+          the changes here. You can determine the date of the most recent
+          changes by looking at the last change date at the bottom of this page.{' '}
+          <br />
         </InformationContainer>
 
         <InformationContainer title={'Last change date'}>

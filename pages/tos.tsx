@@ -17,9 +17,9 @@ const tos = () => {
 
         <InformationContainer title={'Preamble'}>
           Benjamin Thorstensen (hereinafter referred to as the Operator)
-          operates the website MegaPoll.me, a web-based application for
-          creating social polls. These Terms of Use apply to all users of the
-          platform MegaPoll.me (hereinafter: the User).
+          operates the website MegaPoll.me, a web-based application for creating
+          social polls. These Terms of Use apply to all users of the platform
+          MegaPoll.me (hereinafter: the User).
         </InformationContainer>
 
         <InformationContainer title={'Things you should not do'}>
@@ -37,8 +37,8 @@ const tos = () => {
               torrent
             </li>
             <li>
-              Do NOT use MegaPoll.me to host images you link from somewhere
-              else in order to use MegaPoll.me as content delivery network.
+              Do NOT use MegaPoll.me to host images you link from somewhere else
+              in order to use MegaPoll.me as content delivery network.
             </li>
             <li>Do NOT use of the Website and Service must not violate d</li>
             <li>
@@ -74,8 +74,8 @@ const tos = () => {
 
         <InformationContainer title={'The Operator May Remove Content'}>
           The Operator has the right to refuse or remove any User-Generated
-          Content that, in our sole discretion, violates any laws or
-          MegaPoll.me terms or policies.
+          Content that, in our sole discretion, violates any laws or MegaPoll.me
+          terms or policies.
         </InformationContainer>
 
         <InformationContainer title={'License Grant to Us'}>
@@ -153,10 +153,10 @@ const tos = () => {
         </InformationContainer>
 
         <InformationContainer title={'Changes to Terms of Service'}>
-          MegaPoll.me may revise the privacy policy from time to time by
-          posting the changes here. You can determine the date of the most
-          recent changes by looking at the last change date at the bottom of
-          this page. <br />
+          MegaPoll.me may revise the privacy policy from time to time by posting
+          the changes here. You can determine the date of the most recent
+          changes by looking at the last change date at the bottom of this page.{' '}
+          <br />
         </InformationContainer>
 
         <InformationContainer title={'Last change date'}>
