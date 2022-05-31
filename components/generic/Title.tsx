@@ -7,14 +7,12 @@ interface IProps {
 }
 
 const Title = (props: IProps) => {
-
   return (
     <div
       className={
         'component-preview mb-8 text-center text-7xl font-bold md:text-8xl xl:text-9xl '
       }
     >
-
       <div className={'text-secondary mix-blend-color-dodge '}>
         {props.firstPart}{' '}
       </div>

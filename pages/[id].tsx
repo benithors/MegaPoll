@@ -20,7 +20,7 @@ import CopyUrlButton from '../components/generic/CopyUrlButton';
 import PaddingContainer from '../components/structure/PaddingContainer';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
-import Gradient from "../lib/gradient";
+import Gradient from '../lib/gradient';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id as string;
@@ -119,8 +119,6 @@ const Poll = (props: IProps) => {
 
     loadData();
   }, [router.isReady, user]);
-
-
 
   return (
     <Container>
