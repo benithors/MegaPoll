@@ -57,7 +57,7 @@ function Home(props: IProps) {
 
       <Container>
         <NextSeo
-          title="Socialpoll.me - Share your Polls"
+          title="Megapoll.me - Share your Polls"
           description="Free realtime polls for you and your community"
           robotsProps={{
             nosnippet: true,
@@ -69,21 +69,21 @@ function Home(props: IProps) {
             maxVideoPreview: -1
           }}
           twitter={{
-            handle: '@socialpollme',
-            site: '@socialpollme',
+            handle: '@megapollme',
+            site: '@megapollme',
             cardType: 'summary_large_image'
           }}
           openGraph={{
             type: 'website',
             locale: 'en_IE',
-            url: 'https://www.socialpoll.me/',
-            site_name: 'SocialPoll.me',
+            url: 'https://www.megapoll.me/',
+            site_name: 'megapoll.me',
             images: [
               {
                 url: 'https://pbs.twimg.com/profile_images/1522287055463714820/4TE0Pt3__400x400.jpg',
                 width: 400,
                 height: 400,
-                alt: 'socialpoll.me',
+                alt: 'megapoll.me',
                 type: 'image/jpeg'
               }
             ]

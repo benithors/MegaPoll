@@ -15,8 +15,8 @@ const privacy = () => {
 
       <div className={'flex flex-col px-6'}>
         <InformationContainer title={'Data Privacy'}>
-          SocialPoll.me would like to make the visit to the SocialPoll.me pages
-          as pleasant as possible for all its users. For SocialPoll.Me, this
+          MegaPoll.me would like to make the visit to the MegaPoll.me pages
+          as pleasant as possible for all its users. For MegaPoll.Me, this
           also includes - right at the forefront - safeguarding the privacy of
           each individual and protecting personal data.
           <br />
@@ -28,7 +28,7 @@ const privacy = () => {
         <InformationContainer
           title={'Collection and processing of personal data'}
         >
-          Personal data is collected and processed on SocialPoll.me exclusively
+          Personal data is collected and processed on MegaPoll.me exclusively
           for legally permitted purposes and to the extent specified by law.
           This is the case, for example, if the processing of your data is
           necessary for the fulfillment of a contract or a legal obligation
@@ -48,16 +48,16 @@ const privacy = () => {
         </InformationContainer>
 
         <InformationContainer title={'Data Processing'}>
-          SocialPoll.me and its subsidiaries process your data, for example,
+          MegaPoll.me and its subsidiaries process your data, for example,
           when you vote on a poll, create a poll. <br />
-          SocialPoll.me process data such as your IP address and browser or app
+          MegaPoll.me process data such as your IP address and browser or app
           identifiers for technical operation such as making sure that only one
           vote is casted per poll question. <br />
-          SocialPoll.me uses the personal data you provide only to the extent
+          MegaPoll.me uses the personal data you provide only to the extent
           necessary to fulfill the respective purpose; e.g. <br />
           <ul className="ml-8 list-disc pt-2">
             <li>
-              for measuring the use and performance of SocialPoll.me online
+              for measuring the use and performance of MegaPoll.me online
               services
             </li>
             <li>to answer a question that you ask us.</li>
@@ -75,19 +75,19 @@ const privacy = () => {
         <InformationContainer title={'How do we use uploaded images?'}>
           The uploaded images are displayed as a visual information on what the
           poll is about, the images are stored on a AWS S3 bucket. <br />
-          SocialPoll.me does not claim the ownership of the images. And the{' '}
+          MegaPoll.me does not claim the ownership of the images. And the{' '}
           <br />
           Uploading an Image creates a Poll that can be shared to the community.
           <br />
           No matter what your privacy settings are, every poll and therefor
           image can always be accessed and viewed by anyone who types in that
-          exact URL. No image uploaded to SocialPoll.me is ever completely
-          hidden from public view. This is mainly to ensure that SocialPoll.me
+          exact URL. No image uploaded to MegaPoll.me is ever completely
+          hidden from public view. This is mainly to ensure that MegaPoll.me
           will not be used as a platform for illegality.
         </InformationContainer>
 
         <InformationContainer title={'Changes to this Privacy Policy'}>
-          SocialPoll.me may revise the privacy policy from time to time by
+          MegaPoll.me may revise the privacy policy from time to time by
           posting the changes here. You can determine the date of the most
           recent changes by looking at the last change date at the bottom of
           this page. <br />

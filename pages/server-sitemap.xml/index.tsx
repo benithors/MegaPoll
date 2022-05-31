@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (data) {
     data.forEach((page) => {
       fields.push({
-        loc: 'https://socialpoll.me/' + page.poll_instance, // Absolute url
+        loc: 'https://megapoll.me/' + page.poll_instance, // Absolute url
         lastmod: new Date().toISOString()
         // changefreq
         // priority

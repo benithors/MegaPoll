@@ -124,7 +124,7 @@ const Poll = (props: IProps) => {
     <Container>
       <NextSeo
         title={props.pollData.poll_name}
-        description="Socialpoll.me - Free realtime polls for you and your community"
+        description="megapoll.me - Free realtime polls for you and your community"
         robotsProps={{
           nosnippet: true,
           notranslate: false,
@@ -135,15 +135,15 @@ const Poll = (props: IProps) => {
           maxVideoPreview: -1
         }}
         twitter={{
-          handle: '@socialpollme',
-          site: '@socialpollme',
+          handle: '@megapollme',
+          site: '@megapollme',
           cardType: 'summary_large_image'
         }}
         openGraph={{
           type: 'website',
           locale: 'en_IE',
-          url: 'https://www.socialpoll.me/' + props.pollData.poll_instance_id,
-          site_name: 'SocialPoll',
+          url: 'https://www.megapoll.me/' + props.pollData.poll_instance_id,
+          site_name: 'MegaPoll',
           images: [
             {
               width: 400,

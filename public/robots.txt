@@ -3,8 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://socialpoll.me
+Host: https://megapoll.me
 
 # Sitemaps
-Sitemap: https://socialpoll.me/sitemap.xml
-Sitemap: https://socialpoll.me/server-sitemap.xml
+Sitemap: https://megapoll.me/sitemap.xml
+Sitemap: https://megapoll.me/server-sitemap-index.xml

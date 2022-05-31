@@ -17,9 +17,9 @@ const tos = () => {
 
         <InformationContainer title={'Preamble'}>
           Benjamin Thorstensen (hereinafter referred to as the Operator)
-          operates the website SocialPoll.me, a web-based application for
+          operates the website MegaPoll.me, a web-based application for
           creating social polls. These Terms of Use apply to all users of the
-          platform SocialPoll.me (hereinafter: the User).
+          platform MegaPoll.me (hereinafter: the User).
         </InformationContainer>
 
         <InformationContainer title={'Things you should not do'}>
@@ -37,12 +37,12 @@ const tos = () => {
               torrent
             </li>
             <li>
-              Do NOT use SocialPoll.me to host images you link from somewhere
-              else in order to use SocialPoll.me as content delivery network.
+              Do NOT use MegaPoll.me to host images you link from somewhere
+              else in order to use MegaPoll.me as content delivery network.
             </li>
             <li>Do NOT use of the Website and Service must not violate d</li>
             <li>
-              Do Not use SocialPoll.me to violate any applicable laws, including
+              Do Not use MegaPoll.me to violate any applicable laws, including
               copyright or trademark laws, export control or sanctions laws, or
               other laws in your jurisdiction.
             </li>
@@ -75,7 +75,7 @@ const tos = () => {
         <InformationContainer title={'The Operator May Remove Content'}>
           The Operator has the right to refuse or remove any User-Generated
           Content that, in our sole discretion, violates any laws or
-          Socialpoll.me terms or policies.
+          MegaPoll.me terms or policies.
         </InformationContainer>
 
         <InformationContainer title={'License Grant to Us'}>
@@ -106,7 +106,7 @@ const tos = () => {
             compliance with laws and any applicable regulations.
           </div>
           <div>
-            People under the age of 18 are not permitted to use SocialPoll.me
+            People under the age of 18 are not permitted to use MegaPoll.me
           </div>
         </InformationContainer>
 
@@ -153,7 +153,7 @@ const tos = () => {
         </InformationContainer>
 
         <InformationContainer title={'Changes to Terms of Service'}>
-          SocialPoll.me may revise the privacy policy from time to time by
+          MegaPoll.me may revise the privacy policy from time to time by
           posting the changes here. You can determine the date of the most
           recent changes by looking at the last change date at the bottom of
           this page. <br />

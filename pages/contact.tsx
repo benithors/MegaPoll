@@ -21,7 +21,7 @@ const contact = () => {
         You may also contact us via the following social media channels
         <button className={'btn-link px-1'}>
           <a
-            href={'https://twitter.com/socialpollme'}
+            href={'https://twitter.com/megapollme'}
             aria-label={'twitter to the creator of this website'}
           >
             Twitter

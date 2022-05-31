@@ -38,7 +38,7 @@ const Footer = () => {
             </a>
           </Link>
           <a
-            href="mailto:socialpoll.me@gmail.com"
+            href="mailto:megapoll.me@gmail.com"
             aria-label={'e-mail to the creator of this website'}
           >
             <IconMail className={'stroke-2'} />
